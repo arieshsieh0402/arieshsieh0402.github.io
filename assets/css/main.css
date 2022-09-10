@@ -2182,7 +2182,7 @@ input, select, textarea {
 	header.major {
 		margin: 0 0 4em 0;
 		position: relative;
-		text-align: center;
+		text-align: left;
 	}
 
 		header.major:after {
