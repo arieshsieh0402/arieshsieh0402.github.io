@@ -23,7 +23,7 @@
                     <ul>
                         <li><a href="/#About">About</a></li>
                         <li><a href="/#Resume">Resume</a></li>
-                        <li><a href="/#Side-Project">Side Project</a></li>
+                        <li><a href="#main">Side Projects</a></li>
                     </ul>
                 </nav>
             </header>
@@ -32,18 +32,86 @@
             <div id="main" class="wrapper style1">
                 <div class="container">
                     <header class="major">
-                        <h2 align="left">AttorneyTech</h2>
+                        <h2 align="left">Side Projects</h2>
                         <p align="left">
-                            <p>A system to manage your law firm</p>
-
+                            <ul>
+                                <li><a href="#attorneytech">AttorneyTech 法律事務所管理系統</a></li>
+                                <li><a href="#excel-export-sheets">Excel 數據轉換工作表工具</a></li>
+                                <li><a href="#google-service-automatic">Google 服務流程自動化</a></li>
+                            </ul>
 
                         </p>
                     </header>
 
                     <!-- Content -->
-                    <section id="content">
-                        <a href="#" class="image fit"><img src="images/attorneytech.jpg" alt="" /></a>
-                    </section>
+                    <div id="attorneytech">
+                        <h3>AttorneyTech 法律事務所管理系統</h3>
+                        <ul>
+                            <li>
+                                本系統規劃對內可管理事務所人員、客戶及案件資料。對外可供客戶登入系統，查詢案件辦理進度或下載相關文書。
+                            </li>
+                            <li>
+                                本專案資料庫運行於 Docker 服務，使用 docker-compose 部署 PostgreSQL 及 PgAdmin。
+                                資料庫使用 PostgreSQL 之 Prepare 技術，可預先載入 SQL 查詢語句增進執行效能。
+                            </li>
+                            <li>
+                                API 部分提供了 OpenAPI 規格書，並以 Python 搭配 Flask 框架實作，目前可透過 POST /users、
+                                GET /users 及 GET /users/{userId} 建立並取得事務所人員及客戶資料。另於本地端進行開發測試時，
+                                運用 HTTP Basic Auth 驗證呼叫 API 之使用者權限，並使用 OpenSSL 製作私鑰及自簽憑證，將伺服器
+                                運行於 HTTPS 下進行加密通訊。
+                            </li>
+                            <li>
+                                本專案目前仍繼續建置中，後續規劃建置前端介面供使用者登入。預期將可取代傳統律師事務所僅依靠個人自主
+                                管理案件之方式，可以有效率、有系統性的取得客戶及案件資訊；對於客戶而言，將取代現行大多數與律師一對一
+                                ，透過打電話或通訊軟體了解自身案件承辦概況之溝通模式，可大幅減少雙方之溝通成本。
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="excel-export-sheets">
+                        <h3>Excel 數據轉換工作表工具</h3>
+                        <ul>
+                            <li>
+                                本專案之功能為將特定欄位裡的資料做整理分類，並依據不同類別儲存為單一 excel 檔裡之不同工作表。
+                            </li>
+                            <li>
+                                本專案使用 Python 搭配 Pandas 套件撰寫，選定特定欄位後，可自動將欄位內之資料整理成一個 set，
+                                再分別將該 set 裡的內容，選取符合條件的列之資料，分別合併成不同的工作表後儲存成單一 excel 檔。
+                            </li>
+                            <li>
+                                本專案可快速處理大量資料，以一份有 6 萬條 rows 的資料為例，選定欄位之 set 有 10 種不同資料，
+                                僅 7 秒即整理完畢。若以手工方式處理，將耗費數小時以上不等，而若選定欄位之資料種類越複雜，耗時
+                                將會更高。
+                            </li>
+                            <li>
+                                <a href ="https://github.com/arieshsieh0402/export-data-into-separate-sheets" target="_blank">
+                                    GitHub 程式碼
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div id="google-service-automatic">
+                        <h3>Google 服務流程自動化</h3>
+                        <ul>
+                            <li>
+                                本專案之功能為，讓 Google Forms 自動化產 Google Docs，並可於收到表單提交時，
+                                自動將剛產出的 Google Docs 轉換成 PDF 格式檔案，並將其作為附件，email 給填表人。
+                            </li>
+                            <li>本專案使用 Google Apps Script，使用語言為 JavaScript。</li>
+                            <li>
+                                此專案特色在於，可依據個人需求設計想要的文件格式，並將表單內容放入文件指定之位置中，
+                                而非僅單純將表單輸出成固定格式之試算表，既滿足了自定義的彈性，自動化寄發 email 給填表人。
+                                原先透過手動方式處理上述流程，一筆訂單至少耗時 10 分鐘；而透過此專案，該流程可於 10 秒內完成，
+                                可省去近 60 倍的時間。
+                            </li>
+                            <li>
+                                <a href ="https://github.com/arieshsieh0402/Useful-google-app-scripts#auto-send-email-from-forms" target="_blank">
+                                    GitHub 程式碼
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
 
                 </div>
             </div>
