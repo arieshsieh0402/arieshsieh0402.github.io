@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<!--
+    Landed by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+    <head>
+        <title>Hsieh-Te Hsieh</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1,
+            user-scalable=no" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    </head>
+    <body class="is-preload">
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <header id="header">
+                <h1 id="logo"><a href="index.html">Hsieh-Te Hsieh</a></h1>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="/#About">About</a></li>
+                        <li><a href="#main">Resume</a></li>
+                    </ul>
+                </nav>
+            </header>
+
+            <!-- Main -->
+            <div id="main" class="wrapper style1">
+                <div class="container">
+                    <header class="major">
+                        <h2 align="left">Resume</h2>
+                        <p align="left">
+                            My experience, skills and side projects.
+                        </p>
+                    </header>
+
+                    <!-- Content -->
+                    <div id="experience">
+                        <h2>Experience</h2>
+                        <h3>國立政治大學</h3>
+                        <p align="left">
+                            地政學系 (2007.06 - 2011.06)
+                            <blockquote>
+                                地政系之課程訓練橫跨商學、法律乃至於測量技術，使我能以開放態度去學習跨領域的專業知識。
+                            </blockquote>
+                        </p>
+                        <h3>國立臺灣大學</h3>
+                        <p align="left">
+                            科際整合法律學研究所 (2012.06 - 2018.06)
+                            <blockquote>
+                                研究所期間共修習 98 個學分 (3.71 / 4.3 GPA)，並考取律師國考及完成碩士論文。
+                            </blockquote>
+                        </p>
+                        <h3>律師</h3>
+                        <p align="left">
+                            中華民國律師 (2018.08 - 現在)
+                            <blockquote>
+                                在承辦眾多法律關係複雜案件之過程中，需要逐一抽絲剝繭，將混亂的法律關係整理清楚並找出核心問題，
+                                從而制定應對策略，此訓練過程使我具備優秀的邏輯分析能力。而透過在法庭上將自身主張透過文字及話語
+                                表達清楚之訓練，亦使我具備良好的表達及溝通能力。此外，法律規定瞬息萬變，案件涉及之法律以外專業
+                                知識之複雜，亦使我擁有快速學習新事物的能力。
+                            </blockquote>
+                        </p>
+                    </div>
+                    <hr>
+                    <div id="skills">
+                        <h2>Skills</h2>
+                        <ul>
+                            <li>Front-End: HTML, CSS, JavaScript, React, GitHub Pages</li>
+                            <li>Back-End: Python, pip, Virtualenv, Flask, Pandas, Selenium, Tkinter, Turtle, Node.js, npm</li>
+                            <li>Databases: PostgreSQL, PgAdmin, SQL, SQLite</li>
+                            <li>APIs: RESTful API, JSON API, Swagger/OpenAPI, Postman, HTTP Basic Auth, OpenSSL</li>
+                            <li>DevOps: Docker, Docker Compose, Git, Github</li>
+                            <li>Others: iTerm2, Regular Expression, VS code, Web Scraping</li>
+                        </ul>
+                    </div>
+                    <hr>
+                    <div id="side-project">
+                        <h2>Side projects</h2>
+                        <div id="attorneytech">
+                            <h3>AttorneyTech 法律事務所管理系統</h3>
+                            <ul>
+                                <li>
+                                    本系統規劃對內可管理事務所人員、客戶及案件資料。對外可供客戶登入系統，查詢案件辦理進度或下載相關文書。
+                                </li>
+                                <li>
+                                    本專案資料庫運行於 Docker 服務，使用 docker-compose 部署 PostgreSQL 及 PgAdmin。
+                                    資料庫使用 PostgreSQL 之 Prepare 技術，可預先載入 SQL 查詢語句增進執行效能。
+                                </li>
+                                <li>
+                                    API 部分提供了 OpenAPI 規格書，並以 Python 搭配 Flask 框架實作，目前可透過 POST /users、
+                                    GET /users 及 GET /users/{userId} 建立並取得事務所人員及客戶資料。另於本地端進行開發測試時，
+                                    運用 HTTP Basic Auth 驗證呼叫 API 之使用者權限，並使用 OpenSSL 製作私鑰及自簽憑證，將伺服器
+                                    運行於 HTTPS 下進行加密通訊。
+                                </li>
+                                <li>
+                                    本專案目前仍繼續建置中，後續規劃建置前端介面供使用者登入。預期將可取代傳統律師事務所僅依靠個人自主
+                                    管理案件之方式，可以有效率、有系統性的取得客戶及案件資訊；對於客戶而言，將取代現行大多數與律師一對一
+                                    ，透過打電話或通訊軟體了解自身案件承辦概況之溝通模式，可大幅減少雙方之溝通成本。
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="excel-export-sheets">
+                            <h3>Excel 數據轉換工作表工具</h3>
+                            <ul>
+                                <li>
+                                    本專案之功能為將特定欄位裡的資料做整理分類，並依據不同類別儲存為單一 excel 檔裡之不同工作表。
+                                </li>
+                                <li>
+                                    本專案使用 Python 搭配 Pandas 套件撰寫，選定特定欄位後，可自動將欄位內之資料整理成一個 set，
+                                    再分別將該 set 裡的內容，選取符合條件的列之資料，分別合併成不同的工作表後儲存成單一 excel 檔。
+                                </li>
+                                <li>
+                                    本專案可快速處理大量資料，以一份有 6 萬條 rows 的資料為例，選定欄位之 set 有 10 種不同資料，
+                                    僅 7 秒即整理完畢。若以手工方式處理，將耗費數小時以上不等，而若選定欄位之資料種類越複雜，耗時
+                                    將會更高。
+                                </li>
+                                <li>
+                                    <a href ="https://github.com/arieshsieh0402/export-data-into-separate-sheets" target="_blank">
+                                        GitHub 程式碼
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div id="google-service-automatic">
+                            <h3>Google 服務流程自動化</h3>
+                            <ul>
+                                <li>
+                                    本專案之功能為，讓 Google Forms 自動化產 Google Docs，並可於收到表單提交時，
+                                    自動將剛產出的 Google Docs 轉換成 PDF 格式檔案，並將其作為附件，email 給填表人。
+                                </li>
+                                <li>本專案使用 Google Apps Script，使用語言為 JavaScript。</li>
+                                <li>
+                                    此專案特色在於，可依據個人需求設計想要的文件格式，並將表單內容放入文件指定之位置中，
+                                    而非僅單純將表單輸出成固定格式之試算表，既滿足了自定義的彈性，自動化寄發 email 給填表人。
+                                    原先透過手動方式處理上述流程，一筆訂單至少耗時 10 分鐘；而透過此專案，該流程可於 10 秒內完成，
+                                    可省去近 60 倍的時間。
+                                </li>
+                                <li>
+                                    <a href ="https://github.com/arieshsieh0402/Useful-google-app-scripts#auto-send-email-from-forms" target="_blank">
+                                        GitHub 程式碼
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer id="footer">
+                <ul class="icons">
+                    <li>
+                        <a href="https://www.facebook.com/ntulawaries/" class="icon brands alt
+                            fa-facebook-f">
+                            <span class="label">Facebook</span>
+                        </a>
+                    </li>
+                    <!-- <li><a href="#" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li> -->
+                    <li>
+                        <a href="https://www.instagram.com/hht1989tw/" class="icon brands alt
+                            fa-instagram">
+                            <span class="label">Instagram</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/arieshsieh0402" class="icon brands alt
+                            fa-github">
+                            <span class="label">GitHub</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:westwood0402@gmail.com" class="icon solid alt
+                            fa-envelope">
+                            <span class="label">Email</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="copyright">
+                    <li>&copy; arieshsieh0402.github.io. All rights reserved.</li><li>Design:
+                        <a href="http://html5up.net">HTML5 UP</a></li>
+                </ul>
+            </footer>
+
+        </div>
+
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.scrolly.min.js"></script>
+        <script src="assets/js/jquery.dropotron.min.js"></script>
+        <script src="assets/js/jquery.scrollex.min.js"></script>
+        <script src="assets/js/browser.min.js"></script>
+        <script src="assets/js/breakpoints.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+
+    </body>
+</html>
