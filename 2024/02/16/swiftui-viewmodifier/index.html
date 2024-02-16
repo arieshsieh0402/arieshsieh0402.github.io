@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>理解 SwiftUI 中的 View Modifiers 和它們的堆疊效果 | Hsien-Te Hsieh</title><meta name="author" content="Hsieh-Te Hsieh"><meta name="copyright" content="Hsieh-Te Hsieh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在 SwiftUI 中我們使用 view modifiers 來改變 view 的外觀和行為。而 view modifiers 的堆疊（stacking）效果和它們對 UI 呈現的影響也需要一定的理解才能有效利用。本文透過幾個簡單例子來理解 view modifiers 的堆疊效果。  先讓我們回到 UIKit。 若我們現在想要建立一個有紅色背景，frame 為 200*200 大小的按鈕，我們可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解 SwiftUI 中的 View Modifiers 和它們的堆疊效果">
+<meta property="og:url" content="https://arieshsieh0402.github.io/2024/02/16/swiftui-viewmodifier/index.html">
+<meta property="og:site_name" content="Hsien-Te Hsieh">
+<meta property="og:description" content="在 SwiftUI 中我們使用 view modifiers 來改變 view 的外觀和行為。而 view modifiers 的堆疊（stacking）效果和它們對 UI 呈現的影響也需要一定的理解才能有效利用。本文透過幾個簡單例子來理解 view modifiers 的堆疊效果。  先讓我們回到 UIKit。 若我們現在想要建立一個有紅色背景，frame 為 200*200 大小的按鈕，我們可">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2024-02-16T05:53:56.897Z">
+<meta property="article:modified_time" content="2024-02-16T06:19:25.568Z">
+<meta property="article:author" content="Hsieh-Te Hsieh">
+<meta property="article:tag" content="SwiftUI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://arieshsieh0402.github.io/2024/02/16/swiftui-viewmodifier/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '理解 SwiftUI 中的 View Modifiers 和它們的堆疊效果',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-16 14:19:25'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">1</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Hsien-Te Hsieh"><span class="site-name">Hsien-Te Hsieh</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">理解 SwiftUI 中的 View Modifiers 和它們的堆疊效果</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2024-02-16T05:53:56.897Z" title="發表於 2024-02-16 13:53:56">2024-02-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2024-02-16T06:19:25.568Z" title="更新於 2024-02-16 14:19:25">2024-02-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Notes/">Notes</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="理解 SwiftUI 中的 View Modifiers 和它們的堆疊效果"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p>在 SwiftUI 中我們使用 view modifiers 來改變 view 的外觀和行為。而 view modifiers 的堆疊（stacking）效果和它們對 UI 呈現的影響也需要一定的理解才能有效利用。本文透過幾個簡單例子來理解 view modifiers 的堆疊效果。</p>
+<hr>
+<p>先讓我們回到 UIKit。</p>
+<p>若我們現在想要建立一個有紅色背景，frame 為 200*200 大小的按鈕，我們可以這樣實作：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ViewController</span>: <span class="title class_">UIViewController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">viewDidLoad</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> button <span class="operator">=</span> <span class="type">UIButton</span>(type: .system)</span><br><span class="line">        button.setTitle(<span class="string">&quot;Hello, world!&quot;</span>, for: .normal)</span><br><span class="line">        button.backgroundColor <span class="operator">=</span> .red</span><br><span class="line">        button.frame <span class="operator">=</span> <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: <span class="number">200</span>, height: <span class="number">200</span>)</span><br><span class="line">        button.center <span class="operator">=</span> view.center</span><br><span class="line">        </span><br><span class="line">        view.addSubview(button)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在模擬器上面呈現的結果為：</p>
+<p><img src="/2024/02/16/swiftui-viewmodifier/1.jpg" alt="UIKit-Xcode"></p>
+<p>接著我們換 SwiftUI 來實作：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">ContentView</span>: <span class="title class_">View</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Button</span>(<span class="string">&quot;Hello World!&quot;</span>) &#123;</span><br><span class="line">            <span class="comment">// Do nothing</span></span><br><span class="line">        &#125;</span><br><span class="line">        .background(.red)</span><br><span class="line">        .frame(width: <span class="number">200</span>, height: <span class="number">200</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/02/16/swiftui-viewmodifier/2.jpg" alt="UIKit-Xcode"></p>
+<p>可以看到結果跟預期的不太一樣，紅色背景只有應用在圍繞著 Hello World! 文字的周圍，而其餘部分都是白色背景。<br>為何沒有達到預期效果？先講結論：這個與 modifier 的修改順序有關。若我們將程式碼修改成這樣：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">ContentView</span>: <span class="title class_">View</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Button</span>(<span class="string">&quot;Hello World!&quot;</span>) &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="built_in">type</span>(of: <span class="keyword">self</span>.body))</span><br><span class="line">        &#125;</span><br><span class="line">        .frame(width: <span class="number">200</span>, height: <span class="number">200</span>)</span><br><span class="line">        .background(.red)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/02/16/swiftui-viewmodifier/3.jpg" alt="UIKit-Xcode"></p>
+<p>可以看到結果符合我們原先預期。</p>
+<p>在 SwiftUI 中，當你對一個 view 應用一個 modifier 時，實際上是在創建一個新的 struct 也就是 view，這個新的 view 包含了該修改，這表示 modifier 的應用順序會對最終的 UI 呈現有直接影響。</p>
+<p>回到上述的例子來看：</p>
+<ul>
+<li><p>.background 作用於 button，並在 button 的後面繪製背景色。這時，背景色只根據 button 的內容大小來繪製。</p>
+</li>
+<li><p>然後，.frame 修改器增加了整個按鈕的尺寸，但這個增加的尺寸是在背景色已經被繪製後發生的。因此，.frame 修改器實際上是在調整這個已經有背景的 button 及其背景的容器大小，而不會擴展背景色本身。</p>
+</li>
+</ul>
+<p>這意味著，如果背景色是首先被應用的，那麼它只會根據當時 button 的大小來繪製，而不會隨後的 .frame 設定自動擴展。這就是為什麼當 .frame 大小被設定為更大值時，你看到的背景色沒有填滿整個 frame 的原因。</p>
+<p>這是因為 SwiftUI 的 view 和 modifier 是不可變的（immutable）的 struct，每次應用 modifier 時，它實際上是在創建一個新的 view struct，而不是改變現有 view 的狀態。</p>
+<h2 id="Modifier-的順序"><a href="#Modifier-的順序" class="headerlink" title="Modifier 的順序"></a>Modifier 的順序</h2><p>為了進一步證明 modifier 順序關係，我們可以將 button 的 程式碼修改如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">ContentView</span>: <span class="title class_">View</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Button</span>(<span class="string">&quot;Hello World!&quot;</span>) &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="built_in">type</span>(of: <span class="keyword">self</span>.body))</span><br><span class="line">        &#125;</span><br><span class="line">        .frame(width: <span class="number">200</span>, height: <span class="number">200</span>)</span><br><span class="line">        .background(.red)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>點擊 button 時，在 console print 出 view 的內容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ModifiedContent&lt;ModifiedContent&lt;Button&lt;Text&gt;, _BackgroundStyleModifier&lt;Color&gt;&gt;, _FrameLayout&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>ModifiedContent</code> 是一個泛型 struct，能夠接收兩種型別參數：一種是要修改的內容，另一種是進行修改的修改器。</p>
+<h2 id="第一層修改：-BackgroundStyleModifier"><a href="#第一層修改：-BackgroundStyleModifier" class="headerlink" title="第一層修改：_BackgroundStyleModifier"></a>第一層修改：_BackgroundStyleModifier<Color></h2><p><code>ModifiedContent&lt;Button&lt;Text&gt;, _BackgroundStyleModifier&lt;Color&gt;&gt;</code>：這表示 Button<Text> 被 <code>_BackgroundStyleModifier&lt;Color&gt;</code> 修改，為 button 添加了背景顏色。</p>
+<h2 id="第二層修改：-FrameLayout"><a href="#第二層修改：-FrameLayout" class="headerlink" title="第二層修改：_FrameLayout"></a>第二層修改：_FrameLayout</h2><p><code>ModifiedContent&lt;..., _FrameLayout&gt;</code>：這一層表示被背景色修改過的 button view（即第一層的 ModifiedContent）再次被修改，這次是通過 <code>_FrameLayout</code> 這個 modifier 設定了 view 的 frame。</p>
+<p>而若我們將 <code>.background</code> 與 <code>.frame</code> 順序交換，console 呈現如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ModifiedContent&lt;ModifiedContent&lt;Button&lt;Text&gt;, _FrameLayout&gt;, _BackgroundStyleModifier&lt;Color&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 button 的 frame 先被修改，然後才被修改了顏色。</p>
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>Modifier 被應用的順序直接影響到 view 的最終呈現。如當 .background 在 .frame 之前應用時，背景色只會應用到原始按鈕的大小，而不是後來通過 .frame 設定的大小。反之，如果 .frame 在 .background 之前應用，則背景色會填滿整個框架。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://arieshsieh0402.github.io">Hsieh-Te Hsieh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://arieshsieh0402.github.io/2024/02/16/swiftui-viewmodifier/">https://arieshsieh0402.github.io/2024/02/16/swiftui-viewmodifier/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。轉載請註明來自 <a href="https://arieshsieh0402.github.io" target="_blank">Hsien-Te Hsieh</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/SwiftUI/">SwiftUI</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/02/16/git-submodules/" title="Git submodule 的簡單應用"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Git submodule 的簡單應用</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><div><a href="/2024/02/15/swiftui_property_management/" title="SwiftUI - 利用 property 來建立與管理 view"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-02-15</div><div class="title">SwiftUI - 利用 property 來建立與管理 view</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Hsieh-Te Hsieh</div><div class="author-info__description">iOS Developer</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/arieshsieh0402"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Modifier-%E7%9A%84%E9%A0%86%E5%BA%8F"><span class="toc-number">1.</span> <span class="toc-text">Modifier 的順序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%B1%A4%E4%BF%AE%E6%94%B9%EF%BC%9A-BackgroundStyleModifier"><span class="toc-number">2.</span> <span class="toc-text">第一層修改：_BackgroundStyleModifier</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%B1%A4%E4%BF%AE%E6%94%B9%EF%BC%9A-FrameLayout"><span class="toc-number">3.</span> <span class="toc-text">第二層修改：_FrameLayout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%B5%90"><span class="toc-number">4.</span> <span class="toc-text">小結</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/02/16/swiftui-viewmodifier/" title="理解 SwiftUI 中的 View Modifiers 和它們的堆疊效果">理解 SwiftUI 中的 View Modifiers 和它們的堆疊效果</a><time datetime="2024-02-16T05:53:56.897Z" title="發表於 2024-02-16 13:53:56">2024-02-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/02/16/git-submodules/" title="Git submodule 的簡單應用">Git submodule 的簡單應用</a><time datetime="2024-02-16T04:44:17.000Z" title="發表於 2024-02-16 12:44:17">2024-02-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/02/15/swiftui_property_management/" title="SwiftUI - 利用 property 來建立與管理 view">SwiftUI - 利用 property 來建立與管理 view</a><time datetime="2024-02-15T14:54:48.000Z" title="發表於 2024-02-15 22:54:48">2024-02-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Hsieh-Te Hsieh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="返回頂部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
