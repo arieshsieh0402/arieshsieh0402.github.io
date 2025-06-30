@@ -6,8 +6,6 @@ categories: ["雜談"]
 tags: ["法律", "轉職"]
 showToc: true
 TocOpen: true
-ShowReadingTime: true
-ShowWordCount: true
 searchHidden: false
 ---
 

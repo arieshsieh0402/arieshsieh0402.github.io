@@ -32,6 +32,8 @@
     <loc>http://localhost:1313/categories/%E9%9B%9C%E8%AB%87/</loc>
     <lastmod>2025-06-30T20:54:43+08:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/archives/</loc>
+  </url><url>
     <loc>http://localhost:1313/search/</loc>
   </url>
 </urlset>
