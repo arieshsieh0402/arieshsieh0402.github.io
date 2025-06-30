@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>律師轉職軟體工程師 - 變換人生技能樹 | Slash Life: Lawyer / Developer</title>
+<meta name="keywords" content="法律, 轉職">
+<meta name="description" content="前言
+曾經在各大平台（如 Medium、Vocus、Substack 等）嘗試發表文章，但最後還是覺得將內容放在自己的 GitHub Pages 最合適。平時的知識整理會以 Obsidian 為主，想公開分享的內容則會發布在這裡。既然這是第一篇文章，就以我的轉職簡短心得作為開場，希望對有類似想法的朋友有所幫助。
+如標題所述，我的本科專業是法律，並在取得法學碩士及律師執照後做了幾年訴訟律師，每天的生活就是：
+
+與當事人開會
+研究法律問題
+寫訴狀
+到法院開庭
+以上四點無限迴圈。
+
+
+對，我忘了說一點：「法院等開庭」。
+這件事情有什麼特別的？嗯，任何事情都有可能 delay，法院開庭當然也不例外，有時候比較誇張會等 30 分鐘到 1 小時都有可能。
+我喜歡律師工作。我喜歡分析案情，研究法律問題，找出可以用的法律見解並應用在案件上。但律師工作性質以及我個人特質的雙重影響下，讓我不僅是在精神上或物理上，很難將工作與生活分開~時間久了身體也漸漸開始出狀況，所以我一直有在思考我有沒有更多其他可能。
+
+在一段職涯空檔中，我慢慢回想自己的過去。
+我從小學一年級就開始接觸電腦，直到現在我都是光華商場的常客，朋友、家人之間負責修電腦的工具人XD
+吸收法律知識和科技知識，對我來說都很有成就感。不同的是，前者多半是出於專業需求，而後者則多了一份純粹的興奮與熱情。
+會發現這點，是因為我在律師工作時，深刻體會到這行業極度依賴紙本作業。但我習慣把資料電子化，所以會把所有文書掃描成電子卷宗，這樣查找資料既方便又快速，開庭時翻資料也不會輸人。
+後來我開始思考，能不能再進一步改善這件事。當時就想過，或許可以開發一個系統，讓員工能用來管理案件，客戶也能登入查詢自己案件的進度。只是那時還沒開始學寫程式，這個想法就暫時擱在心裡。
+身邊不少朋友都是軟體工程師，而我本來就對電腦、程式這類東西很有興趣，長期下來也算耳濡目染。離開事務所後有了比較多自己的時間，就買了 Python 的書和線上課程，開始認真學習。學著學著發現，其實程式和法律有不少相似之處，所以上手還算順利，越學也越有興趣，還能用程式幫朋友、家人解決一些問題。
+在實作過程中我發現，比起一直看課程，動手做的學習效率和成就感都更高。於是我開始開發前面提到的那個事務所系統。這段開發經歷，讓我更確定自己真的熱愛寫程式，覺得這就是我想做的事。
+後來進入找工作階段，很幸運錄取了 AppWorks School 的 iOS Training Program，結業後也順利進入媒合的公司工作。
+
+坦白說，現在回頭看，轉職這個決定確實有點任性和衝動，畢竟算是完全打掉重練。不過既然已經踏上這條路，未來會在這裡持續更新技術文章，有機會也會聊聊法律相關的話題XD">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/2025-06-30-lawyer-to-dev/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css" integrity="sha256-j&#43;ECM6cGvIfy4Is8&#43;XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2025-06-30-lawyer-to-dev/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-WDF1DJPXLY"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-WDF1DJPXLY');
+        }
+      </script><meta property="og:url" content="http://localhost:1313/posts/2025-06-30-lawyer-to-dev/">
+  <meta property="og:site_name" content="Slash Life: Lawyer / Developer">
+  <meta property="og:title" content="律師轉職軟體工程師 - 變換人生技能樹">
+  <meta property="og:description" content="前言 曾經在各大平台（如 Medium、Vocus、Substack 等）嘗試發表文章，但最後還是覺得將內容放在自己的 GitHub Pages 最合適。平時的知識整理會以 Obsidian 為主，想公開分享的內容則會發布在這裡。既然這是第一篇文章，就以我的轉職簡短心得作為開場，希望對有類似想法的朋友有所幫助。
+如標題所述，我的本科專業是法律，並在取得法學碩士及律師執照後做了幾年訴訟律師，每天的生活就是：
+與當事人開會 研究法律問題 寫訴狀 到法院開庭 以上四點無限迴圈。 對，我忘了說一點：「法院等開庭」。
+這件事情有什麼特別的？嗯，任何事情都有可能 delay，法院開庭當然也不例外，有時候比較誇張會等 30 分鐘到 1 小時都有可能。
+我喜歡律師工作。我喜歡分析案情，研究法律問題，找出可以用的法律見解並應用在案件上。但律師工作性質以及我個人特質的雙重影響下，讓我不僅是在精神上或物理上，很難將工作與生活分開~時間久了身體也漸漸開始出狀況，所以我一直有在思考我有沒有更多其他可能。
+在一段職涯空檔中，我慢慢回想自己的過去。
+我從小學一年級就開始接觸電腦，直到現在我都是光華商場的常客，朋友、家人之間負責修電腦的工具人XD
+吸收法律知識和科技知識，對我來說都很有成就感。不同的是，前者多半是出於專業需求，而後者則多了一份純粹的興奮與熱情。
+會發現這點，是因為我在律師工作時，深刻體會到這行業極度依賴紙本作業。但我習慣把資料電子化，所以會把所有文書掃描成電子卷宗，這樣查找資料既方便又快速，開庭時翻資料也不會輸人。
+後來我開始思考，能不能再進一步改善這件事。當時就想過，或許可以開發一個系統，讓員工能用來管理案件，客戶也能登入查詢自己案件的進度。只是那時還沒開始學寫程式，這個想法就暫時擱在心裡。
+身邊不少朋友都是軟體工程師，而我本來就對電腦、程式這類東西很有興趣，長期下來也算耳濡目染。離開事務所後有了比較多自己的時間，就買了 Python 的書和線上課程，開始認真學習。學著學著發現，其實程式和法律有不少相似之處，所以上手還算順利，越學也越有興趣，還能用程式幫朋友、家人解決一些問題。
+在實作過程中我發現，比起一直看課程，動手做的學習效率和成就感都更高。於是我開始開發前面提到的那個事務所系統。這段開發經歷，讓我更確定自己真的熱愛寫程式，覺得這就是我想做的事。
+後來進入找工作階段，很幸運錄取了 AppWorks School 的 iOS Training Program，結業後也順利進入媒合的公司工作。
+坦白說，現在回頭看，轉職這個決定確實有點任性和衝動，畢竟算是完全打掉重練。不過既然已經踏上這條路，未來會在這裡持續更新技術文章，有機會也會聊聊法律相關的話題XD">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-06-30T20:54:43+08:00">
+    <meta property="article:modified_time" content="2025-06-30T20:54:43+08:00">
+    <meta property="article:tag" content="法律">
+    <meta property="article:tag" content="轉職">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="律師轉職軟體工程師 - 變換人生技能樹">
+<meta name="twitter:description" content="前言
+曾經在各大平台（如 Medium、Vocus、Substack 等）嘗試發表文章，但最後還是覺得將內容放在自己的 GitHub Pages 最合適。平時的知識整理會以 Obsidian 為主，想公開分享的內容則會發布在這裡。既然這是第一篇文章，就以我的轉職簡短心得作為開場，希望對有類似想法的朋友有所幫助。
+如標題所述，我的本科專業是法律，並在取得法學碩士及律師執照後做了幾年訴訟律師，每天的生活就是：
+
+與當事人開會
+研究法律問題
+寫訴狀
+到法院開庭
+以上四點無限迴圈。
+
+
+對，我忘了說一點：「法院等開庭」。
+這件事情有什麼特別的？嗯，任何事情都有可能 delay，法院開庭當然也不例外，有時候比較誇張會等 30 分鐘到 1 小時都有可能。
+我喜歡律師工作。我喜歡分析案情，研究法律問題，找出可以用的法律見解並應用在案件上。但律師工作性質以及我個人特質的雙重影響下，讓我不僅是在精神上或物理上，很難將工作與生活分開~時間久了身體也漸漸開始出狀況，所以我一直有在思考我有沒有更多其他可能。
+
+在一段職涯空檔中，我慢慢回想自己的過去。
+我從小學一年級就開始接觸電腦，直到現在我都是光華商場的常客，朋友、家人之間負責修電腦的工具人XD
+吸收法律知識和科技知識，對我來說都很有成就感。不同的是，前者多半是出於專業需求，而後者則多了一份純粹的興奮與熱情。
+會發現這點，是因為我在律師工作時，深刻體會到這行業極度依賴紙本作業。但我習慣把資料電子化，所以會把所有文書掃描成電子卷宗，這樣查找資料既方便又快速，開庭時翻資料也不會輸人。
+後來我開始思考，能不能再進一步改善這件事。當時就想過，或許可以開發一個系統，讓員工能用來管理案件，客戶也能登入查詢自己案件的進度。只是那時還沒開始學寫程式，這個想法就暫時擱在心裡。
+身邊不少朋友都是軟體工程師，而我本來就對電腦、程式這類東西很有興趣，長期下來也算耳濡目染。離開事務所後有了比較多自己的時間，就買了 Python 的書和線上課程，開始認真學習。學著學著發現，其實程式和法律有不少相似之處，所以上手還算順利，越學也越有興趣，還能用程式幫朋友、家人解決一些問題。
+在實作過程中我發現，比起一直看課程，動手做的學習效率和成就感都更高。於是我開始開發前面提到的那個事務所系統。這段開發經歷，讓我更確定自己真的熱愛寫程式，覺得這就是我想做的事。
+後來進入找工作階段，很幸運錄取了 AppWorks School 的 iOS Training Program，結業後也順利進入媒合的公司工作。
+
+坦白說，現在回頭看，轉職這個決定確實有點任性和衝動，畢竟算是完全打掉重練。不過既然已經踏上這條路，未來會在這裡持續更新技術文章，有機會也會聊聊法律相關的話題XD">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "律師轉職軟體工程師 - 變換人生技能樹",
+      "item": "http://localhost:1313/posts/2025-06-30-lawyer-to-dev/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "律師轉職軟體工程師 - 變換人生技能樹",
+  "name": "律師轉職軟體工程師 - 變換人生技能樹",
+  "description": "前言 曾經在各大平台（如 Medium、Vocus、Substack 等）嘗試發表文章，但最後還是覺得將內容放在自己的 GitHub Pages 最合適。平時的知識整理會以 Obsidian 為主，想公開分享的內容則會發布在這裡。既然這是第一篇文章，就以我的轉職簡短心得作為開場，希望對有類似想法的朋友有所幫助。\n如標題所述，我的本科專業是法律，並在取得法學碩士及律師執照後做了幾年訴訟律師，每天的生活就是：\n與當事人開會 研究法律問題 寫訴狀 到法院開庭 以上四點無限迴圈。 對，我忘了說一點：「法院等開庭」。\n這件事情有什麼特別的？嗯，任何事情都有可能 delay，法院開庭當然也不例外，有時候比較誇張會等 30 分鐘到 1 小時都有可能。\n我喜歡律師工作。我喜歡分析案情，研究法律問題，找出可以用的法律見解並應用在案件上。但律師工作性質以及我個人特質的雙重影響下，讓我不僅是在精神上或物理上，很難將工作與生活分開~時間久了身體也漸漸開始出狀況，所以我一直有在思考我有沒有更多其他可能。\n在一段職涯空檔中，我慢慢回想自己的過去。\n我從小學一年級就開始接觸電腦，直到現在我都是光華商場的常客，朋友、家人之間負責修電腦的工具人XD\n吸收法律知識和科技知識，對我來說都很有成就感。不同的是，前者多半是出於專業需求，而後者則多了一份純粹的興奮與熱情。\n會發現這點，是因為我在律師工作時，深刻體會到這行業極度依賴紙本作業。但我習慣把資料電子化，所以會把所有文書掃描成電子卷宗，這樣查找資料既方便又快速，開庭時翻資料也不會輸人。\n後來我開始思考，能不能再進一步改善這件事。當時就想過，或許可以開發一個系統，讓員工能用來管理案件，客戶也能登入查詢自己案件的進度。只是那時還沒開始學寫程式，這個想法就暫時擱在心裡。\n身邊不少朋友都是軟體工程師，而我本來就對電腦、程式這類東西很有興趣，長期下來也算耳濡目染。離開事務所後有了比較多自己的時間，就買了 Python 的書和線上課程，開始認真學習。學著學著發現，其實程式和法律有不少相似之處，所以上手還算順利，越學也越有興趣，還能用程式幫朋友、家人解決一些問題。\n在實作過程中我發現，比起一直看課程，動手做的學習效率和成就感都更高。於是我開始開發前面提到的那個事務所系統。這段開發經歷，讓我更確定自己真的熱愛寫程式，覺得這就是我想做的事。\n後來進入找工作階段，很幸運錄取了 AppWorks School 的 iOS Training Program，結業後也順利進入媒合的公司工作。\n坦白說，現在回頭看，轉職這個決定確實有點任性和衝動，畢竟算是完全打掉重練。不過既然已經踏上這條路，未來會在這裡持續更新技術文章，有機會也會聊聊法律相關的話題XD\n",
+  "keywords": [
+    "法律", "轉職"
+  ],
+  "articleBody": "前言 曾經在各大平台（如 Medium、Vocus、Substack 等）嘗試發表文章，但最後還是覺得將內容放在自己的 GitHub Pages 最合適。平時的知識整理會以 Obsidian 為主，想公開分享的內容則會發布在這裡。既然這是第一篇文章，就以我的轉職簡短心得作為開場，希望對有類似想法的朋友有所幫助。\n如標題所述，我的本科專業是法律，並在取得法學碩士及律師執照後做了幾年訴訟律師，每天的生活就是：\n與當事人開會 研究法律問題 寫訴狀 到法院開庭 以上四點無限迴圈。 對，我忘了說一點：「法院等開庭」。\n這件事情有什麼特別的？嗯，任何事情都有可能 delay，法院開庭當然也不例外，有時候比較誇張會等 30 分鐘到 1 小時都有可能。\n我喜歡律師工作。我喜歡分析案情，研究法律問題，找出可以用的法律見解並應用在案件上。但律師工作性質以及我個人特質的雙重影響下，讓我不僅是在精神上或物理上，很難將工作與生活分開~時間久了身體也漸漸開始出狀況，所以我一直有在思考我有沒有更多其他可能。\n在一段職涯空檔中，我慢慢回想自己的過去。\n我從小學一年級就開始接觸電腦，直到現在我都是光華商場的常客，朋友、家人之間負責修電腦的工具人XD\n吸收法律知識和科技知識，對我來說都很有成就感。不同的是，前者多半是出於專業需求，而後者則多了一份純粹的興奮與熱情。\n會發現這點，是因為我在律師工作時，深刻體會到這行業極度依賴紙本作業。但我習慣把資料電子化，所以會把所有文書掃描成電子卷宗，這樣查找資料既方便又快速，開庭時翻資料也不會輸人。\n後來我開始思考，能不能再進一步改善這件事。當時就想過，或許可以開發一個系統，讓員工能用來管理案件，客戶也能登入查詢自己案件的進度。只是那時還沒開始學寫程式，這個想法就暫時擱在心裡。\n身邊不少朋友都是軟體工程師，而我本來就對電腦、程式這類東西很有興趣，長期下來也算耳濡目染。離開事務所後有了比較多自己的時間，就買了 Python 的書和線上課程，開始認真學習。學著學著發現，其實程式和法律有不少相似之處，所以上手還算順利，越學也越有興趣，還能用程式幫朋友、家人解決一些問題。\n在實作過程中我發現，比起一直看課程，動手做的學習效率和成就感都更高。於是我開始開發前面提到的那個事務所系統。這段開發經歷，讓我更確定自己真的熱愛寫程式，覺得這就是我想做的事。\n後來進入找工作階段，很幸運錄取了 AppWorks School 的 iOS Training Program，結業後也順利進入媒合的公司工作。\n坦白說，現在回頭看，轉職這個決定確實有點任性和衝動，畢竟算是完全打掉重練。不過既然已經踏上這條路，未來會在這裡持續更新技術文章，有機會也會聊聊法律相關的話題XD\n",
+  "wordCount" : "40",
+  "inLanguage": "en",
+  "datePublished": "2025-06-30T20:54:43+08:00",
+  "dateModified": "2025-06-30T20:54:43+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/2025-06-30-lawyer-to-dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Slash Life: Lawyer / Developer",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Slash Life: Lawyer / Developer (Alt + H)">Slash Life: Lawyer / Developer</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      律師轉職軟體工程師 - 變換人生技能樹
+    </h1>
+    <div class="post-meta"><span title='2025-06-30 20:54:43 +0800 CST'>June 30, 2025</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;40 words
+
+</div>
+  </header> <div class="toc">
+    <details  open>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#%e5%89%8d%e8%a8%80" aria-label="前言">前言</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="前言">前言<a hidden class="anchor" aria-hidden="true" href="#前言">#</a></h1>
+<p>曾經在各大平台（如 Medium、Vocus、Substack 等）嘗試發表文章，但最後還是覺得將內容放在自己的 GitHub Pages 最合適。平時的知識整理會以 Obsidian 為主，想公開分享的內容則會發布在這裡。既然這是第一篇文章，就以我的轉職簡短心得作為開場，希望對有類似想法的朋友有所幫助。</p>
+<p>如標題所述，我的本科專業是法律，並在取得法學碩士及律師執照後做了幾年訴訟律師，每天的生活就是：</p>
+<ul>
+<li>與當事人開會</li>
+<li>研究法律問題</li>
+<li>寫訴狀</li>
+<li>到法院開庭
+以上四點無限迴圈。</li>
+</ul>
+<p><img alt="lawyer" loading="lazy" src="/images/2025-06-30-lawyer.jpeg"></p>
+<p>對，我忘了說一點：「法院等開庭」。</p>
+<p>這件事情有什麼特別的？嗯，任何事情都有可能 delay，法院開庭當然也不例外，有時候比較誇張會等 30 分鐘到 1 小時都有可能。</p>
+<p>我喜歡律師工作。我喜歡分析案情，研究法律問題，找出可以用的法律見解並應用在案件上。但律師工作性質以及我個人特質的雙重影響下，讓我不僅是在精神上或物理上，很難將工作與生活分開~時間久了身體也漸漸開始出狀況，所以我一直有在思考我有沒有更多其他可能。</p>
+<hr>
+<p>在一段職涯空檔中，我慢慢回想自己的過去。</p>
+<p>我從小學一年級就開始接觸電腦，直到現在我都是光華商場的常客，朋友、家人之間負責修電腦的工具人XD</p>
+<p>吸收法律知識和科技知識，對我來說都很有成就感。不同的是，前者多半是出於專業需求，而後者則多了一份純粹的興奮與熱情。</p>
+<p>會發現這點，是因為我在律師工作時，深刻體會到這行業極度依賴紙本作業。但我習慣把資料電子化，所以會把所有文書掃描成電子卷宗，這樣查找資料既方便又快速，開庭時翻資料也不會輸人。</p>
+<p>後來我開始思考，能不能再進一步改善這件事。當時就想過，或許可以開發一個系統，讓員工能用來管理案件，客戶也能登入查詢自己案件的進度。只是那時還沒開始學寫程式，這個想法就暫時擱在心裡。</p>
+<p>身邊不少朋友都是軟體工程師，而我本來就對電腦、程式這類東西很有興趣，長期下來也算耳濡目染。離開事務所後有了比較多自己的時間，就買了 Python 的書和線上課程，開始認真學習。學著學著發現，其實程式和法律有不少相似之處，所以上手還算順利，越學也越有興趣，還能用程式幫朋友、家人解決一些問題。</p>
+<p>在實作過程中我發現，比起一直看課程，動手做的學習效率和成就感都更高。於是我開始開發前面提到的那個事務所系統。這段開發經歷，讓我更確定自己真的熱愛寫程式，覺得這就是我想做的事。</p>
+<p>後來進入找工作階段，很幸運錄取了 AppWorks School 的 iOS Training Program，結業後也順利進入媒合的公司工作。</p>
+<hr>
+<p>坦白說，現在回頭看，轉職這個決定確實有點任性和衝動，畢竟算是完全打掉重練。不過既然已經踏上這條路，未來會在這裡持續更新技術文章，有機會也會聊聊法律相關的話題XD</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/%E6%B3%95%E5%BE%8B/">法律</a></li>
+      <li><a href="http://localhost:1313/tags/%E8%BD%89%E8%81%B7/">轉職</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">Slash Life: Lawyer / Developer</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

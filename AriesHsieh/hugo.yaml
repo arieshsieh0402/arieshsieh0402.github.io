@@ -1,6 +1,6 @@
 baseURL: "https://arieshsieh.github.io/"
 languageCode: en-us
-title: Hi there!
+title: "Slash Life: Lawyer / Developer"
 theme: ["PaperMod"]
 caches:
   images:
@@ -15,15 +15,29 @@ params:
   homeInfoParams:
     title: "Hi, I'm Hsieh-Te Hsieh 🧑🏻‍💻"
     Content: >
+      - • Lawyer turned software engineer, based in Taipei, Taiwan
+
       - • Software engineer focused on iOS development
 
       - • Expanding into backend, DevOps, and API integration
   socialIcons:
     - name: github
       url: "https://github.com/arieshsieh0402"
+    - name: linkedin
+      url: "https://www.linkedin.com/in/hsien-te-hsieh-b65993145"
+  env: production # Enable Social-Metadata and SEO
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    includeMatches: true
+    threshold: 0.3
 services:
-  googleAnalytics:
+  googleAnalytics: # Enable Google Analytics
     id: G-WDF1DJPXLY
+outputs:
+  home:
+    - HTML
+    - JSON
 menu:
   main:
     - identifier: home
@@ -38,4 +52,8 @@ menu:
       name: Tags
       url: /tags/
       weight: 20
+    - identifier: search
+      name: Search
+      url: /search/
+      weight: 30
 
