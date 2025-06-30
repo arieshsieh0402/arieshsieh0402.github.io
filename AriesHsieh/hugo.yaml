@@ -1,0 +1,7 @@
+baseURL: https://example.org/
+languageCode: en-us
+title: Hi there!
+theme: ["PaperMod"]
+caches:
+  images:
+    dir: :cacheDir/images
