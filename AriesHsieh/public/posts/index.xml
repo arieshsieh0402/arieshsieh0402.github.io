@@ -6,8 +6,88 @@
     <description>Recent content in Posts on Slash Life: Lawyer / Developer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Jun 2025 20:54:43 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 30 Jun 2025 23:38:06 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>法源公司 vs. Lawsnote 著作權侵權案</title>
+      <link>http://localhost:1313/posts/2025-06-30-lawbank-v-lawsnote/</link>
+      <pubDate>Mon, 30 Jun 2025 23:38:06 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-06-30-lawbank-v-lawsnote/</guid>
+      <description>&lt;p&gt;在 2025 年 6 月，科技圈熱烈討論法源公司指控 Lawsnote（七法公司）未經授權爬取其法律資料庫內容，構成著作權侵權及違反刑法第359條。以下依爭點，整理判決核心內容：&lt;/p&gt;
+&lt;h2 id=&#34;一民事判決損害賠償計算基礎&#34;&gt;一、民事判決：損害賠償計算基礎&lt;/h2&gt;
+&lt;p&gt;法院區分三類資料性質，採用不同請求權基礎：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;法規沿革&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;經刑事判決認定屬《著作權法》第7條「編輯著作」，受著作權保護。&lt;/li&gt;
+&lt;li&gt;請求權基礎：民法第 184 條第 1 項前段（故意侵權）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;法規內容與附件&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;刑事判決未認定為著作，但屬「電磁紀錄」。&lt;/li&gt;
+&lt;li&gt;請求權基礎：民法第 184 條第 2 項（違反刑法第 359 條「無故取得他人電磁紀錄」之保護性法律）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二刑事判決核心爭點&#34;&gt;二、刑事判決核心爭點&lt;/h2&gt;
+&lt;h3 id=&#34;爭點一法規沿革是否受著作權保護&#34;&gt;爭點一：「法規沿革」是否受著作權保護？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;被告抗辯&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;法規沿革屬政府公文，不具著作權；縱有編排，因表達方式有限（思想與表達合併原則），不應受保護。&lt;/li&gt;
+&lt;li&gt;法源公司遲至 109 年 11 月才禁止爬蟲，此前行為不構成侵權。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;法院認定&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;採用「最低程度創作」標準，比對法源公司與政府機關（如科技部、立法院）的沿革表述差異（例如條號範圍、主管機關變動、施行日期等）。&lt;/li&gt;
+&lt;li&gt;法源公司對資料進行「層次化選擇與編排」，呈現獨特性與原創性，非機械式羅列，故屬《著作權法》第7條保護之編輯著作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;爭點二被告行為是否構成合理使用&#34;&gt;爭點二：被告行為是否構成「合理使用」？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;原告主張&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;被告以商業目的（Lawsnote 為收費服務）100% 複製沿革資料，非少量引用或轉化性使用，嚴重損害原告市場價值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;被告主張&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;法規沿革屬政府應公開資訊，法源公司未收費提供，使用不損其利益。&lt;/li&gt;
+&lt;li&gt;Lawsnote 核心價值為搜尋功能，非沿革資料本身，對原市場影響甚微。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;法院裁判理由&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;利用目的&lt;/strong&gt;：純商業行為（收費服務）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;使用量&lt;/strong&gt;：100% 複製。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;市場影響&lt;/strong&gt;：以低價與原告競爭，剝奪授權機會，造成實質損害。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;不符合理使用四要件，被告抗辯駁回。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;爭點三爬蟲行為是否構成侵權&#34;&gt;爭點三：爬蟲行為是否構成侵權？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;原告證據&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;被告於 107–110 年間撰寫 6 支爬蟲程式，從法源網站下載共 331,524 筆資料（含沿革、內容及附件），用於 Lawsnote 資料庫。&lt;/li&gt;
+&lt;li&gt;行為逾越法源《使用規範》禁止之自動化查詢與重製範圍。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;被告抗辯&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;政府網站未完整保存歷史法規，爬取法源僅為便捷與完整性，不構成侵權。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;法院認定&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;抽樣比對確認下載資料與法源內容「逐字相符」。&lt;/li&gt;
+&lt;li&gt;未獲授權且違反使用規範，構成著作權侵害。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;三未決爭議與批判性分析&#34;&gt;三、未決爭議與批判性分析&lt;/h2&gt;
+&lt;h3 id=&#34;一法規資料的公共性-vs-著作權歸屬&#34;&gt;（一）法規資料的公共性 vs. 著作權歸屬&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;標案矛盾&lt;/strong&gt;：法源公司承接司法院數億元標案維護法規資料，但判決未釐清：
+&lt;ul&gt;
+&lt;li&gt;政府委外產出之法規資料，著作財產權應歸屬公部門或企業？&lt;/li&gt;
+&lt;li&gt;具公益性質的法規資料，是否應完全由民間企業專有？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;二損害賠償計算的合理性爭議&#34;&gt;（二）損害賠償計算的合理性爭議&lt;/h3&gt;
+&lt;p&gt;法院以法源公司「建置成本」作為賠償基準，但學說與實務指出：&lt;/p&gt;</description>
+    </item>
     <item>
       <title>律師轉職軟體工程師 - 變換人生技能樹</title>
       <link>http://localhost:1313/posts/2025-06-30-lawyer-to-dev/</link>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>法律 on Slash Life: Lawyer / Developer</title>
-    <link>http://localhost:1313/tags/%E6%B3%95%E5%BE%8B/</link>
-    <description>Recent content in 法律 on Slash Life: Lawyer / Developer</description>
+    <title>判決評析 on Slash Life: Lawyer / Developer</title>
+    <link>http://localhost:1313/categories/%E5%88%A4%E6%B1%BA%E8%A9%95%E6%9E%90/</link>
+    <description>Recent content in 判決評析 on Slash Life: Lawyer / Developer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 30 Jun 2025 23:38:06 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/%E6%B3%95%E5%BE%8B/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/%E5%88%A4%E6%B1%BA%E8%A9%95%E6%9E%90/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>法源公司 vs. Lawsnote 著作權侵權案</title>
       <link>http://localhost:1313/posts/2025-06-30-lawbank-v-lawsnote/</link>
@@ -87,37 +87,6 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;二損害賠償計算的合理性爭議&#34;&gt;（二）損害賠償計算的合理性爭議&lt;/h3&gt;
 &lt;p&gt;法院以法源公司「建置成本」作為賠償基準，但學說與實務指出：&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>律師轉職軟體工程師 - 變換人生技能樹</title>
-      <link>http://localhost:1313/posts/2025-06-30-lawyer-to-dev/</link>
-      <pubDate>Mon, 30 Jun 2025 20:54:43 +0800</pubDate>
-      <guid>http://localhost:1313/posts/2025-06-30-lawyer-to-dev/</guid>
-      <description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
-&lt;p&gt;曾經在各大平台（如 Medium、Vocus、Substack 等）嘗試發表文章，但最後還是覺得將內容放在自己的 GitHub Pages 最合適。平時的知識整理會以 Obsidian 為主，想公開分享的內容則會發布在這裡。既然這是第一篇文章，就以我的轉職簡短心得作為開場，希望對有類似想法的朋友有所幫助。&lt;/p&gt;
-&lt;p&gt;如標題所述，我的本科專業是法律，並在取得法學碩士及律師執照後做了幾年訴訟律師，每天的生活就是：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;與當事人開會&lt;/li&gt;
-&lt;li&gt;研究法律問題&lt;/li&gt;
-&lt;li&gt;寫訴狀&lt;/li&gt;
-&lt;li&gt;到法院開庭
-以上四點無限迴圈。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img alt=&#34;lawyer&#34; loading=&#34;lazy&#34; src=&#34;http://localhost:1313/images/2025-06-30-lawyer.jpeg&#34;&gt;&lt;/p&gt;
-&lt;p&gt;對，我忘了說一點：「法院等開庭」。&lt;/p&gt;
-&lt;p&gt;這件事情有什麼特別的？嗯，任何事情都有可能 delay，法院開庭當然也不例外，有時候比較誇張會等 30 分鐘到 1 小時都有可能。&lt;/p&gt;
-&lt;p&gt;我喜歡律師工作。我喜歡分析案情，研究法律問題，找出可以用的法律見解並應用在案件上。但律師工作性質以及我個人特質的雙重影響下，讓我不僅是在精神上或物理上，很難將工作與生活分開~時間久了身體也漸漸開始出狀況，所以我一直有在思考我有沒有更多其他可能。&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;在一段職涯空檔中，我慢慢回想自己的過去。&lt;/p&gt;
-&lt;p&gt;我從小學一年級就開始接觸電腦，直到現在我都是光華商場的常客，朋友、家人之間負責修電腦的工具人XD&lt;/p&gt;
-&lt;p&gt;吸收法律知識和科技知識，對我來說都很有成就感。不同的是，前者多半是出於專業需求，而後者則多了一份純粹的興奮與熱情。&lt;/p&gt;
-&lt;p&gt;會發現這點，是因為我在律師工作時，深刻體會到這行業極度依賴紙本作業。但我習慣把資料電子化，所以會把所有文書掃描成電子卷宗，這樣查找資料既方便又快速，開庭時翻資料也不會輸人。&lt;/p&gt;
-&lt;p&gt;後來我開始思考，能不能再進一步改善這件事。當時就想過，或許可以開發一個系統，讓員工能用來管理案件，客戶也能登入查詢自己案件的進度。只是那時還沒開始學寫程式，這個想法就暫時擱在心裡。&lt;/p&gt;
-&lt;p&gt;身邊不少朋友都是軟體工程師，而我本來就對電腦、程式這類東西很有興趣，長期下來也算耳濡目染。離開事務所後有了比較多自己的時間，就買了 Python 的書和線上課程，開始認真學習。學著學著發現，其實程式和法律有不少相似之處，所以上手還算順利，越學也越有興趣，還能用程式幫朋友、家人解決一些問題。&lt;/p&gt;
-&lt;p&gt;在實作過程中我發現，比起一直看課程，動手做的學習效率和成就感都更高。於是我開始開發前面提到的那個事務所系統。這段開發經歷，讓我更確定自己真的熱愛寫程式，覺得這就是我想做的事。&lt;/p&gt;
-&lt;p&gt;後來進入找工作階段，很幸運錄取了 AppWorks School 的 iOS Training Program，結業後也順利進入媒合的公司工作。&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;坦白說，現在回頭看，轉職這個決定確實有點任性和衝動，畢竟算是完全打掉重練。不過既然已經踏上這條路，未來會在這裡持續更新技術文章，有機會也會聊聊法律相關的話題XD&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
