@@ -5,3 +5,34 @@ theme: ["PaperMod"]
 caches:
   images:
     dir: :cacheDir/images
+taxonomies:
+  category: categories
+  tag: tags
+params:
+  ShowPageNums: true
+  pagination:
+    pagerSize: 10
+  homeInfoParams:
+    title: "Hi, I'm Hsieh-Te Hsieh 🧑🏻‍💻"
+    Content: >
+      - • Software engineer focused on iOS development
+
+      - • Expanding into backend, DevOps, and API integration
+  socialIcons:
+    - name: github
+      url: "https://github.com/arieshsieh0402"
+menu:
+  main:
+    - identifier: home
+      name: Home
+      url: /
+      weight: 1
+    - identifier: categories
+      name: Categories
+      url: /categories/
+      weight: 15
+    - identifier: tags
+      name: Tags
+      url: /tags/
+      weight: 20
+
