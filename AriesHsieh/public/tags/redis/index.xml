@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Redis on Slash Life: Lawyer / Developer</title>
+    <title>Redis on Slash Life: Developer / Lawyer</title>
     <link>http://localhost:1313/tags/redis/</link>
-    <description>Recent content in Redis on Slash Life: Lawyer / Developer</description>
+    <description>Recent content in Redis on Slash Life: Developer / Lawyer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 01 Jul 2025 11:18:29 +0800</lastBuildDate>

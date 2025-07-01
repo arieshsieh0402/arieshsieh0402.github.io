@@ -5,7 +5,7 @@ draft: true
 categories: []
 tags: []
 showToc: true
-TocOpen: true
+TocOpen: false
 searchHidden: false
 ---
 

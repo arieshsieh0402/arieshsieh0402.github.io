@@ -1,6 +1,6 @@
 baseURL: "https://arieshsieh.github.io/"
 languageCode: en-us
-title: "Slash Life: Lawyer / Developer"
+title: "Slash Life: Developer / Lawyer"
 theme: ["PaperMod"]
 caches:
   images:
@@ -23,8 +23,6 @@ params:
   socialIcons:
     - name: github
       url: "https://github.com/arieshsieh0402"
-    - name: linkedin
-      url: "https://www.linkedin.com/in/hsien-te-hsieh-b65993145"
   env: production # Enable Social-Metadata and SEO
   fuseOpts:
     isCaseSensitive: false
