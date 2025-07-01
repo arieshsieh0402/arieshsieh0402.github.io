@@ -33,7 +33,7 @@ Kong 官方 plugin（開源版）僅支援單一 Redis 節點，企業版則支�
 
 # Redis：Cluster 與 Sentinel
 
-![架構圖參考](/images/2025-07-01-kong-redis-1.png)
+![架構圖參考](2025-07-01-kong-redis-1.png)
 
 > 圖片來源：[How to use Redis with Kong Rate Limiting Plugin](https://tech.aufomm.com/how-to-use-redis-with-kong-rate-limiting-plugin/)
 

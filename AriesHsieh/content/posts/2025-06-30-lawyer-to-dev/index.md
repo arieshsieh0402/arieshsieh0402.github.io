@@ -20,7 +20,7 @@ searchHidden: false
 - 到法院開庭
 以上四點無限迴圈。
 
-![lawyer](/images/2025-06-30-lawyer.jpeg)
+![lawyer](2025-06-30-lawyer.jpeg)
 
 對，我忘了說一點：「法院等開庭」。
 

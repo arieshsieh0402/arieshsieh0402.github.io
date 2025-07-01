@@ -279,7 +279,7 @@ hybrid mode 則是將 Control Plane 和 Data Plane 分離，CP 負責管理與�
 <p>但如果只用單一 Redis 或每個節點各自記錄，會導致計數不同步而使限流失去預期作用。因此需要一個所有節點都能存取的 Redis 服務，也就是 Redis Cluster 與 Redis Sentinel。</p>
 <p>Kong 官方 plugin（開源版）僅支援單一 Redis 節點，企業版則支援 Redis Cluster 與 Redis Sentinel。若單一節點故障，counter 會遺失，因此建議使用後者架構。</p>
 <h1 id="rediscluster-與-sentinel">Redis：Cluster 與 Sentinel<a hidden class="anchor" aria-hidden="true" href="#rediscluster-與-sentinel">#</a></h1>
-<p><img alt="架構圖參考" loading="lazy" src="/images/2025-07-01-kong-redis-1.png"></p>
+<p><img alt="架構圖參考" loading="lazy" src="/posts/2025-07-01-kong-redis/2025-07-01-kong-redis-1.png"></p>
 <blockquote>
 <p>圖片來源：<a href="https://tech.aufomm.com/how-to-use-redis-with-kong-rate-limiting-plugin/">How to use Redis with Kong Rate Limiting Plugin</a></p></blockquote>
 <ul>
