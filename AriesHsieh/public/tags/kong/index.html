@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Archives | Slash Life: Lawyer / Developer</title>
+<title>Kong | Slash Life: Lawyer / Developer</title>
 <meta name="keywords" content="">
-<meta name="description" content="Archives - Slash Life: Lawyer / Developer">
+<meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/archives/">
+<link rel="canonical" href="http://localhost:1313/tags/kong/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css" integrity="sha256-j&#43;ECM6cGvIfy4Is8&#43;XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,8 +18,8 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/archives/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/archives/">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/kong/index.xml">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/kong/">
 <noscript>
     <style>
         #theme-toggle,
@@ -70,30 +70,15 @@
           gtag('js', new Date());
           gtag('config', 'G-WDF1DJPXLY');
         }
-      </script><meta property="og:url" content="http://localhost:1313/archives/">
+      </script><meta property="og:url" content="http://localhost:1313/tags/kong/">
   <meta property="og:site_name" content="Slash Life: Lawyer / Developer">
-  <meta property="og:title" content="Archives">
+  <meta property="og:title" content="Kong">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Archives">
+<meta name="twitter:title" content="Kong">
 <meta name="twitter:description" content="">
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Archives",
-      "item": "http://localhost:1313/archives/"
-    }
-  ]
-}
-</script>
 </head>
 
 <body class="list" id="top">
@@ -153,7 +138,7 @@
             </li>
             <li>
                 <a href="http://localhost:1313/archives/" title="Archives">
-                    <span class="active">Archives</span>
+                    <span>Archives</span>
                 </a>
             </li>
             <li>
@@ -164,53 +149,29 @@
         </ul>
     </nav>
 </header>
-<main class="main">
-
+<main class="main"> 
 <header class="page-header">
   <h1>
-    Archives
+    Kong
   </h1>
 </header>
-<div class="archive-year">
-  <h2 class="archive-year-header" id="2025">
-    <a class="archive-header-link" href="#2025">2025</a>
-    <sup class="archive-count">&nbsp;3</sup>
-  </h2>
-  <div class="archive-month">
-    <h3 class="archive-month-header" id="2025-July">
-      <a class="archive-header-link" href="#2025-July">July</a>
-      <sup class="archive-count">&nbsp;1</sup>
-    </h3>
-    <div class="archive-posts">
-      <div class="archive-entry">
-        <h3 class="archive-entry-title entry-hint-parent">Kong APIM 與 Redis Sentinel 架構學習筆記
-        </h3>
-        <div class="archive-meta"><span title='2025-07-01 11:18:29 +0800 CST'>July 1, 2025</span></div>
-        <a class="entry-link" aria-label="post link to Kong APIM 與 Redis Sentinel 架構學習筆記" href="http://localhost:1313/posts/2025-07-01-kong-redis/"></a>
-      </div>
-    </div>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Kong APIM 與 Redis Sentinel 架構學習筆記
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前言 整理一下在 Kong APIM 架構下，Redis 在快取與限流計數器同步上的應用。 因為之前沒接觸過，僅就目前理解部分紀錄，不會提到太多細節，未來有機會再補充～
+Redis 快取的用途 Kong API Gateway 可以 Redis 來做快取，主要目的是可以快速回應重複的 API 請求，讓資料變動不頻繁的 API 可以直接回傳快取內容，可減少後端服務壓力。
+限流計數器的同步需求 如果系統有對 consumer 限流需求，記錄在 db 是一個選項，但這樣就必須所有 gateway 的節點都跟 db 建立連線，且不適用於 dbless 或是 hybrid mode 的架構。
+dbless 是指 data plane 的設置透過 kong.yml 來配置，每次配置都需要重啟服務。
+hybrid mode 則是將 Control Plane 和 Data Plane 分離，CP 負責管理與同步設定，DP 專注於流量代理。DP 不直接連資料庫，只從 CP 接收設定。相反地，傳統模式沒有明確區分 DP 和 CP。每一台 Kong 節點同時扮演 CP 和 DP 的角色，也就是說，每個節點都可以管理設定（新增/修改服務、路由、插件等），這是 CP 的功能。每個節點也都會處理用戶端 API 請求，這是 DP 的功能，所有節點也都直接連接到資料庫。
+...</p>
   </div>
-  <div class="archive-month">
-    <h3 class="archive-month-header" id="2025-June">
-      <a class="archive-header-link" href="#2025-June">June</a>
-      <sup class="archive-count">&nbsp;2</sup>
-    </h3>
-    <div class="archive-posts">
-      <div class="archive-entry">
-        <h3 class="archive-entry-title entry-hint-parent">法源公司 vs. Lawsnote 著作權侵權案
-        </h3>
-        <div class="archive-meta"><span title='2025-06-30 23:38:06 +0800 CST'>June 30, 2025</span></div>
-        <a class="entry-link" aria-label="post link to 法源公司 vs. Lawsnote 著作權侵權案" href="http://localhost:1313/posts/2025-06-30-lawbank-v-lawsnote/"></a>
-      </div>
-      <div class="archive-entry">
-        <h3 class="archive-entry-title entry-hint-parent">律師轉職軟體工程師 - 變換人生技能樹
-        </h3>
-        <div class="archive-meta"><span title='2025-06-30 20:54:43 +0800 CST'>June 30, 2025</span></div>
-        <a class="entry-link" aria-label="post link to 律師轉職軟體工程師 - 變換人生技能樹" href="http://localhost:1313/posts/2025-06-30-lawyer-to-dev/"></a>
-      </div>
-    </div>
-  </div>
-</div>
+  <footer class="entry-footer"><span title='2025-07-01 11:18:29 +0800 CST'>July 1, 2025</span></footer>
+  <a class="entry-link" aria-label="post link to Kong APIM 與 Redis Sentinel 架構學習筆記" href="http://localhost:1313/posts/2025-07-01-kong-redis/"></a>
+</article>
     </main>
     
 <footer class="footer">
