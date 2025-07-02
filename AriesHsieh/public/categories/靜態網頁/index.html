@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Posts | Slash Life: Developer / Lawyer</title>
+<title>靜態網頁 | Slash Life: Developer / Lawyer</title>
 <meta name="keywords" content="">
-<meta name="description" content="Posts - Slash Life: Developer / Lawyer">
+<meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/posts/">
+<link rel="canonical" href="http://localhost:1313/categories/%E9%9D%9C%E6%85%8B%E7%B6%B2%E9%A0%81/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css" integrity="sha256-j&#43;ECM6cGvIfy4Is8&#43;XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,8 +18,8 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/posts/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/%E9%9D%9C%E6%85%8B%E7%B6%B2%E9%A0%81/index.xml">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/%E9%9D%9C%E6%85%8B%E7%B6%B2%E9%A0%81/">
 <noscript>
     <style>
         #theme-toggle,
@@ -70,30 +70,15 @@
           gtag('js', new Date());
           gtag('config', 'G-WDF1DJPXLY');
         }
-      </script><meta property="og:url" content="http://localhost:1313/posts/">
+      </script><meta property="og:url" content="http://localhost:1313/categories/%E9%9D%9C%E6%85%8B%E7%B6%B2%E9%A0%81/">
   <meta property="og:site_name" content="Slash Life: Developer / Lawyer">
-  <meta property="og:title" content="Posts">
+  <meta property="og:title" content="靜態網頁">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Posts">
+<meta name="twitter:title" content="靜態網頁">
 <meta name="twitter:description" content="">
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "http://localhost:1313/posts/"
-    }
-  ]
-}
-</script>
 </head>
 
 <body class="list" id="top">
@@ -167,11 +152,11 @@
 <main class="main"> 
 <header class="page-header">
   <h1>
-    Posts
+    靜態網頁
   </h1>
 </header>
 
-<article class="post-entry"> 
+<article class="post-entry tag-entry"> 
   <header class="entry-header">
     <h2 class="entry-hint-parent">Hugo &#43; PaperMod 靜態網站串接 Utterances 實作留言區
       <span class="entry-hint" title="Draft">
@@ -194,73 +179,6 @@ repo 名稱（格式：username/repo） Issue 對應規則（建議選 pathname 
   </div>
   <footer class="entry-footer"><span title='2025-07-02 16:11:41 +0800 CST'>July 2, 2025</span></footer>
   <a class="entry-link" aria-label="post link to Hugo &#43; PaperMod 靜態網站串接 Utterances 實作留言區" href="http://localhost:1313/posts/2025-07-02-utterances/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Kong APIM 與 Redis Sentinel 架構學習筆記
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>前言 整理一下在 Kong APIM 架構下，Redis 在快取與限流計數器同步上的應用。 因為之前沒接觸過，僅就目前理解部分紀錄，不會提到太多細節，未來有機會再補充～
-Redis 快取的用途 Kong API Gateway 可以 Redis 來做快取，主要目的是可以快速回應重複的 API 請求，讓資料變動不頻繁的 API 可以直接回傳快取內容，可減少後端服務壓力。
-限流計數器的同步需求 如果系統有對 consumer 限流需求，記錄在 db 是一個選項，但這樣就必須所有 gateway 的節點都跟 db 建立連線，且不適用於 dbless 或是 hybrid mode 的架構。
-dbless 是指 data plane 的設置透過 kong.yml 來配置，每次配置都需要重啟服務。
-hybrid mode 則是將 Control Plane 和 Data Plane 分離，CP 負責管理與同步設定，DP 專注於流量代理。DP 不直接連資料庫，只從 CP 接收設定。相反地，傳統模式沒有明確區分 DP 和 CP。每一台 Kong 節點同時扮演 CP 和 DP 的角色，也就是說，每個節點都可以管理設定（新增/修改服務、路由、插件等），這是 CP 的功能。每個節點也都會處理用戶端 API 請求，這是 DP 的功能，所有節點也都直接連接到資料庫。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-07-01 11:18:29 +0800 CST'>July 1, 2025</span></footer>
-  <a class="entry-link" aria-label="post link to Kong APIM 與 Redis Sentinel 架構學習筆記" href="http://localhost:1313/posts/2025-07-01-kong-redis/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">法源公司 vs. Lawsnote 著作權侵權案
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>在 2025 年 6 月，科技圈熱烈討論法源公司指控 Lawsnote（七法公司）未經授權爬取其法律資料庫內容，構成著作權侵權及違反刑法第359條。以下依爭點，整理判決核心內容：
-一、民事判決：損害賠償計算基礎 法院區分三類資料性質，採用不同請求權基礎：
-法規沿革： 經刑事判決認定屬《著作權法》第7條「編輯著作」，受著作權保護。 請求權基礎：民法第 184 條第 1 項前段（故意侵權）。 法規內容與附件： 刑事判決未認定為著作，但屬「電磁紀錄」。 請求權基礎：民法第 184 條第 2 項（違反刑法第 359 條「無故取得他人電磁紀錄」之保護性法律）。 二、刑事判決核心爭點 爭點一：「法規沿革」是否受著作權保護？ 被告抗辯：
-法規沿革屬政府公文，不具著作權；縱有編排，因表達方式有限（思想與表達合併原則），不應受保護。 法源公司遲至 109 年 11 月才禁止爬蟲，此前行為不構成侵權。 法院認定：
-採用「最低程度創作」標準，比對法源公司與政府機關（如科技部、立法院）的沿革表述差異（例如條號範圍、主管機關變動、施行日期等）。 法源公司對資料進行「層次化選擇與編排」，呈現獨特性與原創性，非機械式羅列，故屬《著作權法》第7條保護之編輯著作。 爭點二：被告行為是否構成「合理使用」？ 原告主張：
-被告以商業目的（Lawsnote 為收費服務）100% 複製沿革資料，非少量引用或轉化性使用，嚴重損害原告市場價值。 被告主張：
-法規沿革屬政府應公開資訊，法源公司未收費提供，使用不損其利益。 Lawsnote 核心價值為搜尋功能，非沿革資料本身，對原市場影響甚微。 法院裁判理由：
-利用目的：純商業行為（收費服務）。 使用量：100% 複製。 市場影響：以低價與原告競爭，剝奪授權機會，造成實質損害。 不符合理使用，被告抗辯駁回。
-爭點三：爬蟲行為是否構成侵權？ 原告主張：
-被告於 107–110 年間撰寫 6 支爬蟲程式，從法源網站下載共 331,524 筆資料（含沿革、內容及附件），用於 Lawsnote 資料庫。 行為逾越法源《使用規範》禁止之自動化查詢與重製範圍。 被告抗辯：
-政府網站未完整保存歷史法規，爬取法源僅為便捷與完整性，不構成侵權。 法院認定：
-抽樣比對確認下載資料與法源內容「逐字相符」。 未獲授權且違反使用規範，構成著作權侵害。 三、未決爭議與批判性分析 （一）法規資料的公共性 vs. 著作權歸屬 法源公司承接司法院數億元標案維護法規資料，但判決未釐清： 政府委外產出之法規資料，著作財產權應歸屬公部門或企業？ 具公益性質的法規資料，是否可由民間企業專有？ （二）損害賠償計算的合理性爭議 法院以法源公司「建置成本」作為賠償基準，但學說與實務指出：
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-06-30 23:38:06 +0800 CST'>June 30, 2025</span></footer>
-  <a class="entry-link" aria-label="post link to 法源公司 vs. Lawsnote 著作權侵權案" href="http://localhost:1313/posts/2025-06-30-lawbank-v-lawsnote/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">律師轉職軟體工程師 - 變換人生技能樹
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>前言 曾經在各大平台（如 Medium、Vocus、Substack 等）嘗試發表文章，但最後還是覺得將內容放在自己的 GitHub Pages 最合適。平時的知識整理會以 Obsidian 為主，想公開分享的內容則會發布在這裡。既然這是第一篇文章，就以我的轉職簡短心得作為開場，希望對有類似想法的朋友有所幫助。
-如標題所述，我的本科專業是法律，並在取得法學碩士及律師執照後做了幾年訴訟律師，每天的生活就是：
-與當事人開會 研究法律問題 寫訴狀 到法院開庭 以上四點無限迴圈。 對，我忘了說一點：「法院等開庭」。
-這件事情有什麼特別的？嗯，任何事情都有可能 delay，法院開庭當然也不例外，有時候比較誇張會等 30 分鐘到 1 小時都有可能。
-我喜歡律師工作。我喜歡分析案情，研究法律問題，找出可以用的法律見解並應用在案件上。但律師工作性質以及我個人特質的雙重影響下，讓我不僅是在精神上或物理上，很難將工作與生活分開~時間久了身體也漸漸開始出狀況，所以我一直有在思考我有沒有更多其他可能。
-在一段職涯空檔中，我慢慢回想自己的過去。
-我從小學一年級就開始接觸電腦，直到現在我都是光華商場的常客，朋友、家人之間負責修電腦的工具人XD
-吸收法律知識和科技知識，對我來說都很有成就感。不同的是，前者多半是出於專業需求，而後者則多了一份純粹的興奮與熱情。
-會發現這點，是因為我在律師工作時，深刻體會到這行業極度依賴紙本作業。但我習慣把資料電子化，所以會把所有文書掃描成電子卷宗，這樣查找資料既方便又快速，開庭時翻資料也不會輸人。
-後來我開始思考，能不能再進一步改善這件事。當時就想過，或許可以開發一個系統，讓員工能用來管理案件，客戶也能登入查詢自己案件的進度。只是那時還沒開始學寫程式，這個想法就暫時擱在心裡。
-身邊不少朋友都是軟體工程師，而我本來就對電腦、程式這類東西很有興趣，長期下來也算耳濡目染。離開事務所後有了比較多自己的時間，就買了 Python 的書和線上課程，開始認真學習。學著學著發現，其實程式和法律有不少相似之處，所以上手還算順利，越學也越有興趣，還能用程式幫朋友、家人解決一些問題。
-在實作過程中我發現，比起一直看課程，動手做的學習效率和成就感都更高。於是我開始開發前面提到的那個事務所系統。這段開發經歷，讓我更確定自己真的熱愛寫程式，覺得這就是我想做的事。
-後來進入找工作階段，很幸運錄取了 AppWorks School 的 iOS Training Program，結業後也順利進入媒合的公司工作。
-坦白說，現在回頭看，轉職這個決定確實有點任性和衝動，畢竟算是完全打掉重練。不過既然已經踏上這條路，未來會在這裡持續更新技術文章，有機會也會聊聊法律相關的話題XD
-</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-06-30 20:54:43 +0800 CST'>June 30, 2025</span></footer>
-  <a class="entry-link" aria-label="post link to 律師轉職軟體工程師 - 變換人生技能樹" href="http://localhost:1313/posts/2025-06-30-lawyer-to-dev/"></a>
 </article>
     </main>
     
