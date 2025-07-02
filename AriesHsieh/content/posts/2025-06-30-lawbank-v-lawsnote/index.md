@@ -7,6 +7,7 @@ tags: ["法律"]
 showToc: true
 TocOpen: true
 searchHidden: false
+comments: true
 ---
 
 在 2025 年 6 月，科技圈熱烈討論法源公司指控 Lawsnote（七法公司）未經授權爬取其法律資料庫內容，構成著作權侵權及違反刑法第359條。以下依爭點，整理判決核心內容：

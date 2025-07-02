@@ -7,6 +7,7 @@ tags: ["Kong", "Redis", "API", "Cache"]
 showToc: true
 TocOpen: true
 searchHidden: false
+comments: true
 ---
 
 # 前言
