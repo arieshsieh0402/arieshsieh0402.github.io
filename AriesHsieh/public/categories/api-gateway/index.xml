@@ -6,8 +6,28 @@
     <description>Recent content in API Gateway on Slash Life: Developer / Lawyer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Jul 2025 11:18:29 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 03 Jul 2025 10:54:54 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/api-gateway/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kong API Gateway 真實 client IP 識別</title>
+      <link>http://localhost:1313/posts/2025-07-03-apim-clientip/</link>
+      <pubDate>Thu, 03 Jul 2025 10:54:54 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-03-apim-clientip/</guid>
+      <description>&lt;p&gt;小弟最近要接手管理 APIM 了，會把踩的點記錄下來。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;在管理公司 Kong API Gateway 的過程中，發現在啟用 IP Restriction Plugin 並設置白名單後，該 consumer 仍然驗證失敗。經確認此情況與 IP 置換有關。&lt;/p&gt;
+&lt;p&gt;該 consumer request 路徑為：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Client → Load Balancer → Kong API Gateway → Backend Service&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;在這樣的架構中，Kong 接收到的 IP &lt;strong&gt;並不是實際的 Client IP&lt;/strong&gt;，而是來自 Load Balancer 的內部 IP。&lt;/p&gt;
+&lt;p&gt;經確認：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kong 接收到的 client_ip 顯示為內部網段 IP（例如：以 .254 結尾）。&lt;/li&gt;
+&lt;li&gt;這些 IP 實際上是 Load Balancer 的 IP。&lt;/li&gt;
+&lt;li&gt;導致 IP Restriction Plugin 誤判來源 IP，合法用戶被錯誤拒絕。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;nginx-真實-ip-辨識機制&#34;&gt;Nginx 真實 IP 辨識機制&lt;/h3&gt;
+&lt;p&gt;Kong 是建構在 &lt;code&gt;Nginx&lt;/code&gt; 之上，利用 &lt;code&gt;Nginx&lt;/code&gt; 的 &lt;code&gt;ngx_http_realip_module&lt;/code&gt;&lt;a href=&#34;https://docs.konghq.com/gateway/latest/kong-enterprise/kong-gateway/reference/configuration/#trusted_ips&#34;&gt;1&lt;/a&gt; 模組來從 HTTP Header 中擷取真正的 Client IP，並改寫 &lt;code&gt;$remote_addr&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Kong APIM 與 Redis Sentinel 架構學習筆記</title>
       <link>http://localhost:1313/posts/2025-07-01-kong-redis/</link>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kong API Gateway 真實 client IP 識別 | Slash Life: Developer / Lawyer</title>
+<meta name="keywords" content="Kong, API">
+<meta name="description" content="小弟最近要接手管理 APIM 了，會把踩的點記錄下來。
+
+在管理 Kong API Gateway 的過程中，發現在啟用 IP Restriction Plugin 並設置白名單後，該 consumer 仍然驗證失敗。經確認此情況與 IP 置換有關。
+該 consumer request 路徑為：
+Client → Load Balancer → Kong API Gateway → Backend Service
+在這樣的架構中，Kong 接收到的 IP 並不是實際的 Client IP，而是來自 Load Balancer 的內部 IP。
+經確認：
+
+Kong 接收到的 client_ip 顯示為內部網段 IP（例如：以 .254 結尾）。
+這些 IP 實際上是 Load Balancer 的 IP。
+導致 IP Restriction Plugin 誤判來源 IP，合法用戶被錯誤拒絕。
+
+Nginx 真實 IP 辨識機制
+Kong 是建構在 Nginx 之上，利用 Nginx 的 ngx_http_realip_module 模組來從 HTTP Header 中擷取真正的 Client IP，並改寫 $remote_addr。">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/2025-07-03-apim-clientip/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css" integrity="sha256-j&#43;ECM6cGvIfy4Is8&#43;XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2025-07-03-apim-clientip/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-WDF1DJPXLY"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-WDF1DJPXLY');
+        }
+      </script><meta property="og:url" content="http://localhost:1313/posts/2025-07-03-apim-clientip/">
+  <meta property="og:site_name" content="Slash Life: Developer / Lawyer">
+  <meta property="og:title" content="Kong API Gateway 真實 client IP 識別">
+  <meta property="og:description" content="小弟最近要接手管理 APIM 了，會把踩的點記錄下來。
+在管理 Kong API Gateway 的過程中，發現在啟用 IP Restriction Plugin 並設置白名單後，該 consumer 仍然驗證失敗。經確認此情況與 IP 置換有關。
+該 consumer request 路徑為：
+Client → Load Balancer → Kong API Gateway → Backend Service
+在這樣的架構中，Kong 接收到的 IP 並不是實際的 Client IP，而是來自 Load Balancer 的內部 IP。
+經確認：
+Kong 接收到的 client_ip 顯示為內部網段 IP（例如：以 .254 結尾）。 這些 IP 實際上是 Load Balancer 的 IP。 導致 IP Restriction Plugin 誤判來源 IP，合法用戶被錯誤拒絕。 Nginx 真實 IP 辨識機制 Kong 是建構在 Nginx 之上，利用 Nginx 的 ngx_http_realip_module 模組來從 HTTP Header 中擷取真正的 Client IP，並改寫 $remote_addr。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-07-03T10:54:54+08:00">
+    <meta property="article:modified_time" content="2025-07-03T10:54:54+08:00">
+    <meta property="article:tag" content="Kong">
+    <meta property="article:tag" content="API">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kong API Gateway 真實 client IP 識別">
+<meta name="twitter:description" content="小弟最近要接手管理 APIM 了，會把踩的點記錄下來。
+
+在管理 Kong API Gateway 的過程中，發現在啟用 IP Restriction Plugin 並設置白名單後，該 consumer 仍然驗證失敗。經確認此情況與 IP 置換有關。
+該 consumer request 路徑為：
+Client → Load Balancer → Kong API Gateway → Backend Service
+在這樣的架構中，Kong 接收到的 IP 並不是實際的 Client IP，而是來自 Load Balancer 的內部 IP。
+經確認：
+
+Kong 接收到的 client_ip 顯示為內部網段 IP（例如：以 .254 結尾）。
+這些 IP 實際上是 Load Balancer 的 IP。
+導致 IP Restriction Plugin 誤判來源 IP，合法用戶被錯誤拒絕。
+
+Nginx 真實 IP 辨識機制
+Kong 是建構在 Nginx 之上，利用 Nginx 的 ngx_http_realip_module 模組來從 HTTP Header 中擷取真正的 Client IP，並改寫 $remote_addr。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kong API Gateway 真實 client IP 識別",
+      "item": "http://localhost:1313/posts/2025-07-03-apim-clientip/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kong API Gateway 真實 client IP 識別",
+  "name": "Kong API Gateway 真實 client IP 識別",
+  "description": "小弟最近要接手管理 APIM 了，會把踩的點記錄下來。\n在管理 Kong API Gateway 的過程中，發現在啟用 IP Restriction Plugin 並設置白名單後，該 consumer 仍然驗證失敗。經確認此情況與 IP 置換有關。\n該 consumer request 路徑為：\nClient → Load Balancer → Kong API Gateway → Backend Service\n在這樣的架構中，Kong 接收到的 IP 並不是實際的 Client IP，而是來自 Load Balancer 的內部 IP。\n經確認：\nKong 接收到的 client_ip 顯示為內部網段 IP（例如：以 .254 結尾）。 這些 IP 實際上是 Load Balancer 的 IP。 導致 IP Restriction Plugin 誤判來源 IP，合法用戶被錯誤拒絕。 Nginx 真實 IP 辨識機制 Kong 是建構在 Nginx 之上，利用 Nginx 的 ngx_http_realip_module 模組來從 HTTP Header 中擷取真正的 Client IP，並改寫 $remote_addr。\n",
+  "keywords": [
+    "Kong", "API"
+  ],
+  "articleBody": "小弟最近要接手管理 APIM 了，會把踩的點記錄下來。\n在管理 Kong API Gateway 的過程中，發現在啟用 IP Restriction Plugin 並設置白名單後，該 consumer 仍然驗證失敗。經確認此情況與 IP 置換有關。\n該 consumer request 路徑為：\nClient → Load Balancer → Kong API Gateway → Backend Service\n在這樣的架構中，Kong 接收到的 IP 並不是實際的 Client IP，而是來自 Load Balancer 的內部 IP。\n經確認：\nKong 接收到的 client_ip 顯示為內部網段 IP（例如：以 .254 結尾）。 這些 IP 實際上是 Load Balancer 的 IP。 導致 IP Restriction Plugin 誤判來源 IP，合法用戶被錯誤拒絕。 Nginx 真實 IP 辨識機制 Kong 是建構在 Nginx 之上，利用 Nginx 的 ngx_http_realip_module 模組來從 HTTP Header 中擷取真正的 Client IP，並改寫 $remote_addr。\n常見的 HTTP Header：\nHeader 名稱 說明 X-Real-IP 包含直接與第一層代理連線的 Client IP X-Forwarded-For 包含完整轉發鏈，列出每一層代理經過的 IP（逗號分隔） Kong 設定參數說明：\n參數名稱 說明 trusted_ips 定義哪些 IP 被視為可信任的代理；只有來自這些 IP 的 Header 才會被信任 real_ip_header 指定從哪個 Header 擷取真實 IP，預設為 X-Real-IP real_ip_recursive 啟用後會從轉發鏈中遞迴取得最早的（最靠近 Client 的）IP 解決方式 修改 Kong 設定檔 編輯 /etc/kong/kong.conf，加入以下設定：\n# 信任 Load Balancer 的 IP trusted_ips = YOUR_LOAD_BALANCER_IP # 從 X-Forwarded-For Header 取得真實 IP real_ip_header = X-Forwarded-For # 啟用遞迴搜尋 real_ip_recursive = on 重新啟動 Kong kong reload Kong 重啟後會重新載入這些設定，透過 ngx_http_realip_module 將 $remote_addr 改寫為真實的 Client IP。此時 IP Restriction Plugin 將能正確依據實際來源 IP 進行存取控制。\n",
+  "wordCount" : "162",
+  "inLanguage": "en",
+  "datePublished": "2025-07-03T10:54:54+08:00",
+  "dateModified": "2025-07-03T10:54:54+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/2025-07-03-apim-clientip/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Slash Life: Developer / Lawyer",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Slash Life: Developer / Lawyer (Alt + H)">Slash Life: Developer / Lawyer</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Kong API Gateway 真實 client IP 識別
+    </h1>
+    <div class="post-meta"><span title='2025-07-03 10:54:54 +0800 CST'>July 3, 2025</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#nginx-%e7%9c%9f%e5%af%a6-ip-%e8%be%a8%e8%ad%98%e6%a9%9f%e5%88%b6" aria-label="Nginx 真實 IP 辨識機制">Nginx 真實 IP 辨識機制</a></li>
+                <li>
+                    <a href="#%e8%a7%a3%e6%b1%ba%e6%96%b9%e5%bc%8f" aria-label="解決方式">解決方式</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>小弟最近要接手管理 APIM 了，會把踩的點記錄下來。</p>
+<hr>
+<p>在管理 Kong API Gateway 的過程中，發現在啟用 IP Restriction Plugin 並設置白名單後，該 consumer 仍然驗證失敗。經確認此情況與 IP 置換有關。</p>
+<p>該 consumer request 路徑為：</p>
+<p><code>Client → Load Balancer → Kong API Gateway → Backend Service</code></p>
+<p>在這樣的架構中，Kong 接收到的 IP <strong>並不是實際的 Client IP</strong>，而是來自 Load Balancer 的內部 IP。</p>
+<p>經確認：</p>
+<ul>
+<li>Kong 接收到的 client_ip 顯示為內部網段 IP（例如：以 .254 結尾）。</li>
+<li>這些 IP 實際上是 Load Balancer 的 IP。</li>
+<li>導致 IP Restriction Plugin 誤判來源 IP，合法用戶被錯誤拒絕。</li>
+</ul>
+<h3 id="nginx-真實-ip-辨識機制">Nginx 真實 IP 辨識機制<a hidden class="anchor" aria-hidden="true" href="#nginx-真實-ip-辨識機制">#</a></h3>
+<p>Kong 是建構在 <code>Nginx</code> 之上，利用 <code>Nginx</code> 的 <code>ngx_http_realip_module</code> 模組來從 HTTP Header 中擷取真正的 Client IP，並改寫 <code>$remote_addr</code>。</p>
+<p>常見的 HTTP Header：</p>
+<table>
+  <thead>
+      <tr>
+          <th>Header 名稱</th>
+          <th>說明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>X-Real-IP</code></td>
+          <td>包含直接與第一層代理連線的 Client IP</td>
+      </tr>
+      <tr>
+          <td><code>X-Forwarded-For</code></td>
+          <td>包含完整轉發鏈，列出每一層代理經過的 IP（逗號分隔）</td>
+      </tr>
+  </tbody>
+</table>
+<p>Kong 設定參數說明：</p>
+<table>
+  <thead>
+      <tr>
+          <th>參數名稱</th>
+          <th>說明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>trusted_ips</code></td>
+          <td>定義哪些 IP 被視為可信任的代理；只有來自這些 IP 的 Header 才會被信任</td>
+      </tr>
+      <tr>
+          <td><code>real_ip_header</code></td>
+          <td>指定從哪個 Header 擷取真實 IP，預設為 <code>X-Real-IP</code></td>
+      </tr>
+      <tr>
+          <td><code>real_ip_recursive</code></td>
+          <td>啟用後會從轉發鏈中遞迴取得最早的（最靠近 Client 的）IP</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="解決方式">解決方式<a hidden class="anchor" aria-hidden="true" href="#解決方式">#</a></h3>
+<ul>
+<li>修改 Kong 設定檔</li>
+</ul>
+<p>編輯 /etc/kong/kong.conf，加入以下設定：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#75715e"># 信任 Load Balancer 的 IP</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">trusted_ips</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">YOUR_LOAD_BALANCER_IP</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 從 X-Forwarded-For Header 取得真實 IP</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">real_ip_header</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">X-Forwarded-For</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 啟用遞迴搜尋</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">real_ip_recursive</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">on</span>
+</span></span></code></pre></div><ul>
+<li>重新啟動 Kong</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>kong reload
+</span></span></code></pre></div><p>Kong 重啟後會重新載入這些設定，透過 <code>ngx_http_realip_module</code> 將 $remote_addr 改寫為真實的 Client IP。此時 IP Restriction Plugin 將能正確依據實際來源 IP 進行存取控制。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/kong/">Kong</a></li>
+      <li><a href="http://localhost:1313/tags/api/">API</a></li>
+    </ul>
+  </footer><script src="https://utteranc.es/client.js"
+        repo="arieshsieh0402/arieshsieh0402.github.io"
+        issue-term="pathname"
+        label="blog-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">Slash Life: Developer / Lawyer</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
