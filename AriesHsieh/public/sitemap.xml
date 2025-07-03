@@ -2,28 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/posts/2025-07-03-ios-azure/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/azure/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/ci/cd/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/devops/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/entitlements/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/ios/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/pipeline/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/signing/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/xcode/</loc>
+    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/api/</loc>
     <lastmod>2025-07-03T10:54:54+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/categories/api-gateway/</loc>
     <lastmod>2025-07-03T10:54:54+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2025-07-03T10:54:54+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/kong/</loc>
     <lastmod>2025-07-03T10:54:54+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/2025-07-03-apim-clientip/</loc>
-    <lastmod>2025-07-03T10:54:54+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2025-07-03T10:54:54+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2025-07-03T10:54:54+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
     <lastmod>2025-07-03T10:54:54+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/hugo/</loc>

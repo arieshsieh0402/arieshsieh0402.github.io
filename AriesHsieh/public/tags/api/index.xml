@@ -15,7 +15,7 @@
       <guid>http://localhost:1313/posts/2025-07-03-apim-clientip/</guid>
       <description>&lt;p&gt;小弟最近要接手管理 APIM 了，會把踩的點記錄下來。&lt;/p&gt;
 &lt;hr&gt;
-&lt;p&gt;在管理公司 Kong API Gateway 的過程中，發現在啟用 IP Restriction Plugin 並設置白名單後，該 consumer 仍然驗證失敗。經確認此情況與 IP 置換有關。&lt;/p&gt;
+&lt;p&gt;在管理 Kong API Gateway 的過程中，發現在啟用 IP Restriction Plugin 並設置白名單後，該 consumer 仍然驗證失敗。經確認此情況與 IP 置換有關。&lt;/p&gt;
 &lt;p&gt;該 consumer request 路徑為：&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Client → Load Balancer → Kong API Gateway → Backend Service&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;在這樣的架構中，Kong 接收到的 IP &lt;strong&gt;並不是實際的 Client IP&lt;/strong&gt;，而是來自 Load Balancer 的內部 IP。&lt;/p&gt;
@@ -26,7 +26,7 @@
 &lt;li&gt;導致 IP Restriction Plugin 誤判來源 IP，合法用戶被錯誤拒絕。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;nginx-真實-ip-辨識機制&#34;&gt;Nginx 真實 IP 辨識機制&lt;/h3&gt;
-&lt;p&gt;Kong 是建構在 &lt;code&gt;Nginx&lt;/code&gt; 之上，利用 &lt;code&gt;Nginx&lt;/code&gt; 的 &lt;code&gt;ngx_http_realip_module&lt;/code&gt;&lt;a href=&#34;https://docs.konghq.com/gateway/latest/kong-enterprise/kong-gateway/reference/configuration/#trusted_ips&#34;&gt;1&lt;/a&gt; 模組來從 HTTP Header 中擷取真正的 Client IP，並改寫 &lt;code&gt;$remote_addr&lt;/code&gt;。&lt;/p&gt;</description>
+&lt;p&gt;Kong 是建構在 &lt;code&gt;Nginx&lt;/code&gt; 之上，利用 &lt;code&gt;Nginx&lt;/code&gt; 的 &lt;code&gt;ngx_http_realip_module&lt;/code&gt; 模組來從 HTTP Header 中擷取真正的 Client IP，並改寫 &lt;code&gt;$remote_addr&lt;/code&gt;。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Kong APIM 與 Redis Sentinel 架構學習筆記</title>

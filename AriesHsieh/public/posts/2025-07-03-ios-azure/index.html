@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Azure Pipeline 編譯 iOS App Groups 權限未簽入問題 | Slash Life: Developer / Lawyer</title>
+<meta name="keywords" content="Azure, Pipeline, Xcode, CI/CD, Signing, Entitlements">
+<meta name="description" content="前言
+公司原本的上線流程最近要走 Azure DevOps 方式上線，我維護的 iOS App 不外乎也要走這個流程。原本測試都沒有太大問題，但上線之後發現 App Groups 功能沒有正確運作，就開始查找問題，最終找到問題所在並解決，記錄一下過程，並延伸相關知識。
+Trouble Shooting
+一開始覺得很奇怪，這次上線的內容並沒有異動到 App Group 的設定，所以應該跟 source code 沒有太大關係。後來先嘗試在本機 build 一版，結果發現透過這個方式運作正常，但透過 Azure pipeline build 出來的就會發生問題。因此轉向研究 pipeline yaml 的設定是否出現狀況。
+先進一步確認透過 Azure pipeline 包出來的 artifacts 內容是否正確，一般而言，iOS App 打包後的成品如下：
+DistributionSummary.plist
+ExportOptions.plist
+YourAppName.ipa
+Packaging.log
+查看 .ipa
+我們可以查看 YourAppName.ipa 裡面到底簽入了哪些權限：
+解壓縮 .ipa 檔案：
+unzip YourAppName.ipa -d AppContents
+進入 Payload 目錄：
+cd AppContents/Payload
+執行 codesign 指令：
+codesign -d --entitlements :- YourAppName.app
+每個部分的含義是：
+
+codesign：呼叫程式碼簽署工具
+d：表示 &ldquo;display&rdquo;，用於顯示簽署資訊
+-entitlements :-：要求工具顯示應用程式中包含的所有權限（entitlements）
+這裡的 :- 是一個特殊的語法，表示將輸出導向到標準輸出（stdout）
+YourAppName.app：要檢查的應用程式套件路徑
+
+如果有正確簽入 App Groups 的權限，應該要有 &lt;key&gt;com.apple.security.application-groups&lt;/key&gt; 的蹤跡，但發現透過 Azure pipeline 包出來 .ipa 沒有。">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/2025-07-03-ios-azure/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css" integrity="sha256-j&#43;ECM6cGvIfy4Is8&#43;XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2025-07-03-ios-azure/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-WDF1DJPXLY"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-WDF1DJPXLY');
+        }
+      </script><meta property="og:url" content="http://localhost:1313/posts/2025-07-03-ios-azure/">
+  <meta property="og:site_name" content="Slash Life: Developer / Lawyer">
+  <meta property="og:title" content="Azure Pipeline 編譯 iOS App Groups 權限未簽入問題">
+  <meta property="og:description" content="前言 公司原本的上線流程最近要走 Azure DevOps 方式上線，我維護的 iOS App 不外乎也要走這個流程。原本測試都沒有太大問題，但上線之後發現 App Groups 功能沒有正確運作，就開始查找問題，最終找到問題所在並解決，記錄一下過程，並延伸相關知識。
+Trouble Shooting 一開始覺得很奇怪，這次上線的內容並沒有異動到 App Group 的設定，所以應該跟 source code 沒有太大關係。後來先嘗試在本機 build 一版，結果發現透過這個方式運作正常，但透過 Azure pipeline build 出來的就會發生問題。因此轉向研究 pipeline yaml 的設定是否出現狀況。
+先進一步確認透過 Azure pipeline 包出來的 artifacts 內容是否正確，一般而言，iOS App 打包後的成品如下：
+DistributionSummary.plist ExportOptions.plist YourAppName.ipa Packaging.log 查看 .ipa 我們可以查看 YourAppName.ipa 裡面到底簽入了哪些權限：
+解壓縮 .ipa 檔案：
+unzip YourAppName.ipa -d AppContents 進入 Payload 目錄：
+cd AppContents/Payload 執行 codesign 指令：
+codesign -d --entitlements :- YourAppName.app 每個部分的含義是：
+codesign：呼叫程式碼簽署工具 d：表示 “display”，用於顯示簽署資訊 -entitlements :-：要求工具顯示應用程式中包含的所有權限（entitlements） 這裡的 :- 是一個特殊的語法，表示將輸出導向到標準輸出（stdout） YourAppName.app：要檢查的應用程式套件路徑 如果有正確簽入 App Groups 的權限，應該要有 &lt;key&gt;com.apple.security.application-groups&lt;/key&gt; 的蹤跡，但發現透過 Azure pipeline 包出來 .ipa 沒有。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-07-03T16:27:33+08:00">
+    <meta property="article:modified_time" content="2025-07-03T16:27:33+08:00">
+    <meta property="article:tag" content="Azure">
+    <meta property="article:tag" content="Pipeline">
+    <meta property="article:tag" content="Xcode">
+    <meta property="article:tag" content="CI/CD">
+    <meta property="article:tag" content="Signing">
+    <meta property="article:tag" content="Entitlements">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Azure Pipeline 編譯 iOS App Groups 權限未簽入問題">
+<meta name="twitter:description" content="前言
+公司原本的上線流程最近要走 Azure DevOps 方式上線，我維護的 iOS App 不外乎也要走這個流程。原本測試都沒有太大問題，但上線之後發現 App Groups 功能沒有正確運作，就開始查找問題，最終找到問題所在並解決，記錄一下過程，並延伸相關知識。
+Trouble Shooting
+一開始覺得很奇怪，這次上線的內容並沒有異動到 App Group 的設定，所以應該跟 source code 沒有太大關係。後來先嘗試在本機 build 一版，結果發現透過這個方式運作正常，但透過 Azure pipeline build 出來的就會發生問題。因此轉向研究 pipeline yaml 的設定是否出現狀況。
+先進一步確認透過 Azure pipeline 包出來的 artifacts 內容是否正確，一般而言，iOS App 打包後的成品如下：
+DistributionSummary.plist
+ExportOptions.plist
+YourAppName.ipa
+Packaging.log
+查看 .ipa
+我們可以查看 YourAppName.ipa 裡面到底簽入了哪些權限：
+解壓縮 .ipa 檔案：
+unzip YourAppName.ipa -d AppContents
+進入 Payload 目錄：
+cd AppContents/Payload
+執行 codesign 指令：
+codesign -d --entitlements :- YourAppName.app
+每個部分的含義是：
+
+codesign：呼叫程式碼簽署工具
+d：表示 &ldquo;display&rdquo;，用於顯示簽署資訊
+-entitlements :-：要求工具顯示應用程式中包含的所有權限（entitlements）
+這裡的 :- 是一個特殊的語法，表示將輸出導向到標準輸出（stdout）
+YourAppName.app：要檢查的應用程式套件路徑
+
+如果有正確簽入 App Groups 的權限，應該要有 &lt;key&gt;com.apple.security.application-groups&lt;/key&gt; 的蹤跡，但發現透過 Azure pipeline 包出來 .ipa 沒有。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Azure Pipeline 編譯 iOS App Groups 權限未簽入問題",
+      "item": "http://localhost:1313/posts/2025-07-03-ios-azure/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Azure Pipeline 編譯 iOS App Groups 權限未簽入問題",
+  "name": "Azure Pipeline 編譯 iOS App Groups 權限未簽入問題",
+  "description": "前言 公司原本的上線流程最近要走 Azure DevOps 方式上線，我維護的 iOS App 不外乎也要走這個流程。原本測試都沒有太大問題，但上線之後發現 App Groups 功能沒有正確運作，就開始查找問題，最終找到問題所在並解決，記錄一下過程，並延伸相關知識。\nTrouble Shooting 一開始覺得很奇怪，這次上線的內容並沒有異動到 App Group 的設定，所以應該跟 source code 沒有太大關係。後來先嘗試在本機 build 一版，結果發現透過這個方式運作正常，但透過 Azure pipeline build 出來的就會發生問題。因此轉向研究 pipeline yaml 的設定是否出現狀況。\n先進一步確認透過 Azure pipeline 包出來的 artifacts 內容是否正確，一般而言，iOS App 打包後的成品如下：\nDistributionSummary.plist ExportOptions.plist YourAppName.ipa Packaging.log 查看 .ipa 我們可以查看 YourAppName.ipa 裡面到底簽入了哪些權限：\n解壓縮 .ipa 檔案：\nunzip YourAppName.ipa -d AppContents 進入 Payload 目錄：\ncd AppContents/Payload 執行 codesign 指令：\ncodesign -d --entitlements :- YourAppName.app 每個部分的含義是：\ncodesign：呼叫程式碼簽署工具 d：表示 \u0026ldquo;display\u0026rdquo;，用於顯示簽署資訊 -entitlements :-：要求工具顯示應用程式中包含的所有權限（entitlements） 這裡的 :- 是一個特殊的語法，表示將輸出導向到標準輸出（stdout） YourAppName.app：要檢查的應用程式套件路徑 如果有正確簽入 App Groups 的權限，應該要有 \u0026lt;key\u0026gt;com.apple.security.application-groups\u0026lt;/key\u0026gt; 的蹤跡，但發現透過 Azure pipeline 包出來 .ipa 沒有。\n",
+  "keywords": [
+    "Azure", "Pipeline", "Xcode", "CI/CD", "Signing", "Entitlements"
+  ],
+  "articleBody": "前言 公司原本的上線流程最近要走 Azure DevOps 方式上線，我維護的 iOS App 不外乎也要走這個流程。原本測試都沒有太大問題，但上線之後發現 App Groups 功能沒有正確運作，就開始查找問題，最終找到問題所在並解決，記錄一下過程，並延伸相關知識。\nTrouble Shooting 一開始覺得很奇怪，這次上線的內容並沒有異動到 App Group 的設定，所以應該跟 source code 沒有太大關係。後來先嘗試在本機 build 一版，結果發現透過這個方式運作正常，但透過 Azure pipeline build 出來的就會發生問題。因此轉向研究 pipeline yaml 的設定是否出現狀況。\n先進一步確認透過 Azure pipeline 包出來的 artifacts 內容是否正確，一般而言，iOS App 打包後的成品如下：\nDistributionSummary.plist ExportOptions.plist YourAppName.ipa Packaging.log 查看 .ipa 我們可以查看 YourAppName.ipa 裡面到底簽入了哪些權限：\n解壓縮 .ipa 檔案：\nunzip YourAppName.ipa -d AppContents 進入 Payload 目錄：\ncd AppContents/Payload 執行 codesign 指令：\ncodesign -d --entitlements :- YourAppName.app 每個部分的含義是：\ncodesign：呼叫程式碼簽署工具 d：表示 “display”，用於顯示簽署資訊 -entitlements :-：要求工具顯示應用程式中包含的所有權限（entitlements） 這裡的 :- 是一個特殊的語法，表示將輸出導向到標準輸出（stdout） YourAppName.app：要檢查的應用程式套件路徑 如果有正確簽入 App Groups 的權限，應該要有 com.apple.security.application-groups 的蹤跡，但發現透過 Azure pipeline 包出來 .ipa 沒有。\n這個時候就進一步查看，是不是在打包開始前根本沒有將權限設定進去。\nDistributionSummary.plist 當你將 iOS App 打包成 .ipa 檔案時，系統會自動生成這個 plist 檔案。它就像是一份「出廠證明書」，記錄了這個應用程式在打包時的所有重要設定和權限資訊包含：\n應用程式基本資訊 權限設定(Entitlements)：如推播、App Groups、iCloud 等 簽署資訊：如描述檔(provision profile)、分發憑證(certificate) 而跟今天 App Group 有關的部分，則要查找 Entitlements 的內容。\n正確來說應該要長得像下面這樣：\nentitlements application-identifier com.xxx.xxx com.apple.developer.team-identifier xxxxxxxx aps-environment production com.apple.security.application-groups group.yyyyy.yyyyyy get-task-allow 應該要有 com.apple.security.application-groups 這個 key，且裡面的值也要正確。\n這內容會在 Xcode 設定 App Groups 後，表示新增一個 Entitlement；而每個 Entitlement 最終會被編譯成 .entitlements 檔案，這個檔案會在建置過程中被簽入應用程式中。\n因此在 DistributionSummary.plist 中看到 entitlements 時，那就是記錄了所有已經被簽入應用程式的權限。\n回到問題，我查看透過 Azure pipeline 包出來 DistributionSummary.plist 裡面，確實沒有 App Groups 的蹤跡，這有幾下幾種可能：\n第一種可能：設定過程的問題 專案中可能沒有正確啟用 App Groups 功能 在 Xcode 的 Signing \u0026 Capabilities 中沒有添加 App Groups 或者在添加 App Groups 後，沒有實際設定 App Groups 的識別碼 第二種可能：簽署過程的問題 使用的開發者帳號可能沒有 App Groups 的權限 描述檔（Provisioning Profile）中可能沒有包含 App Groups 的權限 簽署過程中可能出現了問題，導致這個權限沒有被正確包含 因為我很確定有正確啟用，所以應該可以排除第一種可能。而第二種可能，也很確定開發者帳號有權限、描述檔也有包含 App Groups，因此問題範圍就縮小到是簽署過程，也就是 pipeline yaml 的設定問題了。\nXcode@5 task pipeline 設定 Xcode@5 是 Azure Pipelines 提供的一個任務（task），專門用來在雲端執行 Xcode 相關的操作。這個「5」代表的是任務的版本號。\n這個任務可以執行多種 Xcode 相關的操作，例如：\n建置（build）您的 iOS 應用程式 封存（archive）應用程式以準備發布 執行測試（testing） 產生 .ipa 檔案 管理程式碼簽署（code signing） 簡單範例如下：\n- task: Xcode@5 inputs: actions: 'archive' # 要執行的動作：建置、封存或測試 configuration: 'Release' # 建置組態：Release 或 Debug scheme: 'MyApp' # Xcode 專案的架構名稱 xcWorkspacePath: 'MyApp.xcworkspace' # 工作區檔案的路徑 packageApp: true # 是否打包成 .ipa 檔案 exportOptions: 'plist' # 匯出選項的格式 exportOptionsPlist: 'exportOptions.plist' # 匯出設定檔的路徑 signingOption: 'default' # 程式碼簽署方式 這邊有幾個參數值得注意：\nexportOptionsPlist exportOptionsPlist 是一個為 iOS App 打包過程提供詳細指示的檔案。這個 plist 檔案包含許多重要資訊，如基本發布設定(Team ID，發佈方式是 App Store 還是 Enterprise)、簽署相關設定(分發憑證、描述檔)等。\nsigningOption signingOption 決定了如何處理程式碼簽署，依據微軟官方文件，有以下幾種參數設定：\n1. default（專案預設） 這個選項告訴 Xcode「請使用專案中已經設定好的所有簽署配置」。當您使用這個選項時，建置系統會：\n完全遵循專案的原始簽署設定 採用 exportOptionsPlist 中定義的簽署參數 不會嘗試自動修改任何簽署相關的設定 2. auto（自動簽署） 選擇這個選項時，告訴 Xcode「請自動處理所有的簽署相關事務」：\n自動選擇適當的簽署憑證 自動管理佈建描述檔 可能會忽略一些特定的簽署設定 3. manual（手動簽署） 這個選項給予最大的控制權，告訴系統「我要明確指定所有簽署相關的設定」。使用這個選項時：\n需要明確提供簽署憑證 需要指定具體的佈建描述檔 4. nosign（不簽署） 這個選項告訴系統「完全不要進行程式碼簽署」。\n解決方式 要將此 key 設為 default\n因為在 yaml 檔中，我們同時自定義 exportOptions.plist，手動指定了簽署方式，但又將 signingOption 設為 auto，這就可能導致 Xcode 忽略或覆寫 exportOptionsPlist 中的某些設定，應該也就是造成 App Groups 權限沒有被正確簽入的原因。後來將此 key 設為 default，就成功將 App Groups 權限簽入了～\n",
+  "wordCount" : "324",
+  "inLanguage": "en",
+  "datePublished": "2025-07-03T16:27:33+08:00",
+  "dateModified": "2025-07-03T16:27:33+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/2025-07-03-ios-azure/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Slash Life: Developer / Lawyer",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Slash Life: Developer / Lawyer (Alt + H)">Slash Life: Developer / Lawyer</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Azure Pipeline 編譯 iOS App Groups 權限未簽入問題
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h1>
+    <div class="post-meta"><span title='2025-07-03 16:27:33 +0800 CST'>July 3, 2025</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#trouble-shooting" aria-label="Trouble Shooting">Trouble Shooting</a><ul>
+                        
+                <li>
+                    <a href="#%e6%9f%a5%e7%9c%8b-ipa" aria-label="查看 .ipa">查看 .ipa</a></li></ul>
+                </li>
+                <li>
+                    <a href="#distributionsummaryplist" aria-label="DistributionSummary.plist">DistributionSummary.plist</a><ul>
+                        
+                <li>
+                    <a href="#%e7%ac%ac%e4%b8%80%e7%a8%ae%e5%8f%af%e8%83%bd%e8%a8%ad%e5%ae%9a%e9%81%8e%e7%a8%8b%e7%9a%84%e5%95%8f%e9%a1%8c" aria-label="第一種可能：設定過程的問題">第一種可能：設定過程的問題</a></li>
+                <li>
+                    <a href="#%e7%ac%ac%e4%ba%8c%e7%a8%ae%e5%8f%af%e8%83%bd%e7%b0%bd%e7%bd%b2%e9%81%8e%e7%a8%8b%e7%9a%84%e5%95%8f%e9%a1%8c" aria-label="第二種可能：簽署過程的問題">第二種可能：簽署過程的問題</a></li></ul>
+                </li>
+                <li>
+                    <a href="#xcode5-task-pipeline-%e8%a8%ad%e5%ae%9a" aria-label="Xcode@5 task pipeline 設定">Xcode@5 task pipeline 設定</a><ul>
+                        
+                <li>
+                    <a href="#exportoptionsplist" aria-label="exportOptionsPlist">exportOptionsPlist</a></li>
+                <li>
+                    <a href="#signingoption" aria-label="signingOption">signingOption</a><ul>
+                        
+                <li>
+                    <a href="#1-default%e5%b0%88%e6%a1%88%e9%a0%90%e8%a8%ad" aria-label="1. default（專案預設）">1. default（專案預設）</a></li>
+                <li>
+                    <a href="#2-auto%e8%87%aa%e5%8b%95%e7%b0%bd%e7%bd%b2" aria-label="2. auto（自動簽署）">2. auto（自動簽署）</a></li>
+                <li>
+                    <a href="#3-manual%e6%89%8b%e5%8b%95%e7%b0%bd%e7%bd%b2" aria-label="3. manual（手動簽署）">3. manual（手動簽署）</a></li>
+                <li>
+                    <a href="#4-nosign%e4%b8%8d%e7%b0%bd%e7%bd%b2" aria-label="4. nosign（不簽署）">4. nosign（不簽署）</a></li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#%e8%a7%a3%e6%b1%ba%e6%96%b9%e5%bc%8f" aria-label="解決方式">解決方式</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>前言
+公司原本的上線流程最近要走 Azure DevOps 方式上線，我維護的 iOS App 不外乎也要走這個流程。原本測試都沒有太大問題，但上線之後發現 App Groups 功能沒有正確運作，就開始查找問題，最終找到問題所在並解決，記錄一下過程，並延伸相關知識。</p>
+<h2 id="trouble-shooting">Trouble Shooting<a hidden class="anchor" aria-hidden="true" href="#trouble-shooting">#</a></h2>
+<p>一開始覺得很奇怪，這次上線的內容並沒有異動到 App Group 的設定，所以應該跟 source code 沒有太大關係。後來先嘗試在本機 build 一版，結果發現透過這個方式運作正常，但透過 Azure pipeline build 出來的就會發生問題。因此轉向研究 pipeline yaml 的設定是否出現狀況。</p>
+<p>先進一步確認透過 Azure pipeline 包出來的 artifacts 內容是否正確，一般而言，iOS App 打包後的成品如下：</p>
+<pre tabindex="0"><code>DistributionSummary.plist
+ExportOptions.plist
+YourAppName.ipa
+Packaging.log
+</code></pre><h3 id="查看-ipa">查看 .ipa<a hidden class="anchor" aria-hidden="true" href="#查看-ipa">#</a></h3>
+<p>我們可以查看 YourAppName.ipa 裡面到底簽入了哪些權限：</p>
+<p>解壓縮 .ipa 檔案：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>unzip YourAppName.ipa -d AppContents
+</span></span></code></pre></div><p>進入 Payload 目錄：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cd AppContents/Payload
+</span></span></code></pre></div><p>執行 codesign 指令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>codesign -d --entitlements :- YourAppName.app
+</span></span></code></pre></div><p>每個部分的含義是：</p>
+<ul>
+<li><code>codesign</code>：呼叫程式碼簽署工具</li>
+<li><code>d</code>：表示 &ldquo;display&rdquo;，用於顯示簽署資訊</li>
+<li><code>-entitlements :-</code>：要求工具顯示應用程式中包含的所有權限（entitlements）</li>
+<li>這裡的 <code>:-</code> 是一個特殊的語法，表示將輸出導向到標準輸出（stdout）</li>
+<li><code>YourAppName.app</code>：要檢查的應用程式套件路徑</li>
+</ul>
+<p>如果有正確簽入 App Groups 的權限，應該要有 <code>&lt;key&gt;com.apple.security.application-groups&lt;/key&gt;</code> 的蹤跡，但發現透過 Azure pipeline 包出來 .ipa 沒有。</p>
+<p>這個時候就進一步查看，是不是在打包開始前根本沒有將權限設定進去。</p>
+<h2 id="distributionsummaryplist">DistributionSummary.plist<a hidden class="anchor" aria-hidden="true" href="#distributionsummaryplist">#</a></h2>
+<p>當你將 iOS App 打包成 .ipa 檔案時，系統會自動生成這個 plist 檔案。它就像是一份「出廠證明書」，記錄了這個應用程式在打包時的所有重要設定和權限資訊包含：</p>
+<ul>
+<li>應用程式基本資訊</li>
+<li>權限設定(Entitlements)：如推播、App Groups、iCloud 等</li>
+<li>簽署資訊：如描述檔(provision profile)、分發憑證(certificate)</li>
+</ul>
+<p>而跟今天 App Group 有關的部分，則要查找 Entitlements 的內容。</p>
+<p>正確來說應該要長得像下面這樣：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;key&gt;</span>entitlements<span style="color:#f92672">&lt;/key&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dict&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;key&gt;</span>application-identifier<span style="color:#f92672">&lt;/key&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;string&gt;</span>com.xxx.xxx<span style="color:#f92672">&lt;/string&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;key&gt;</span>com.apple.developer.team-identifier<span style="color:#f92672">&lt;/key&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;string&gt;</span>xxxxxxxx<span style="color:#f92672">&lt;/string&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;key&gt;</span>aps-environment<span style="color:#f92672">&lt;/key&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;string&gt;</span>production<span style="color:#f92672">&lt;/string&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;key&gt;</span>com.apple.security.application-groups<span style="color:#f92672">&lt;/key&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;array&gt;</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">&lt;string&gt;</span>group.yyyyy.yyyyyy<span style="color:#f92672">&lt;/string&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/array&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;key&gt;</span>get-task-allow<span style="color:#f92672">&lt;/key&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;false/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dict&gt;</span>
+</span></span></code></pre></div><p>應該要有 <code>&lt;key&gt;com.apple.security.application-groups&lt;/key&gt;</code> 這個 key，且裡面的值也要正確。</p>
+<p>這內容會在 Xcode 設定 App Groups 後，表示新增一個 Entitlement；而每個 Entitlement 最終會被編譯成 .entitlements 檔案，這個檔案會在建置過程中被簽入應用程式中。</p>
+<p>因此在 DistributionSummary.plist 中看到 <code>&lt;key&gt;entitlements&lt;/key&gt;</code> 時，那就是記錄了所有已經被簽入應用程式的權限。</p>
+<p>回到問題，我查看透過 Azure pipeline 包出來 DistributionSummary.plist 裡面，確實沒有 App Groups 的蹤跡，這有幾下幾種可能：</p>
+<h3 id="第一種可能設定過程的問題">第一種可能：設定過程的問題<a hidden class="anchor" aria-hidden="true" href="#第一種可能設定過程的問題">#</a></h3>
+<ul>
+<li>專案中可能沒有正確啟用 App Groups 功能</li>
+<li>在 Xcode 的 Signing &amp; Capabilities 中沒有添加 App Groups</li>
+<li>或者在添加 App Groups 後，沒有實際設定 App Groups 的識別碼</li>
+</ul>
+<h3 id="第二種可能簽署過程的問題">第二種可能：簽署過程的問題<a hidden class="anchor" aria-hidden="true" href="#第二種可能簽署過程的問題">#</a></h3>
+<ul>
+<li>使用的開發者帳號可能沒有 App Groups 的權限</li>
+<li>描述檔（Provisioning Profile）中可能沒有包含 App Groups 的權限</li>
+<li>簽署過程中可能出現了問題，導致這個權限沒有被正確包含</li>
+</ul>
+<p>因為我很確定有正確啟用，所以應該可以排除第一種可能。而第二種可能，也很確定開發者帳號有權限、描述檔也有包含 App Groups，因此問題範圍就縮小到是簽署過程，也就是 pipeline yaml 的設定問題了。</p>
+<h2 id="xcode5-task-pipeline-設定">Xcode@5 task pipeline 設定<a hidden class="anchor" aria-hidden="true" href="#xcode5-task-pipeline-設定">#</a></h2>
+<p>Xcode@5 是 Azure Pipelines 提供的一個任務（task），專門用來在雲端執行 Xcode 相關的操作。這個「5」代表的是任務的版本號。</p>
+<p>這個任務可以執行多種 Xcode 相關的操作，例如：</p>
+<ul>
+<li>建置（build）您的 iOS 應用程式</li>
+<li>封存（archive）應用程式以準備發布</li>
+<li>執行測試（testing）</li>
+<li>產生 .ipa 檔案</li>
+<li>管理程式碼簽署（code signing）</li>
+</ul>
+<p>簡單範例如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">task</span>: <span style="color:#ae81ff">Xcode@5</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">inputs</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">actions</span>: <span style="color:#e6db74">&#39;archive&#39;</span>                    <span style="color:#75715e"># 要執行的動作：建置、封存或測試</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">configuration</span>: <span style="color:#e6db74">&#39;Release&#39;</span>              <span style="color:#75715e"># 建置組態：Release 或 Debug</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">scheme</span>: <span style="color:#e6db74">&#39;MyApp&#39;</span>                       <span style="color:#75715e"># Xcode 專案的架構名稱</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">xcWorkspacePath</span>: <span style="color:#e6db74">&#39;MyApp.xcworkspace&#39;</span>  <span style="color:#75715e"># 工作區檔案的路徑</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">packageApp</span>: <span style="color:#66d9ef">true</span>                      <span style="color:#75715e"># 是否打包成 .ipa 檔案</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">exportOptions</span>: <span style="color:#e6db74">&#39;plist&#39;</span>                <span style="color:#75715e"># 匯出選項的格式</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">exportOptionsPlist</span>: <span style="color:#e6db74">&#39;exportOptions.plist&#39;</span>  <span style="color:#75715e"># 匯出設定檔的路徑</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">signingOption</span>: <span style="color:#e6db74">&#39;default&#39;</span>              <span style="color:#75715e"># 程式碼簽署方式</span>
+</span></span></code></pre></div><p>這邊有幾個參數值得注意：</p>
+<h3 id="exportoptionsplist">exportOptionsPlist<a hidden class="anchor" aria-hidden="true" href="#exportoptionsplist">#</a></h3>
+<p>exportOptionsPlist 是一個為 iOS App 打包過程提供詳細指示的檔案。這個 plist 檔案包含許多重要資訊，如基本發布設定(Team ID，發佈方式是 App Store 還是 Enterprise)、簽署相關設定(分發憑證、描述檔)等。</p>
+<h3 id="signingoption">signingOption<a hidden class="anchor" aria-hidden="true" href="#signingoption">#</a></h3>
+<p>signingOption 決定了如何處理程式碼簽署，依據微軟官方文件，有以下幾種參數設定：</p>
+<h4 id="1-default專案預設">1. default（專案預設）<a hidden class="anchor" aria-hidden="true" href="#1-default專案預設">#</a></h4>
+<p>這個選項告訴 Xcode「請使用專案中已經設定好的所有簽署配置」。當您使用這個選項時，建置系統會：</p>
+<ul>
+<li>完全遵循專案的原始簽署設定</li>
+<li>採用 exportOptionsPlist 中定義的簽署參數</li>
+<li>不會嘗試自動修改任何簽署相關的設定</li>
+</ul>
+<h4 id="2-auto自動簽署">2. auto（自動簽署）<a hidden class="anchor" aria-hidden="true" href="#2-auto自動簽署">#</a></h4>
+<p>選擇這個選項時，告訴 Xcode「請自動處理所有的簽署相關事務」：</p>
+<ul>
+<li>自動選擇適當的簽署憑證</li>
+<li>自動管理佈建描述檔</li>
+<li>可能會忽略一些特定的簽署設定</li>
+</ul>
+<h4 id="3-manual手動簽署">3. manual（手動簽署）<a hidden class="anchor" aria-hidden="true" href="#3-manual手動簽署">#</a></h4>
+<p>這個選項給予最大的控制權，告訴系統「我要明確指定所有簽署相關的設定」。使用這個選項時：</p>
+<ul>
+<li>需要明確提供簽署憑證</li>
+<li>需要指定具體的佈建描述檔</li>
+</ul>
+<h4 id="4-nosign不簽署">4. nosign（不簽署）<a hidden class="anchor" aria-hidden="true" href="#4-nosign不簽署">#</a></h4>
+<p>這個選項告訴系統「完全不要進行程式碼簽署」。</p>
+<h2 id="解決方式">解決方式<a hidden class="anchor" aria-hidden="true" href="#解決方式">#</a></h2>
+<blockquote>
+<p><strong>要將此 key 設為 default</strong></p></blockquote>
+<p>因為在 yaml 檔中，我們同時自定義 exportOptions.plist，手動指定了簽署方式，但又將 signingOption 設為 auto，這就可能導致 Xcode 忽略或覆寫 exportOptionsPlist 中的某些設定，應該也就是造成 App Groups 權限沒有被正確簽入的原因。後來將此 key 設為 default，就成功將 App Groups 權限簽入了～</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/azure/">Azure</a></li>
+      <li><a href="http://localhost:1313/tags/pipeline/">Pipeline</a></li>
+      <li><a href="http://localhost:1313/tags/xcode/">Xcode</a></li>
+      <li><a href="http://localhost:1313/tags/ci/cd/">CI/CD</a></li>
+      <li><a href="http://localhost:1313/tags/signing/">Signing</a></li>
+      <li><a href="http://localhost:1313/tags/entitlements/">Entitlements</a></li>
+    </ul>
+  </footer><script src="https://utteranc.es/client.js"
+        repo="arieshsieh0402/arieshsieh0402.github.io"
+        issue-term="pathname"
+        label="blog-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">Slash Life: Developer / Lawyer</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

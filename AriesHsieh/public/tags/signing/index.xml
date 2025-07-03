@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Signing on Slash Life: Developer / Lawyer</title>
+    <link>http://localhost:1313/tags/signing/</link>
+    <description>Recent content in Signing on Slash Life: Developer / Lawyer</description>
+    <generator>Hugo -- 0.147.9</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 03 Jul 2025 16:27:33 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/signing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2025 07 03 IOS Azure</title>
+      <link>http://localhost:1313/posts/2025-07-03-ios-azure/</link>
+      <pubDate>Thu, 03 Jul 2025 16:27:33 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-03-ios-azure/</guid>
+      <description>&lt;p&gt;前言
+公司原本的上線流程最近要走 Azure DevOps 方式上線，我維護的 iOS App 不外乎也要走這個流程。原本測試都沒有太大問題，但上線之後發現 App Groups 功能沒有正確運作，就開始查找問題，最終找到問題所在並解決，記錄一下過程，並延伸相關知識。&lt;/p&gt;
+&lt;h2 id=&#34;trouble-shooting&#34;&gt;Trouble Shooting&lt;/h2&gt;
+&lt;p&gt;一開始覺得很奇怪，這次上線的內容並沒有異動到 App Group 的設定，所以應該跟 source code 沒有太大關係。後來先嘗試在本機 build 一版，結果發現透過這個方式運作正常，但透過 Azure pipeline build 出來的就會發生問題。因此轉向研究 pipeline yaml 的設定是否出現狀況。&lt;/p&gt;
+&lt;p&gt;先進一步確認透過 Azure pipeline 包出來的 artifacts 內容是否正確，一般而言，iOS App 打包後的成品如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;DistributionSummary.plist
+ExportOptions.plist
+YourAppName.ipa
+Packaging.log
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;查看-ipa&#34;&gt;查看 .ipa&lt;/h3&gt;
+&lt;p&gt;我們可以查看 YourAppName.ipa 裡面到底簽入了哪些權限：&lt;/p&gt;
+&lt;p&gt;解壓縮 .ipa 檔案：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;unzip YourAppName.ipa -d AppContents
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;進入 Payload 目錄：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd AppContents/Payload
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;執行 codesign 指令：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;codesign -d --entitlements :- YourAppName.app
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;每個部分的含義是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;codesign&lt;/code&gt;：呼叫程式碼簽署工具&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;d&lt;/code&gt;：表示 &amp;ldquo;display&amp;rdquo;，用於顯示簽署資訊&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-entitlements :-&lt;/code&gt;：要求工具顯示應用程式中包含的所有權限（entitlements）&lt;/li&gt;
+&lt;li&gt;這裡的 &lt;code&gt;:-&lt;/code&gt; 是一個特殊的語法，表示將輸出導向到標準輸出（stdout）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;YourAppName.app&lt;/code&gt;：要檢查的應用程式套件路徑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果有正確簽入 App Groups 的權限，應該要有 &lt;code&gt;&amp;lt;key&amp;gt;com.apple.security.application-groups&amp;lt;/key&amp;gt;&lt;/code&gt; 的蹤跡，但發現透過 Azure pipeline 包出來 .ipa 沒有。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

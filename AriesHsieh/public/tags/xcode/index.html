@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Categories | Slash Life: Developer / Lawyer</title>
+<title>Xcode | Slash Life: Developer / Lawyer</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/categories/">
+<link rel="canonical" href="http://localhost:1313/tags/xcode/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css" integrity="sha256-j&#43;ECM6cGvIfy4Is8&#43;XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,8 +18,8 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/index.xml">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/categories/">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/xcode/index.xml">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/xcode/">
 <noscript>
     <style>
         #theme-toggle,
@@ -70,13 +70,13 @@
           gtag('js', new Date());
           gtag('config', 'G-WDF1DJPXLY');
         }
-      </script><meta property="og:url" content="http://localhost:1313/categories/">
+      </script><meta property="og:url" content="http://localhost:1313/tags/xcode/">
   <meta property="og:site_name" content="Slash Life: Developer / Lawyer">
-  <meta property="og:title" content="Categories">
+  <meta property="og:title" content="Xcode">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Categories">
+<meta name="twitter:title" content="Xcode">
 <meta name="twitter:description" content="">
 
 </head>
@@ -128,7 +128,7 @@
             </li>
             <li>
                 <a href="http://localhost:1313/categories/" title="Categories">
-                    <span class="active">Categories</span>
+                    <span>Categories</span>
                 </a>
             </li>
             <li>
@@ -149,31 +149,39 @@
         </ul>
     </nav>
 </header>
-<main class="main">
+<main class="main"> 
 <header class="page-header">
-    <h1>Categories</h1>
+  <h1>
+    Xcode
+  </h1>
 </header>
 
-<ul class="terms-tags">
-    <li>
-        <a href="http://localhost:1313/categories/api-gateway/">API Gateway <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/devops/">DevOps <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/ios/">iOS <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/%E5%88%A4%E6%B1%BA%E8%A9%95%E6%9E%90/">判決評析 <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/%E9%9B%9C%E8%AB%87/">雜談 <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/categories/%E9%9D%9C%E6%85%8B%E7%B6%B2%E9%A0%81/">靜態網頁 <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-</ul>
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">2025 07 03 IOS Azure
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前言 公司原本的上線流程最近要走 Azure DevOps 方式上線，我維護的 iOS App 不外乎也要走這個流程。原本測試都沒有太大問題，但上線之後發現 App Groups 功能沒有正確運作，就開始查找問題，最終找到問題所在並解決，記錄一下過程，並延伸相關知識。
+Trouble Shooting 一開始覺得很奇怪，這次上線的內容並沒有異動到 App Group 的設定，所以應該跟 source code 沒有太大關係。後來先嘗試在本機 build 一版，結果發現透過這個方式運作正常，但透過 Azure pipeline build 出來的就會發生問題。因此轉向研究 pipeline yaml 的設定是否出現狀況。
+先進一步確認透過 Azure pipeline 包出來的 artifacts 內容是否正確，一般而言，iOS App 打包後的成品如下：
+DistributionSummary.plist ExportOptions.plist YourAppName.ipa Packaging.log 查看 .ipa 我們可以查看 YourAppName.ipa 裡面到底簽入了哪些權限：
+解壓縮 .ipa 檔案：
+unzip YourAppName.ipa -d AppContents 進入 Payload 目錄：
+cd AppContents/Payload 執行 codesign 指令：
+codesign -d --entitlements :- YourAppName.app 每個部分的含義是：
+codesign：呼叫程式碼簽署工具 d：表示 “display”，用於顯示簽署資訊 -entitlements :-：要求工具顯示應用程式中包含的所有權限（entitlements） 這裡的 :- 是一個特殊的語法，表示將輸出導向到標準輸出（stdout） YourAppName.app：要檢查的應用程式套件路徑 如果有正確簽入 App Groups 的權限，應該要有 &lt;key&gt;com.apple.security.application-groups&lt;/key&gt; 的蹤跡，但發現透過 Azure pipeline 包出來 .ipa 沒有。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-03 16:27:33 +0800 CST'>July 3, 2025</span></footer>
+  <a class="entry-link" aria-label="post link to 2025 07 03 IOS Azure" href="http://localhost:1313/posts/2025-07-03-ios-azure/"></a>
+</article>
     </main>
     
 <footer class="footer">

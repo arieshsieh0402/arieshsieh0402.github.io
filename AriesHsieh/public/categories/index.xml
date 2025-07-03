@@ -6,8 +6,22 @@
     <description>Recent content in Categories on Slash Life: Developer / Lawyer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Jul 2025 10:54:54 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 03 Jul 2025 16:27:33 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DevOps</title>
+      <link>http://localhost:1313/categories/devops/</link>
+      <pubDate>Thu, 03 Jul 2025 16:27:33 +0800</pubDate>
+      <guid>http://localhost:1313/categories/devops/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>IOS</title>
+      <link>http://localhost:1313/categories/ios/</link>
+      <pubDate>Thu, 03 Jul 2025 16:27:33 +0800</pubDate>
+      <guid>http://localhost:1313/categories/ios/</guid>
+      <description></description>
+    </item>
     <item>
       <title>API Gateway</title>
       <link>http://localhost:1313/categories/api-gateway/</link>
