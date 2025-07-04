@@ -1,4 +1,4 @@
 ---
-title: "搜尋"
+title: "Search"
 layout: "search"
 ---

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Azure Pipeline 編譯 iOS App Groups 權限未簽入問題 | Slash Life: Developer / Lawyer</title>
+<title>Azure Pipeline 編譯 iOS App Groups 權限未簽入問題 | Slash Life: Software engineer / Lawyer</title>
 <meta name="keywords" content="Azure, Pipeline, Xcode, CI/CD, Signing, Entitlements">
 <meta name="description" content="前言
 公司原本的上線流程最近要走 Azure DevOps 方式上線，我維護的 iOS App 不外乎也要走這個流程。原本測試都沒有太大問題，但上線之後發現 App Groups 功能沒有正確運作，就開始查找問題，最終找到問題所在並解決，記錄一下過程，並延伸相關知識。
@@ -95,7 +95,7 @@ YourAppName.app：要檢查的應用程式套件路徑
           gtag('config', 'G-JJ4P19P34J');
         }
       </script><meta property="og:url" content="http://localhost:1313/posts/2025-07-03-ios-azure/">
-  <meta property="og:site_name" content="Slash Life: Developer / Lawyer">
+  <meta property="og:site_name" content="Slash Life: Software engineer / Lawyer">
   <meta property="og:title" content="Azure Pipeline 編譯 iOS App Groups 權限未簽入問題">
   <meta property="og:description" content="前言 公司原本的上線流程最近要走 Azure DevOps 方式上線，我維護的 iOS App 不外乎也要走這個流程。原本測試都沒有太大問題，但上線之後發現 App Groups 功能沒有正確運作，就開始查找問題，最終找到問題所在並解決，記錄一下過程，並延伸相關知識。
 Trouble Shooting 一開始覺得很奇怪，這次上線的內容並沒有異動到 App Group 的設定，所以應該跟 source code 沒有太大關係。後來先嘗試在本機 build 一版，結果發現透過這個方式運作正常，但透過 Azure pipeline build 出來的就會發生問題。因此轉向研究 pipeline yaml 的設定是否出現狀況。
@@ -188,7 +188,7 @@ YourAppName.app：要檢查的應用程式套件路徑
   },
   "publisher": {
     "@type": "Organization",
-    "name": "Slash Life: Developer / Lawyer",
+    "name": "Slash Life: Software engineer / Lawyer",
     "logo": {
       "@type": "ImageObject",
       "url": "http://localhost:1313/favicon.ico"
@@ -213,7 +213,7 @@ YourAppName.app：要檢查的應用程式套件路徑
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Slash Life: Developer / Lawyer (Alt + H)">Slash Life: Developer / Lawyer</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Slash Life: Software engineer / Lawyer (Alt + H)">Slash Life: Software engineer / Lawyer</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -470,7 +470,7 @@ Packaging.log
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Slash Life: Developer / Lawyer</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Slash Life: Software engineer / Lawyer</a></span> · 
 
     <span>
         Powered by

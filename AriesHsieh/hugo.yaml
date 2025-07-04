@@ -1,17 +1,16 @@
+# Site Information
 baseURL: "https://arieshsieh.github.io/"
-languageCode: en-us
 title: "Slash Life: Software engineer / Lawyer"
+languageCode: en-us
+
+# Theme
 theme: ["PaperMod"]
-caches:
-  images:
-    dir: :cacheDir/images
-taxonomies:
-  category: categories
-  tag: tags
+
+# SEO & Metadata
 params:
+  env: production # Enable Social-Metadata and SEO
   ShowPageNums: true
-  pagination:
-    pagerSize: 6
+
   homeInfoParams:
     title: "Hi, I'm Hsieh-Te Hsieh 🧑🏻‍💻"
     Content: >
@@ -20,22 +19,44 @@ params:
       - • Software engineer focused on iOS development
 
       - • Expanding into backend, DevOps, and API integration
+
   socialIcons:
     - name: github
       url: "https://github.com/arieshsieh0402"
-  env: production # Enable Social-Metadata and SEO
+
   fuseOpts:
     isCaseSensitive: false
     shouldSort: true
     includeMatches: true
     threshold: 0.3
+
+# Services
 services:
-  googleAnalytics: # Enable Google Analytics
+  googleAnalytics:
     id: G-JJ4P19P34J
+
+# Output formats
 outputs:
   home:
     - HTML
     - JSON
+
+# Caching
+caches:
+  images:
+    dir: :cacheDir/images
+
+# Taxonomies
+taxonomies:
+  category: categories
+  tag: tags
+
+# Pagination
+pagination:
+  disableAliases: false
+  pagerSize: 5
+
+# Menu
 menu:
   main:
     - identifier: home

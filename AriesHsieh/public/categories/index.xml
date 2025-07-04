@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Categories on Slash Life: Developer / Lawyer</title>
+    <title>Categories on Slash Life: Software engineer / Lawyer</title>
     <link>http://localhost:1313/categories/</link>
-    <description>Recent content in Categories on Slash Life: Developer / Lawyer</description>
+    <description>Recent content in Categories on Slash Life: Software engineer / Lawyer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Jul 2025 16:27:33 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 04 Jul 2025 22:38:52 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Workflow</title>
+      <link>http://localhost:1313/categories/workflow/</link>
+      <pubDate>Fri, 04 Jul 2025 22:38:52 +0800</pubDate>
+      <guid>http://localhost:1313/categories/workflow/</guid>
+      <description></description>
+    </item>
     <item>
       <title>DevOps</title>
       <link>http://localhost:1313/categories/devops/</link>
