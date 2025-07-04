@@ -11,7 +11,7 @@ taxonomies:
 params:
   ShowPageNums: true
   pagination:
-    pagerSize: 10
+    pagerSize: 6
   homeInfoParams:
     title: "Hi, I'm Hsieh-Te Hsieh 🧑🏻‍💻"
     Content: >
