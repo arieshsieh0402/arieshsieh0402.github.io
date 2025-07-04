@@ -1,6 +1,6 @@
 baseURL: "https://arieshsieh.github.io/"
 languageCode: en-us
-title: "Slash Life: Developer / Lawyer"
+title: "Slash Life: Software engineer / Lawyer"
 theme: ["PaperMod"]
 caches:
   images:
