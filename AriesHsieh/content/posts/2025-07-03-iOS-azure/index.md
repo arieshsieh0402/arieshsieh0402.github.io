@@ -1,7 +1,7 @@
 ---
 title: "Azure Pipeline 編譯 iOS App Groups 權限未簽入問題"
 date: 2025-07-03T16:27:33+08:00
-draft: true
+draft: false
 categories: ["DevOps", "iOS"]
 tags: ["Azure", "Pipeline", "Xcode", "CI/CD", "Signing", "Entitlements"]
 showToc: true

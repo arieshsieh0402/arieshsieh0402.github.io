@@ -31,7 +31,7 @@ params:
     threshold: 0.3
 services:
   googleAnalytics: # Enable Google Analytics
-    id: G-WDF1DJPXLY
+    id: G-JJ4P19P34J
 outputs:
   home:
     - HTML

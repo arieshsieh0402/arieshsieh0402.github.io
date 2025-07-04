@@ -9,7 +9,7 @@
     <lastBuildDate>Thu, 03 Jul 2025 16:27:33 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/azure/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>2025 07 03 IOS Azure</title>
+      <title>Azure Pipeline 編譯 iOS App Groups 權限未簽入問題</title>
       <link>http://localhost:1313/posts/2025-07-03-ios-azure/</link>
       <pubDate>Thu, 03 Jul 2025 16:27:33 +0800</pubDate>
       <guid>http://localhost:1313/posts/2025-07-03-ios-azure/</guid>
