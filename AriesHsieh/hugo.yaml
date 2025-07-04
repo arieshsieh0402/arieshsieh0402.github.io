@@ -1,6 +1,6 @@
 # Site Information
-baseURL: "https://arieshsieh.github.io/"
-title: "Slash Life: Software engineer / Lawyer"
+baseURL: "https://lawto.dev/"
+title: "Slash Life: Software developer / Lawyer"
 languageCode: en-us
 
 # Theme
@@ -14,9 +14,9 @@ params:
   homeInfoParams:
     title: "Hi, I'm Hsieh-Te Hsieh 🧑🏻‍💻"
     Content: >
-      - • Lawyer turned software engineer, based in Taipei, Taiwan
+      - • Lawyer turned software developer, based in Taipei, Taiwan
 
-      - • Software engineer focused on iOS development
+      - • Software developer focused on iOS development
 
       - • Expanding into backend, DevOps, and API integration
   asset:
