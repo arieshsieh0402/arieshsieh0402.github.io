@@ -19,16 +19,21 @@ params:
       - • Software engineer focused on iOS development
 
       - • Expanding into backend, DevOps, and API integration
-
+  asset:
+    favicon: "favicons/favicon.ico"
   socialIcons:
     - name: github
       url: "https://github.com/arieshsieh0402"
+    - name: substack
+      url: "https://arieshsieh.substack.com/"
 
   fuseOpts:
     isCaseSensitive: false
     shouldSort: true
     includeMatches: true
     threshold: 0.3
+  ShowReadingTime: true
+  ShowCodeCopyButtons: true
 
 # Services
 services:

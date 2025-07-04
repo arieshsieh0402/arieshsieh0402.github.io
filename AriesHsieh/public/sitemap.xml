@@ -2,7 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/categories/</loc>
+    <lastmod>2025-07-04T22:38:52+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/docker/</loc>
+    <lastmod>2025-07-04T22:38:52+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/n8n/</loc>
+    <lastmod>2025-07-04T22:38:52+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/posts/2025-07-04-n8n-local/</loc>
+    <lastmod>2025-07-04T22:38:52+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/ngrok/</loc>
     <lastmod>2025-07-04T22:38:52+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/</loc>
@@ -11,13 +23,16 @@
     <loc>http://localhost:1313/</loc>
     <lastmod>2025-07-04T22:38:52+08:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2025-07-04T22:38:52+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/workflow/</loc>
+    <lastmod>2025-07-04T22:38:52+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/azure/</loc>
     <lastmod>2025-07-03T16:27:33+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/2025-07-03-ios-azure/</loc>
-    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/</loc>
     <lastmod>2025-07-03T16:27:33+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/ci/cd/</loc>
@@ -36,9 +51,6 @@
     <lastmod>2025-07-03T16:27:33+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/signing/</loc>
-    <lastmod>2025-07-03T16:27:33+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
     <lastmod>2025-07-03T16:27:33+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/xcode/</loc>

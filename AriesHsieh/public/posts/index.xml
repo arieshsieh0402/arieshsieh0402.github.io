@@ -15,7 +15,7 @@
       <guid>http://localhost:1313/posts/2025-07-04-n8n-local/</guid>
       <description>&lt;p&gt;A basic record of local n8n deployment.&lt;/p&gt;
 &lt;hr&gt;
-&lt;h1 id=&#34;準備&#34;&gt;準備&lt;/h1&gt;
+&lt;h1 id=&#34;steps&#34;&gt;Steps&lt;/h1&gt;
 &lt;h2 id=&#34;docker&#34;&gt;Docker&lt;/h2&gt;
 &lt;h3 id=&#34;docker-composeyml&#34;&gt;docker-compose.yml&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;version&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;3.9&amp;#34;&lt;/span&gt;
@@ -32,8 +32,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;volumes&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      - &lt;span style=&#34;color:#ae81ff&#34;&gt;n8n_storage:/home/node/.n8n&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;environment&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      - &lt;span style=&#34;color:#ae81ff&#34;&gt;WEBHOOK_URL=https://&amp;lt;your-ngrok-domain&amp;gt;.ngrok-free.app&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# 設定外部 webhook URL（請替換為你自己的 ngrok 網址）&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;usage&#34;&gt;Usage&lt;/h3&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      - &lt;span style=&#34;color:#ae81ff&#34;&gt;WEBHOOK_URL=https://&amp;lt;your-ngrok-domain&amp;gt;.ngrok-free.app&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# External webhook URL&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;usage&#34;&gt;Usage&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;Expose local port 5678 to the internet via ngrok:&lt;/li&gt;
 &lt;/ol&gt;
