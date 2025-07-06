@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/posts/2025-07-06-ai-dev/</loc>
+    <lastmod>2025-07-06T22:01:54+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2025-07-06T22:01:54+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2025-07-06T22:01:54+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/categories/</loc>
     <lastmod>2025-07-04T22:38:52+08:00</lastmod>
   </url><url>
@@ -15,12 +24,6 @@
     <lastmod>2025-07-04T22:38:52+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/ngrok/</loc>
-    <lastmod>2025-07-04T22:38:52+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2025-07-04T22:38:52+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
     <lastmod>2025-07-04T22:38:52+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>

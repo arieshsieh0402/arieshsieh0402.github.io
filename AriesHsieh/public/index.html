@@ -89,7 +89,7 @@
   "description": "",
   "logo": "http://localhost:1313/favicon.ico",
   "sameAs": [
-      "https://github.com/arieshsieh0402", "https://arieshsieh.substack.com/"
+      "https://github.com/arieshsieh0402"
   ]
 }
 </script>
@@ -187,16 +187,32 @@
     </path>
 </svg>
     </a>
-    <a href="https://arieshsieh.substack.com/" target="_blank" rel="noopener noreferrer me"
-        title="Substack">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke-width="2">
-    <path
-        d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
-</svg>
-    </a>
 </div>
 
     </footer>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">AI 時代的軟體工程師：Andrej Karpathy 影片觀後感
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>今天看到一段影片，是 Andrej Karpathy(Vibe coding 一詞之創始人)的演講片段
+中英雙字版本
+軟體開發的三個重要階段 他提到目前軟體開發演進可分為三個重要階段：
+(擷取自影片)
+Software 1.0：由工程師手寫的程式碼。
+Software 2.0：神經網路的權重，工程師不再直接撰寫程式，而是透過調整資料集並運行優化器來訓練模型，進而產生這些程式碼（權重）。例如特斯拉自動駕駛系統中許多功能已從 1.0 轉為 2.0。
+Software 3.0：大型語言模型 (LLMs) 可以透過自然語言提示來「程式設計」。英文本身成為一種強大的程式語言，讓每個人都成為潛在的程式設計師。
+LLMs 的角色與挑戰 Karpathy 將大型語言模型（LLMs）比喻為新型的作業系統，類似 1960 年代初期集中於雲端的電腦運算。他認為 LLMs 具備類似人類的「心理」，擁有百科全書般的知識與超能力般的記憶力，但同時也存在認知缺陷，例如會產生幻覺、智慧表現不穩定，以及類似「順向失憶症」的特性——每次互動後會清除記憶。因此，Karpathy 提醒我們在利用其強大能力的同時，必須特別注意並避開這些弱點。
+Prompt 成為新時代的程式語言 隨著 LLMs 的出現，「prompts」本身成為了一種新型態的程式，這大幅降低了寫程式的門檻。現在，人人都能利用 AI 輕鬆產生基本的程式碼。Karpathy 甚至分享，他自己在完全不懂 Swift 語言的情況下，僅用一天就透過 Vibe Coding 完成了一個基本的 iOS 應用程式。
+軟體工程師價值的轉變 然而，因為 LLMs 仍然是「會犯錯的系統」，Karpathy 認為軟體工程師的價值也隨之轉變——從純粹的程式碼撰寫，轉向設計與維護人機協作的「生成—驗證」循環。AI 負責生成內容，而人類工程師則負責驗證其輸出。他以鋼鐵人的鋼鐵裝為例，強調我們應將 AI 視為「人類的增強工具」，而非完全自主的 agent。我們必須「將 AI 拴住（keep the AI on the leash）」，確保其輸出符合預期且無潛在問題，並避免 AI 生成過於龐大的修改，導致審核困難。現在軟體工程師的的任務是「讓這個循環盡可能地快速進行」。軟體工程師的價值轉向設計更有效率的工具和介面（GUI），使人類能夠快速地審核與驗證 AI 所生成的結果。
+個人觀後感 以上僅提到一些我認為的重要觀點，影片還有許多內容，有興趣的人可以自己去看，蠻建議花時間看完的。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-06 22:01:54 +0800 CST'>July 6, 2025</span>&nbsp;·&nbsp;1 min</footer>
+  <a class="entry-link" aria-label="post link to AI 時代的軟體工程師：Andrej Karpathy 影片觀後感" href="http://localhost:1313/posts/2025-07-06-ai-dev/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -272,23 +288,6 @@ repo 名稱（格式：username/repo） Issue 對應規則（建議選 pathname 
   </div>
   <footer class="entry-footer"><span title='2025-07-02 16:11:41 +0800 CST'>July 2, 2025</span>&nbsp;·&nbsp;1 min</footer>
   <a class="entry-link" aria-label="post link to Hugo &#43; PaperMod 靜態網站串接 Utterances 實作留言區" href="http://localhost:1313/posts/2025-07-02-utterances/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Kong APIM 與 Redis Sentinel 架構學習筆記
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>前言 整理一下在 Kong APIM 架構下，Redis 在快取與限流計數器同步上的應用。 因為之前沒接觸過，僅就目前理解部分紀錄，不會提到太多細節，未來有機會再補充～
-Redis 快取的用途 Kong API Gateway 可以 Redis 來做快取，主要目的是可以快速回應重複的 API 請求，讓資料變動不頻繁的 API 可以直接回傳快取內容，可減少後端服務壓力。
-限流計數器的同步需求 如果系統有對 consumer 限流需求，記錄在 db 是一個選項，但這樣就必須所有 gateway 的節點都跟 db 建立連線，且不適用於 dbless 或是 hybrid mode 的架構。
-dbless 是指 data plane 的設置透過 kong.yml 來配置，每次配置都需要重啟服務。
-hybrid mode 則是將 Control Plane 和 Data Plane 分離，CP 負責管理與同步設定，DP 專注於流量代理。DP 不直接連資料庫，只從 CP 接收設定。相反地，傳統模式沒有明確區分 DP 和 CP。每一台 Kong 節點同時扮演 CP 和 DP 的角色，也就是說，每個節點都可以管理設定（新增/修改服務、路由、插件等），這是 CP 的功能。每個節點也都會處理用戶端 API 請求，這是 DP 的功能，所有節點也都直接連接到資料庫。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-07-01 11:18:29 +0800 CST'>July 1, 2025</span>&nbsp;·&nbsp;1 min</footer>
-  <a class="entry-link" aria-label="post link to Kong APIM 與 Redis Sentinel 架構學習筆記" href="http://localhost:1313/posts/2025-07-01-kong-redis/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

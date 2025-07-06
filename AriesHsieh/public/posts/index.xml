@@ -6,8 +6,16 @@
     <description>Recent content in Posts on Slash Life: Software developer / Lawyer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 04 Jul 2025 22:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 06 Jul 2025 22:01:54 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2025 07 06 Ai Dev</title>
+      <link>http://localhost:1313/posts/2025-07-06-ai-dev/</link>
+      <pubDate>Sun, 06 Jul 2025 22:01:54 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-06-ai-dev/</guid>
+      <description>&lt;h1 id=&#34;2025-07-06-ai-dev&#34;&gt;2025 07 06 Ai Dev&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=vD7CIADHeDc&#34;&gt;https://www.youtube.com/watch?v=vD7CIADHeDc&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>n8n 本地部署紀錄</title>
       <link>http://localhost:1313/posts/2025-07-04-n8n-local/</link>

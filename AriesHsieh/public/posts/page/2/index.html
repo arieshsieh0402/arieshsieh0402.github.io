@@ -173,6 +173,23 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Kong APIM 與 Redis Sentinel 架構學習筆記
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前言 整理一下在 Kong APIM 架構下，Redis 在快取與限流計數器同步上的應用。 因為之前沒接觸過，僅就目前理解部分紀錄，不會提到太多細節，未來有機會再補充～
+Redis 快取的用途 Kong API Gateway 可以 Redis 來做快取，主要目的是可以快速回應重複的 API 請求，讓資料變動不頻繁的 API 可以直接回傳快取內容，可減少後端服務壓力。
+限流計數器的同步需求 如果系統有對 consumer 限流需求，記錄在 db 是一個選項，但這樣就必須所有 gateway 的節點都跟 db 建立連線，且不適用於 dbless 或是 hybrid mode 的架構。
+dbless 是指 data plane 的設置透過 kong.yml 來配置，每次配置都需要重啟服務。
+hybrid mode 則是將 Control Plane 和 Data Plane 分離，CP 負責管理與同步設定，DP 專注於流量代理。DP 不直接連資料庫，只從 CP 接收設定。相反地，傳統模式沒有明確區分 DP 和 CP。每一台 Kong 節點同時扮演 CP 和 DP 的角色，也就是說，每個節點都可以管理設定（新增/修改服務、路由、插件等），這是 CP 的功能。每個節點也都會處理用戶端 API 請求，這是 DP 的功能，所有節點也都直接連接到資料庫。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-01 11:18:29 +0800 CST'>July 1, 2025</span>&nbsp;·&nbsp;1 min</footer>
+  <a class="entry-link" aria-label="post link to Kong APIM 與 Redis Sentinel 架構學習筆記" href="http://localhost:1313/posts/2025-07-01-kong-redis/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">法源公司 vs. Lawsnote 著作權侵權案
     </h2>
   </header>

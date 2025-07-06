@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>AI 時代的軟體工程師：Andrej Karpathy 影片觀後感 | Slash Life: Software developer / Lawyer</title>
+<meta name="keywords" content="">
+<meta name="description" content="今天看到一段影片，是 Andrej Karpathy(Vibe coding 一詞之創始人)的演講片段
+
+
+中英雙字版本
+軟體開發的三個重要階段
+他提到目前軟體開發演進可分為三個重要階段：
+
+(擷取自影片)
+
+
+Software 1.0：由工程師手寫的程式碼。
+
+
+Software 2.0：神經網路的權重，工程師不再直接撰寫程式，而是透過調整資料集並運行優化器來訓練模型，進而產生這些程式碼（權重）。例如特斯拉自動駕駛系統中許多功能已從 1.0 轉為 2.0。
+
+
+Software 3.0：大型語言模型 (LLMs) 可以透過自然語言提示來「程式設計」。英文本身成為一種強大的程式語言，讓每個人都成為潛在的程式設計師。
+
+
+LLMs 的角色與挑戰
+Karpathy 將大型語言模型（LLMs）比喻為新型的作業系統，類似 1960 年代初期集中於雲端的電腦運算。他認為 LLMs 具備類似人類的「心理」，擁有百科全書般的知識與超能力般的記憶力，但同時也存在認知缺陷，例如會產生幻覺、智慧表現不穩定，以及類似「順向失憶症」的特性——每次互動後會清除記憶。因此，Karpathy 提醒我們在利用其強大能力的同時，必須特別注意並避開這些弱點。
+Prompt 成為新時代的程式語言
+隨著 LLMs 的出現，「prompts」本身成為了一種新型態的程式，這大幅降低了寫程式的門檻。現在，人人都能利用 AI 輕鬆產生基本的程式碼。Karpathy 甚至分享，他自己在完全不懂 Swift 語言的情況下，僅用一天就透過 Vibe Coding 完成了一個基本的 iOS 應用程式。
+軟體工程師價值的轉變
+然而，因為 LLMs 仍然是「會犯錯的系統」，Karpathy 認為軟體工程師的價值也隨之轉變——從純粹的程式碼撰寫，轉向設計與維護人機協作的「生成—驗證」循環。AI 負責生成內容，而人類工程師則負責驗證其輸出。他以鋼鐵人的鋼鐵裝為例，強調我們應將 AI 視為「人類的增強工具」，而非完全自主的 agent。我們必須「將 AI 拴住（keep the AI on the leash）」，確保其輸出符合預期且無潛在問題，並避免 AI 生成過於龐大的修改，導致審核困難。現在軟體工程師的的任務是「讓這個循環盡可能地快速進行」。軟體工程師的價值轉向設計更有效率的工具和介面（GUI），使人類能夠快速地審核與驗證 AI 所生成的結果。
+
+個人觀後感
+以上僅提到一些我認為的重要觀點，影片還有許多內容，有興趣的人可以自己去看，蠻建議花時間看完的。">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/2025-07-06-ai-dev/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css" integrity="sha256-j&#43;ECM6cGvIfy4Is8&#43;XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2025-07-06-ai-dev/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ4P19P34J"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-JJ4P19P34J');
+        }
+      </script><meta property="og:url" content="http://localhost:1313/posts/2025-07-06-ai-dev/">
+  <meta property="og:site_name" content="Slash Life: Software developer / Lawyer">
+  <meta property="og:title" content="AI 時代的軟體工程師：Andrej Karpathy 影片觀後感">
+  <meta property="og:description" content="今天看到一段影片，是 Andrej Karpathy(Vibe coding 一詞之創始人)的演講片段
+中英雙字版本
+軟體開發的三個重要階段 他提到目前軟體開發演進可分為三個重要階段：
+(擷取自影片)
+Software 1.0：由工程師手寫的程式碼。
+Software 2.0：神經網路的權重，工程師不再直接撰寫程式，而是透過調整資料集並運行優化器來訓練模型，進而產生這些程式碼（權重）。例如特斯拉自動駕駛系統中許多功能已從 1.0 轉為 2.0。
+Software 3.0：大型語言模型 (LLMs) 可以透過自然語言提示來「程式設計」。英文本身成為一種強大的程式語言，讓每個人都成為潛在的程式設計師。
+LLMs 的角色與挑戰 Karpathy 將大型語言模型（LLMs）比喻為新型的作業系統，類似 1960 年代初期集中於雲端的電腦運算。他認為 LLMs 具備類似人類的「心理」，擁有百科全書般的知識與超能力般的記憶力，但同時也存在認知缺陷，例如會產生幻覺、智慧表現不穩定，以及類似「順向失憶症」的特性——每次互動後會清除記憶。因此，Karpathy 提醒我們在利用其強大能力的同時，必須特別注意並避開這些弱點。
+Prompt 成為新時代的程式語言 隨著 LLMs 的出現，「prompts」本身成為了一種新型態的程式，這大幅降低了寫程式的門檻。現在，人人都能利用 AI 輕鬆產生基本的程式碼。Karpathy 甚至分享，他自己在完全不懂 Swift 語言的情況下，僅用一天就透過 Vibe Coding 完成了一個基本的 iOS 應用程式。
+軟體工程師價值的轉變 然而，因為 LLMs 仍然是「會犯錯的系統」，Karpathy 認為軟體工程師的價值也隨之轉變——從純粹的程式碼撰寫，轉向設計與維護人機協作的「生成—驗證」循環。AI 負責生成內容，而人類工程師則負責驗證其輸出。他以鋼鐵人的鋼鐵裝為例，強調我們應將 AI 視為「人類的增強工具」，而非完全自主的 agent。我們必須「將 AI 拴住（keep the AI on the leash）」，確保其輸出符合預期且無潛在問題，並避免 AI 生成過於龐大的修改，導致審核困難。現在軟體工程師的的任務是「讓這個循環盡可能地快速進行」。軟體工程師的價值轉向設計更有效率的工具和介面（GUI），使人類能夠快速地審核與驗證 AI 所生成的結果。
+個人觀後感 以上僅提到一些我認為的重要觀點，影片還有許多內容，有興趣的人可以自己去看，蠻建議花時間看完的。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-07-06T22:01:54+08:00">
+    <meta property="article:modified_time" content="2025-07-06T22:01:54+08:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AI 時代的軟體工程師：Andrej Karpathy 影片觀後感">
+<meta name="twitter:description" content="今天看到一段影片，是 Andrej Karpathy(Vibe coding 一詞之創始人)的演講片段
+
+
+中英雙字版本
+軟體開發的三個重要階段
+他提到目前軟體開發演進可分為三個重要階段：
+
+(擷取自影片)
+
+
+Software 1.0：由工程師手寫的程式碼。
+
+
+Software 2.0：神經網路的權重，工程師不再直接撰寫程式，而是透過調整資料集並運行優化器來訓練模型，進而產生這些程式碼（權重）。例如特斯拉自動駕駛系統中許多功能已從 1.0 轉為 2.0。
+
+
+Software 3.0：大型語言模型 (LLMs) 可以透過自然語言提示來「程式設計」。英文本身成為一種強大的程式語言，讓每個人都成為潛在的程式設計師。
+
+
+LLMs 的角色與挑戰
+Karpathy 將大型語言模型（LLMs）比喻為新型的作業系統，類似 1960 年代初期集中於雲端的電腦運算。他認為 LLMs 具備類似人類的「心理」，擁有百科全書般的知識與超能力般的記憶力，但同時也存在認知缺陷，例如會產生幻覺、智慧表現不穩定，以及類似「順向失憶症」的特性——每次互動後會清除記憶。因此，Karpathy 提醒我們在利用其強大能力的同時，必須特別注意並避開這些弱點。
+Prompt 成為新時代的程式語言
+隨著 LLMs 的出現，「prompts」本身成為了一種新型態的程式，這大幅降低了寫程式的門檻。現在，人人都能利用 AI 輕鬆產生基本的程式碼。Karpathy 甚至分享，他自己在完全不懂 Swift 語言的情況下，僅用一天就透過 Vibe Coding 完成了一個基本的 iOS 應用程式。
+軟體工程師價值的轉變
+然而，因為 LLMs 仍然是「會犯錯的系統」，Karpathy 認為軟體工程師的價值也隨之轉變——從純粹的程式碼撰寫，轉向設計與維護人機協作的「生成—驗證」循環。AI 負責生成內容，而人類工程師則負責驗證其輸出。他以鋼鐵人的鋼鐵裝為例，強調我們應將 AI 視為「人類的增強工具」，而非完全自主的 agent。我們必須「將 AI 拴住（keep the AI on the leash）」，確保其輸出符合預期且無潛在問題，並避免 AI 生成過於龐大的修改，導致審核困難。現在軟體工程師的的任務是「讓這個循環盡可能地快速進行」。軟體工程師的價值轉向設計更有效率的工具和介面（GUI），使人類能夠快速地審核與驗證 AI 所生成的結果。
+
+個人觀後感
+以上僅提到一些我認為的重要觀點，影片還有許多內容，有興趣的人可以自己去看，蠻建議花時間看完的。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "AI 時代的軟體工程師：Andrej Karpathy 影片觀後感",
+      "item": "http://localhost:1313/posts/2025-07-06-ai-dev/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AI 時代的軟體工程師：Andrej Karpathy 影片觀後感",
+  "name": "AI 時代的軟體工程師：Andrej Karpathy 影片觀後感",
+  "description": "今天看到一段影片，是 Andrej Karpathy(Vibe coding 一詞之創始人)的演講片段\n中英雙字版本\n軟體開發的三個重要階段 他提到目前軟體開發演進可分為三個重要階段：\n(擷取自影片)\nSoftware 1.0：由工程師手寫的程式碼。\nSoftware 2.0：神經網路的權重，工程師不再直接撰寫程式，而是透過調整資料集並運行優化器來訓練模型，進而產生這些程式碼（權重）。例如特斯拉自動駕駛系統中許多功能已從 1.0 轉為 2.0。\nSoftware 3.0：大型語言模型 (LLMs) 可以透過自然語言提示來「程式設計」。英文本身成為一種強大的程式語言，讓每個人都成為潛在的程式設計師。\nLLMs 的角色與挑戰 Karpathy 將大型語言模型（LLMs）比喻為新型的作業系統，類似 1960 年代初期集中於雲端的電腦運算。他認為 LLMs 具備類似人類的「心理」，擁有百科全書般的知識與超能力般的記憶力，但同時也存在認知缺陷，例如會產生幻覺、智慧表現不穩定，以及類似「順向失憶症」的特性——每次互動後會清除記憶。因此，Karpathy 提醒我們在利用其強大能力的同時，必須特別注意並避開這些弱點。\nPrompt 成為新時代的程式語言 隨著 LLMs 的出現，「prompts」本身成為了一種新型態的程式，這大幅降低了寫程式的門檻。現在，人人都能利用 AI 輕鬆產生基本的程式碼。Karpathy 甚至分享，他自己在完全不懂 Swift 語言的情況下，僅用一天就透過 Vibe Coding 完成了一個基本的 iOS 應用程式。\n軟體工程師價值的轉變 然而，因為 LLMs 仍然是「會犯錯的系統」，Karpathy 認為軟體工程師的價值也隨之轉變——從純粹的程式碼撰寫，轉向設計與維護人機協作的「生成—驗證」循環。AI 負責生成內容，而人類工程師則負責驗證其輸出。他以鋼鐵人的鋼鐵裝為例，強調我們應將 AI 視為「人類的增強工具」，而非完全自主的 agent。我們必須「將 AI 拴住（keep the AI on the leash）」，確保其輸出符合預期且無潛在問題，並避免 AI 生成過於龐大的修改，導致審核困難。現在軟體工程師的的任務是「讓這個循環盡可能地快速進行」。軟體工程師的價值轉向設計更有效率的工具和介面（GUI），使人類能夠快速地審核與驗證 AI 所生成的結果。\n個人觀後感 以上僅提到一些我認為的重要觀點，影片還有許多內容，有興趣的人可以自己去看，蠻建議花時間看完的。\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "今天看到一段影片，是 Andrej Karpathy(Vibe coding 一詞之創始人)的演講片段\n中英雙字版本\n軟體開發的三個重要階段 他提到目前軟體開發演進可分為三個重要階段：\n(擷取自影片)\nSoftware 1.0：由工程師手寫的程式碼。\nSoftware 2.0：神經網路的權重，工程師不再直接撰寫程式，而是透過調整資料集並運行優化器來訓練模型，進而產生這些程式碼（權重）。例如特斯拉自動駕駛系統中許多功能已從 1.0 轉為 2.0。\nSoftware 3.0：大型語言模型 (LLMs) 可以透過自然語言提示來「程式設計」。英文本身成為一種強大的程式語言，讓每個人都成為潛在的程式設計師。\nLLMs 的角色與挑戰 Karpathy 將大型語言模型（LLMs）比喻為新型的作業系統，類似 1960 年代初期集中於雲端的電腦運算。他認為 LLMs 具備類似人類的「心理」，擁有百科全書般的知識與超能力般的記憶力，但同時也存在認知缺陷，例如會產生幻覺、智慧表現不穩定，以及類似「順向失憶症」的特性——每次互動後會清除記憶。因此，Karpathy 提醒我們在利用其強大能力的同時，必須特別注意並避開這些弱點。\nPrompt 成為新時代的程式語言 隨著 LLMs 的出現，「prompts」本身成為了一種新型態的程式，這大幅降低了寫程式的門檻。現在，人人都能利用 AI 輕鬆產生基本的程式碼。Karpathy 甚至分享，他自己在完全不懂 Swift 語言的情況下，僅用一天就透過 Vibe Coding 完成了一個基本的 iOS 應用程式。\n軟體工程師價值的轉變 然而，因為 LLMs 仍然是「會犯錯的系統」，Karpathy 認為軟體工程師的價值也隨之轉變——從純粹的程式碼撰寫，轉向設計與維護人機協作的「生成—驗證」循環。AI 負責生成內容，而人類工程師則負責驗證其輸出。他以鋼鐵人的鋼鐵裝為例，強調我們應將 AI 視為「人類的增強工具」，而非完全自主的 agent。我們必須「將 AI 拴住（keep the AI on the leash）」，確保其輸出符合預期且無潛在問題，並避免 AI 生成過於龐大的修改，導致審核困難。現在軟體工程師的的任務是「讓這個循環盡可能地快速進行」。軟體工程師的價值轉向設計更有效率的工具和介面（GUI），使人類能夠快速地審核與驗證 AI 所生成的結果。\n個人觀後感 以上僅提到一些我認為的重要觀點，影片還有許多內容，有興趣的人可以自己去看，蠻建議花時間看完的。\n看完這部影片讓我有很多感觸，剛好我差不多要踏入這一行的時候，ChatGPT 橫空出世，直接開啟了 AI 時代，這讓我特別有感。在還沒有 AI 的時候，自學程式語言是條蠻辛苦的道路，什麼都得自己摸索，要花很多時間看文件、做每一個練習，遇到問題也只能慢慢查資料。現在大家都會用 AI 來寫基本的程式，這種落差其實蠻衝擊的，也讓我更深刻體會到，軟體工程師的價值真的不只是寫程式這麼簡單。\n就像我以前當律師時一樣，無論是法律還是技術，本質上都是在解決人的問題，只是方式不同。尤其在 AI 發展這麼快、軟體開發方式不斷變化的時代，除了技術力或會寫多少程式外，工程師的核心價值更在於能不能真正理解問題、設計出好的系統，還有跟不同領域的人有效溝通。這種轉變讓我覺得很有意思，也提醒自己要不斷提升這些能力。\n",
+  "wordCount" : "77",
+  "inLanguage": "en",
+  "datePublished": "2025-07-06T22:01:54+08:00",
+  "dateModified": "2025-07-06T22:01:54+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/2025-07-06-ai-dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Slash Life: Software developer / Lawyer",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Slash Life: Software developer / Lawyer (Alt + H)">Slash Life: Software developer / Lawyer</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      AI 時代的軟體工程師：Andrej Karpathy 影片觀後感
+    </h1>
+    <div class="post-meta"><span title='2025-07-06 22:01:54 +0800 CST'>July 6, 2025</span>&nbsp;·&nbsp;1 min
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#%e8%bb%9f%e9%ab%94%e9%96%8b%e7%99%bc%e7%9a%84%e4%b8%89%e5%80%8b%e9%87%8d%e8%a6%81%e9%9a%8e%e6%ae%b5" aria-label="軟體開發的三個重要階段">軟體開發的三個重要階段</a></li>
+                <li>
+                    <a href="#llms-%e7%9a%84%e8%a7%92%e8%89%b2%e8%88%87%e6%8c%91%e6%88%b0" aria-label="LLMs 的角色與挑戰">LLMs 的角色與挑戰</a></li>
+                <li>
+                    <a href="#prompt-%e6%88%90%e7%82%ba%e6%96%b0%e6%99%82%e4%bb%a3%e7%9a%84%e7%a8%8b%e5%bc%8f%e8%aa%9e%e8%a8%80" aria-label="Prompt 成為新時代的程式語言">Prompt 成為新時代的程式語言</a></li>
+                <li>
+                    <a href="#%e8%bb%9f%e9%ab%94%e5%b7%a5%e7%a8%8b%e5%b8%ab%e5%83%b9%e5%80%bc%e7%9a%84%e8%bd%89%e8%ae%8a" aria-label="軟體工程師價值的轉變">軟體工程師價值的轉變</a></li>
+                <li>
+                    <a href="#%e5%80%8b%e4%ba%ba%e8%a7%80%e5%be%8c%e6%84%9f" aria-label="個人觀後感">個人觀後感</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>今天看到一段影片，是 Andrej Karpathy(Vibe coding 一詞之創始人)的演講片段</p>
+<p><a href="https://www.youtube.com/watch?v=LCEmiRjPEtQ"><img alt="YouTube 影片縮圖" loading="lazy" src="https://img.youtube.com/vi/LCEmiRjPEtQ/hqdefault.jpg"></a></p>
+<blockquote>
+<p><a href="https://www.youtube.com/watch?v=vD7CIADHeDc">中英雙字版本</a></p></blockquote>
+<h3 id="軟體開發的三個重要階段">軟體開發的三個重要階段<a hidden class="anchor" aria-hidden="true" href="#軟體開發的三個重要階段">#</a></h3>
+<p>他提到目前軟體開發演進可分為三個重要階段：</p>
+<p><img alt="softwate-progress" loading="lazy" src="/posts/2025-07-06-ai-dev/softwate-progress.png">
+(擷取自影片)</p>
+<ul>
+<li>
+<p>Software 1.0：由工程師手寫的程式碼。</p>
+</li>
+<li>
+<p>Software 2.0：神經網路的權重，工程師不再直接撰寫程式，而是透過調整資料集並運行優化器來訓練模型，進而產生這些程式碼（權重）。例如特斯拉自動駕駛系統中許多功能已從 1.0 轉為 2.0。</p>
+</li>
+<li>
+<p>Software 3.0：大型語言模型 (LLMs) 可以透過自然語言提示來「程式設計」。英文本身成為一種強大的程式語言，讓每個人都成為潛在的程式設計師。</p>
+</li>
+</ul>
+<h3 id="llms-的角色與挑戰">LLMs 的角色與挑戰<a hidden class="anchor" aria-hidden="true" href="#llms-的角色與挑戰">#</a></h3>
+<p>Karpathy 將大型語言模型（LLMs）比喻為新型的作業系統，類似 1960 年代初期集中於雲端的電腦運算。他認為 LLMs 具備類似人類的「心理」，擁有百科全書般的知識與超能力般的記憶力，但同時也存在認知缺陷，例如會產生幻覺、智慧表現不穩定，以及類似「順向失憶症」的特性——每次互動後會清除記憶。因此，Karpathy 提醒我們在利用其強大能力的同時，必須特別注意並避開這些弱點。</p>
+<h3 id="prompt-成為新時代的程式語言">Prompt 成為新時代的程式語言<a hidden class="anchor" aria-hidden="true" href="#prompt-成為新時代的程式語言">#</a></h3>
+<p>隨著 LLMs 的出現，「prompts」本身成為了一種新型態的程式，這大幅降低了寫程式的門檻。現在，人人都能利用 AI 輕鬆產生基本的程式碼。Karpathy 甚至分享，他自己在完全不懂 Swift 語言的情況下，僅用一天就透過 Vibe Coding 完成了一個基本的 iOS 應用程式。</p>
+<h3 id="軟體工程師價值的轉變">軟體工程師價值的轉變<a hidden class="anchor" aria-hidden="true" href="#軟體工程師價值的轉變">#</a></h3>
+<p>然而，因為 LLMs 仍然是「會犯錯的系統」，Karpathy 認為軟體工程師的價值也隨之轉變——從純粹的程式碼撰寫，轉向設計與維護人機協作的「生成—驗證」循環。AI 負責生成內容，而人類工程師則負責驗證其輸出。他以鋼鐵人的鋼鐵裝為例，強調我們應將 AI 視為「人類的增強工具」，而非完全自主的 agent。我們必須「將 AI 拴住（keep the AI on the leash）」，確保其輸出符合預期且無潛在問題，並避免 AI 生成過於龐大的修改，導致審核困難。現在軟體工程師的的任務是「讓這個循環盡可能地快速進行」。軟體工程師的價值轉向設計更有效率的工具和介面（GUI），使人類能夠快速地審核與驗證 AI 所生成的結果。</p>
+<hr>
+<h3 id="個人觀後感">個人觀後感<a hidden class="anchor" aria-hidden="true" href="#個人觀後感">#</a></h3>
+<p>以上僅提到一些我認為的重要觀點，影片還有許多內容，有興趣的人可以自己去看，蠻建議花時間看完的。</p>
+<p>看完這部影片讓我有很多感觸，剛好我差不多要踏入這一行的時候，ChatGPT 橫空出世，直接開啟了 AI 時代，這讓我特別有感。在還沒有 AI 的時候，自學程式語言是條蠻辛苦的道路，什麼都得自己摸索，要花很多時間看文件、做每一個練習，遇到問題也只能慢慢查資料。現在大家都會用 AI 來寫基本的程式，這種落差其實蠻衝擊的，也讓我更深刻體會到，軟體工程師的價值真的不只是寫程式這麼簡單。</p>
+<p>就像我以前當律師時一樣，無論是法律還是技術，本質上都是在解決人的問題，只是方式不同。尤其在 AI 發展這麼快、軟體開發方式不斷變化的時代，除了技術力或會寫多少程式外，工程師的核心價值更在於能不能真正理解問題、設計出好的系統，還有跟不同領域的人有效溝通。這種轉變讓我覺得很有意思，也提醒自己要不斷提升這些能力。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer><script src="https://utteranc.es/client.js"
+        repo="arieshsieh0402/arieshsieh0402.github.io"
+        issue-term="pathname"
+        label="blog-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">Slash Life: Software developer / Lawyer</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
