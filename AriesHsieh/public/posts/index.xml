@@ -6,15 +6,48 @@
     <description>Recent content in Posts on Slash Life: Software developer / Lawyer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Jul 2025 22:01:54 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 07 Jul 2025 21:53:27 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>2025 07 06 Ai Dev</title>
+      <title>NuGet 套件遺失問題紀錄</title>
+      <link>http://localhost:1313/posts/2025-07-07-nuget/</link>
+      <pubDate>Mon, 07 Jul 2025 21:53:27 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-07-nuget/</guid>
+      <description>為什麼加一個看起來沒用的 PackageReference，套件就能被還原了？記錄一下我在 NuGet 上踩的這個坑。</description>
+    </item>
+    <item>
+      <title>AI 時代的軟體工程師：Andrej Karpathy 影片觀後感</title>
       <link>http://localhost:1313/posts/2025-07-06-ai-dev/</link>
       <pubDate>Sun, 06 Jul 2025 22:01:54 +0800</pubDate>
       <guid>http://localhost:1313/posts/2025-07-06-ai-dev/</guid>
-      <description>&lt;h1 id=&#34;2025-07-06-ai-dev&#34;&gt;2025 07 06 Ai Dev&lt;/h1&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=vD7CIADHeDc&#34;&gt;https://www.youtube.com/watch?v=vD7CIADHeDc&lt;/a&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;今天看到一段影片，是 Andrej Karpathy(Vibe coding 一詞之創始人)的演講片段&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=LCEmiRjPEtQ&#34;&gt;&lt;img alt=&#34;YouTube 影片縮圖&#34; loading=&#34;lazy&#34; src=&#34;https://img.youtube.com/vi/LCEmiRjPEtQ/hqdefault.jpg&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=vD7CIADHeDc&#34;&gt;中英雙字版本&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;軟體開發的三個重要階段&#34;&gt;軟體開發的三個重要階段&lt;/h3&gt;
+&lt;p&gt;他提到目前軟體開發演進可分為三個重要階段：&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;softwate-progress&#34; loading=&#34;lazy&#34; src=&#34;http://localhost:1313/posts/2025-07-06-ai-dev/softwate-progress.png&#34;&gt;
+(擷取自影片)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Software 1.0：由工程師手寫的程式碼。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Software 2.0：神經網路的權重，工程師不再直接撰寫程式，而是透過調整資料集並運行優化器來訓練模型，進而產生這些程式碼（權重）。例如特斯拉自動駕駛系統中許多功能已從 1.0 轉為 2.0。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Software 3.0：大型語言模型 (LLMs) 可以透過自然語言提示來「程式設計」。英文本身成為一種強大的程式語言，讓每個人都成為潛在的程式設計師。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;llms-的角色與挑戰&#34;&gt;LLMs 的角色與挑戰&lt;/h3&gt;
+&lt;p&gt;Karpathy 將大型語言模型（LLMs）比喻為新型的作業系統，類似 1960 年代初期集中於雲端的電腦運算。他認為 LLMs 具備類似人類的「心理」，擁有百科全書般的知識與超能力般的記憶力，但同時也存在認知缺陷，例如會產生幻覺、智慧表現不穩定，以及類似「順向失憶症」的特性——每次互動後會清除記憶。因此，Karpathy 提醒我們在利用其強大能力的同時，必須特別注意並避開這些弱點。&lt;/p&gt;
+&lt;h3 id=&#34;prompt-成為新時代的程式語言&#34;&gt;Prompt 成為新時代的程式語言&lt;/h3&gt;
+&lt;p&gt;隨著 LLMs 的出現，「prompts」本身成為了一種新型態的程式，這大幅降低了寫程式的門檻。現在，人人都能利用 AI 輕鬆產生基本的程式碼。Karpathy 甚至分享，他自己在完全不懂 Swift 語言的情況下，僅用一天就透過 Vibe Coding 完成了一個基本的 iOS 應用程式。&lt;/p&gt;
+&lt;h3 id=&#34;軟體工程師價值的轉變&#34;&gt;軟體工程師價值的轉變&lt;/h3&gt;
+&lt;p&gt;然而，因為 LLMs 仍然是「會犯錯的系統」，Karpathy 認為軟體工程師的價值也隨之轉變——從純粹的程式碼撰寫，轉向設計與維護人機協作的「生成—驗證」循環。AI 負責生成內容，而人類工程師則負責驗證其輸出。他以鋼鐵人的鋼鐵裝為例，強調我們應將 AI 視為「人類的增強工具」，而非完全自主的 agent。我們必須「將 AI 拴住（keep the AI on the leash）」，確保其輸出符合預期且無潛在問題，並避免 AI 生成過於龐大的修改，導致審核困難。現在軟體工程師的的任務是「讓這個循環盡可能地快速進行」。軟體工程師的價值轉向設計更有效率的工具和介面（GUI），使人類能夠快速地審核與驗證 AI 所生成的結果。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;個人觀後感&#34;&gt;個人觀後感&lt;/h3&gt;
+&lt;p&gt;以上僅提到一些我認為的重要觀點，影片還有許多內容，有興趣的人可以自己去看，蠻建議花時間看完的。&lt;/p&gt;</description>
     </item>
     <item>
       <title>n8n 本地部署紀錄</title>

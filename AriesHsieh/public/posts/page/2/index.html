@@ -173,6 +173,25 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Hugo &#43; PaperMod 靜態網站串接 Utterances 實作留言區
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>雖然説這個靜態網頁主要是拿來做個人筆記記錄用，但想到如果有寫錯的地方，誤人子弟又沒有人告知好像也是個問題， 研究了一下，原來有將留言直接串接到指定 GitHub repo 的 Issues 充作留言區 (但必需要登入 GitHub 才能留言。)的方式。
+實驗了一下，串接成功，記錄一下過程。
+Step 1: 準備 GitHub repo 確認你有一個公開的 GitHub repo，留言將儲存在這個 repo 的 Issues。 因為本站是部署在 GitHub Pages，理當就建立在這個 page 所屬 repo 上。
+Step 2: 安裝 Utterances GitHub App 前往 Utterances 的 GitHub App 頁面，將 App 安裝到你的留言 repo。
+這裡沒有必要全部授權，只授權單一 repo 即可。
+Step 3: 產生 Utterances script 繼續下一步，前往設定頁，依序填寫以下內容：
+repo 名稱（格式：username/repo） Issue 對應規則（建議選 pathname 或 title） 可自訂 label（如 blog-comment）方便分類 選擇主題色系 將產生 &lt;script ...&gt;&lt;/script&gt; 複製下來。 Step 4: 整合到 Hugo（PaperMod） 在 Hugo 專案目錄下建立或修改 layouts/partials/comments.html，貼上剛剛產生的的 script。 接著在你的文章裡面啟用 comment: true
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-02 16:11:41 +0800 CST'>July 2, 2025</span>&nbsp;·&nbsp;1 min</footer>
+  <a class="entry-link" aria-label="post link to Hugo &#43; PaperMod 靜態網站串接 Utterances 實作留言區" href="http://localhost:1313/posts/2025-07-02-utterances/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Kong APIM 與 Redis Sentinel 架構學習筆記
     </h2>
   </header>

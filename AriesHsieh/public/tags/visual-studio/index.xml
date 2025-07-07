@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Visual Studio on Slash Life: Software developer / Lawyer</title>
+    <link>http://localhost:1313/tags/visual-studio/</link>
+    <description>Recent content in Visual Studio on Slash Life: Software developer / Lawyer</description>
+    <generator>Hugo -- 0.147.9</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 07 Jul 2025 21:53:27 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/visual-studio/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NuGet 套件遺失問題紀錄</title>
+      <link>http://localhost:1313/posts/2025-07-07-nuget/</link>
+      <pubDate>Mon, 07 Jul 2025 21:53:27 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-07-nuget/</guid>
+      <description>為什麼加一個看起來沒用的 PackageReference，套件就能被還原了？記錄一下我在 NuGet 上踩的這個坑。</description>
+    </item>
+  </channel>
+</rss>
