@@ -167,6 +167,25 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Kong API Gateway 真實 client IP 識別
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>小弟最近要接手管理 APIM 了，會把踩的點記錄下來。
+在管理 Kong API Gateway 的過程中，發現在啟用 IP Restriction Plugin 並設置白名單後，該 consumer 仍然驗證失敗。經確認此情況與 IP 置換有關。
+該 consumer request 路徑為：
+Client → Load Balancer → Kong API Gateway → Backend Service
+在這樣的架構中，Kong 接收到的 IP 並不是實際的 Client IP，而是來自 Load Balancer 的內部 IP。
+經確認：
+Kong 接收到的 client_ip 顯示為內部網段 IP（例如：以 .254 結尾）。 這些 IP 實際上是 Load Balancer 的 IP。 導致 IP Restriction Plugin 誤判來源 IP，合法用戶被錯誤拒絕。 Nginx 真實 IP 辨識機制 Kong 是建構在 Nginx 之上，利用 Nginx 的 ngx_http_realip_module 模組來從 HTTP Header 中擷取真正的 Client IP，並改寫 $remote_addr。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-03 10:54:54 +0800 CST'>July 3, 2025</span>&nbsp;·&nbsp;1 min</footer>
+  <a class="entry-link" aria-label="post link to Kong API Gateway 真實 client IP 識別" href="http://localhost:1313/posts/2025-07-03-apim-clientip/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Hugo &#43; PaperMod 靜態網站串接 Utterances 實作留言區
     </h2>
   </header>

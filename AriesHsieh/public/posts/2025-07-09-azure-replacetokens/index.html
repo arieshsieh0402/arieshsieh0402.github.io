@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Azure ReplaceTokens 字串轉義問題 | Slash Life: Software developer / Lawyer</title>
+<meta name="keywords" content="azure, escape 字元, pipeline">
+<meta name="description" content="記錄 ReplaceTokens task 在處理字串換行符號時的問題與解法">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/2025-07-09-azure-replacetokens/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css" integrity="sha256-j&#43;ECM6cGvIfy4Is8&#43;XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2025-07-09-azure-replacetokens/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ4P19P34J"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-JJ4P19P34J');
+        }
+      </script><meta property="og:url" content="http://localhost:1313/posts/2025-07-09-azure-replacetokens/">
+  <meta property="og:site_name" content="Slash Life: Software developer / Lawyer">
+  <meta property="og:title" content="Azure ReplaceTokens 字串轉義問題">
+  <meta property="og:description" content="記錄 ReplaceTokens task 在處理字串換行符號時的問題與解法">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-07-09T21:11:20+08:00">
+    <meta property="article:modified_time" content="2025-07-09T21:11:20+08:00">
+    <meta property="article:tag" content="Azure">
+    <meta property="article:tag" content="Escape 字元">
+    <meta property="article:tag" content="Pipeline">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Azure ReplaceTokens 字串轉義問題">
+<meta name="twitter:description" content="記錄 ReplaceTokens task 在處理字串換行符號時的問題與解法">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Azure ReplaceTokens 字串轉義問題",
+      "item": "http://localhost:1313/posts/2025-07-09-azure-replacetokens/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Azure ReplaceTokens 字串轉義問題",
+  "name": "Azure ReplaceTokens 字串轉義問題",
+  "description": "記錄 ReplaceTokens task 在處理字串換行符號時的問題與解法",
+  "keywords": [
+    "azure", "escape 字元", "pipeline"
+  ],
+  "articleBody": "Azure ReplaceTokens 字串換行被轉義問題紀錄 在某個專案中，CI/CD 過程需要將設定以 token 替換的方式寫入 JSON 檔案，其中一個欄位包含多行文字內容。在 pipeline 中使用了 qetza.replacetokens.replacetokens-task.replacetokens@5 這個 Azure DevOps Task：\n- task: qetza.replacetokens.replacetokens-task.replacetokens@5 displayName: 'Replace token in xxx-config.json' inputs: targetFiles: '$(System.ArtifactsDirectory)\\\\drop\\\\$(Build.BuildId)\\\\xxx-config.json' 問題現象 完成替換並部署到測試環境後，發現無法正常啟動。檢查部署產出的 JSON 檔案時，發現原本應為多行的字串中的 \\n，在處理後變成了 \\\\n。\n這導致程式在解析該欄位時，無法還原出原本的格式，進而發生錯誤。\n問題原因 查閱文件後發現，ReplaceTokens 預設會對變數值進行 escape 處理。這對一般情況有幫助，但對於需要保留格式的多行字串（如憑證或編碼內容）就會導致格式錯誤。\n解法：使用 noescape() 函數停用自動 escape ReplaceTokens 支援開啟轉換函數（Transformations）功能，可用來自訂變數處理方式。具體做法如下：\n步驟 1：啟用 enableTransforms 在 ReplaceTokens 的 YAML 設定中加上 enableTransforms: true\n- task: qetza.replacetokens.replacetokens-task.replacetokens@5 displayName: 'Replace token in xxx-config.json' inputs: targetFiles: '$(System.ArtifactsDirectory)\\\\drop\\\\$(Build.BuildId)\\\\xxx-config.json' enableTransforms: true # 要加這行 步驟 2：修改 JSON，使用 noescape() 將目標檔案中的 token 改寫為：\n{ \"config_content\": \"#{noescape(multiline_config)}#\" } 如此可讓 \\n 在替換後仍保持原始格式，不會被轉成 \\\\n。\n其他支援的轉換函數 base64(): 將變數值編碼為 Base64 upper(): 將變數值轉為大寫字母 lower(): 將變數值轉為小寫字母 Ref Replace Tokens task on GitHub (qetza) ",
+  "wordCount" : "100",
+  "inLanguage": "en",
+  "datePublished": "2025-07-09T21:11:20+08:00",
+  "dateModified": "2025-07-09T21:11:20+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/2025-07-09-azure-replacetokens/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Slash Life: Software developer / Lawyer",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Slash Life: Software developer / Lawyer (Alt + H)">Slash Life: Software developer / Lawyer</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Azure ReplaceTokens 字串轉義問題
+    </h1>
+    <div class="post-description">
+      記錄 ReplaceTokens task 在處理字串換行符號時的問題與解法
+    </div>
+    <div class="post-meta"><span title='2025-07-09 21:11:20 +0800 CST'>July 9, 2025</span>&nbsp;·&nbsp;1 min
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#azure-replacetokens-%e5%ad%97%e4%b8%b2%e6%8f%9b%e8%a1%8c%e8%a2%ab%e8%bd%89%e7%be%a9%e5%95%8f%e9%a1%8c%e7%b4%80%e9%8c%84" aria-label="Azure ReplaceTokens 字串換行被轉義問題紀錄">Azure ReplaceTokens 字串換行被轉義問題紀錄</a></li>
+                <li>
+                    <a href="#%e5%95%8f%e9%a1%8c%e7%8f%be%e8%b1%a1" aria-label="問題現象">問題現象</a></li>
+                <li>
+                    <a href="#%e5%95%8f%e9%a1%8c%e5%8e%9f%e5%9b%a0" aria-label="問題原因">問題原因</a></li>
+                <li>
+                    <a href="#%e8%a7%a3%e6%b3%95%e4%bd%bf%e7%94%a8-noescape-%e5%87%bd%e6%95%b8%e5%81%9c%e7%94%a8%e8%87%aa%e5%8b%95-escape" aria-label="解法：使用 noescape() 函數停用自動 escape">解法：使用 noescape() 函數停用自動 escape</a><ul>
+                        
+                <li>
+                    <a href="#%e6%ad%a5%e9%a9%9f-1%e5%95%9f%e7%94%a8-enabletransforms" aria-label="步驟 1：啟用 enableTransforms">步驟 1：啟用 enableTransforms</a></li>
+                <li>
+                    <a href="#%e6%ad%a5%e9%a9%9f-2%e4%bf%ae%e6%94%b9-json%e4%bd%bf%e7%94%a8-noescape" aria-label="步驟 2：修改 JSON，使用 noescape()">步驟 2：修改 JSON，使用 noescape()</a></li>
+                <li>
+                    <a href="#%e5%85%b6%e4%bb%96%e6%94%af%e6%8f%b4%e7%9a%84%e8%bd%89%e6%8f%9b%e5%87%bd%e6%95%b8" aria-label="其他支援的轉換函數">其他支援的轉換函數</a></li>
+                <li>
+                    <a href="#ref" aria-label="Ref">Ref</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="azure-replacetokens-字串換行被轉義問題紀錄">Azure ReplaceTokens 字串換行被轉義問題紀錄<a hidden class="anchor" aria-hidden="true" href="#azure-replacetokens-字串換行被轉義問題紀錄">#</a></h2>
+<p>在某個專案中，CI/CD 過程需要將設定以 token 替換的方式寫入 JSON 檔案，其中一個欄位包含多行文字內容。在 pipeline 中使用了 <code>qetza.replacetokens.replacetokens-task.replacetokens@5</code> 這個 Azure DevOps Task：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">task</span>: <span style="color:#ae81ff">qetza.replacetokens.replacetokens-task.replacetokens@5</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">displayName</span>: <span style="color:#e6db74">&#39;Replace token in xxx-config.json&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">inputs</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">targetFiles</span>: <span style="color:#e6db74">&#39;$(System.ArtifactsDirectory)\\drop\\$(Build.BuildId)\\xxx-config.json&#39;</span>
+</span></span></code></pre></div><h2 id="問題現象">問題現象<a hidden class="anchor" aria-hidden="true" href="#問題現象">#</a></h2>
+<p>完成替換並部署到測試環境後，發現無法正常啟動。檢查部署產出的 JSON 檔案時，發現原本應為多行的字串中的 <code>\n</code>，在處理後變成了 <code>\\n</code>。</p>
+<p>這導致程式在解析該欄位時，無法還原出原本的格式，進而發生錯誤。</p>
+<h2 id="問題原因">問題原因<a hidden class="anchor" aria-hidden="true" href="#問題原因">#</a></h2>
+<p>查閱文件後發現，ReplaceTokens 預設會對變數值進行 escape 處理。這對一般情況有幫助，但對於需要保留格式的多行字串（如憑證或編碼內容）就會導致格式錯誤。</p>
+<h2 id="解法使用-noescape-函數停用自動-escape">解法：使用 noescape() 函數停用自動 escape<a hidden class="anchor" aria-hidden="true" href="#解法使用-noescape-函數停用自動-escape">#</a></h2>
+<p>ReplaceTokens 支援開啟轉換函數（Transformations）功能，可用來自訂變數處理方式。具體做法如下：</p>
+<h3 id="步驟-1啟用-enabletransforms">步驟 1：啟用 enableTransforms<a hidden class="anchor" aria-hidden="true" href="#步驟-1啟用-enabletransforms">#</a></h3>
+<p>在 ReplaceTokens 的 YAML 設定中加上 <code>enableTransforms: true</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">task</span>: <span style="color:#ae81ff">qetza.replacetokens.replacetokens-task.replacetokens@5</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">displayName</span>: <span style="color:#e6db74">&#39;Replace token in xxx-config.json&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">inputs</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">targetFiles</span>: <span style="color:#e6db74">&#39;$(System.ArtifactsDirectory)\\drop\\$(Build.BuildId)\\xxx-config.json&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">enableTransforms</span>: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># 要加這行</span>
+</span></span></code></pre></div><h3 id="步驟-2修改-json使用-noescape">步驟 2：修改 JSON，使用 noescape()<a hidden class="anchor" aria-hidden="true" href="#步驟-2修改-json使用-noescape">#</a></h3>
+<p>將目標檔案中的 token 改寫為：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;config_content&#34;</span>: <span style="color:#e6db74">&#34;#{noescape(multiline_config)}#&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>如此可讓 <code>\n</code> 在替換後仍保持原始格式，不會被轉成 <code>\\n</code>。</p>
+<h3 id="其他支援的轉換函數">其他支援的轉換函數<a hidden class="anchor" aria-hidden="true" href="#其他支援的轉換函數">#</a></h3>
+<ul>
+<li>base64(): 將變數值編碼為 Base64</li>
+<li>upper(): 將變數值轉為大寫字母</li>
+<li>lower(): 將變數值轉為小寫字母</li>
+</ul>
+<h3 id="ref">Ref<a hidden class="anchor" aria-hidden="true" href="#ref">#</a></h3>
+<ul>
+<li><a href="https://github.com/qetza/replacetokens">Replace Tokens task on GitHub (qetza)</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/azure/">Azure</a></li>
+      <li><a href="http://localhost:1313/tags/escape-%E5%AD%97%E5%85%83/">Escape 字元</a></li>
+      <li><a href="http://localhost:1313/tags/pipeline/">Pipeline</a></li>
+    </ul>
+  </footer><script src="https://utteranc.es/client.js"
+        repo="arieshsieh0402/arieshsieh0402.github.io"
+        issue-term="pathname"
+        label="blog-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">Slash Life: Software developer / Lawyer</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -6,7 +6,6 @@ categories: [".NET", "NuGet"]
 tags: [".NET Framework", "Visual Studio"]
 description: "為什麼加一個看起來沒用的 PackageReference，套件就能被還原了？記錄一下我在 NuGet 上踩的這個坑。"
 showToc: true
-showToc: true
 TocOpen: false
 searchHidden: false
 comments: true

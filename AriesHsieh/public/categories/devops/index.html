@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>DevOps | Slash Life: Software developer / Lawyer</title>
+<title>Devops | Slash Life: Software developer / Lawyer</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -72,11 +72,11 @@
         }
       </script><meta property="og:url" content="http://localhost:1313/categories/devops/">
   <meta property="og:site_name" content="Slash Life: Software developer / Lawyer">
-  <meta property="og:title" content="DevOps">
+  <meta property="og:title" content="Devops">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="DevOps">
+<meta name="twitter:title" content="Devops">
 <meta name="twitter:description" content="">
 
 </head>
@@ -152,9 +152,33 @@
 <main class="main"> 
 <header class="page-header">
   <h1>
-    DevOps
+    Devops
   </h1>
 </header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Azure ReplaceTokens 字串轉義問題
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Azure ReplaceTokens 字串換行被轉義問題紀錄 在某個專案中，CI/CD 過程需要將設定以 token 替換的方式寫入 JSON 檔案，其中一個欄位包含多行文字內容。在 pipeline 中使用了 qetza.replacetokens.replacetokens-task.replacetokens@5 這個 Azure DevOps Task：
+- task: qetza.replacetokens.replacetokens-task.replacetokens@5 displayName: &#39;Replace token in xxx-config.json&#39; inputs: targetFiles: &#39;$(System.ArtifactsDirectory)\\drop\\$(Build.BuildId)\\xxx-config.json&#39; 問題現象 完成替換並部署到測試環境後，發現無法正常啟動。檢查部署產出的 JSON 檔案時，發現原本應為多行的字串中的 \n，在處理後變成了 \\n。
+這導致程式在解析該欄位時，無法還原出原本的格式，進而發生錯誤。
+問題原因 查閱文件後發現，ReplaceTokens 預設會對變數值進行 escape 處理。這對一般情況有幫助，但對於需要保留格式的多行字串（如憑證或編碼內容）就會導致格式錯誤。
+解法：使用 noescape() 函數停用自動 escape ReplaceTokens 支援開啟轉換函數（Transformations）功能，可用來自訂變數處理方式。具體做法如下：
+步驟 1：啟用 enableTransforms 在 ReplaceTokens 的 YAML 設定中加上： enableTransforms: true
+步驟 2：修改 JSON 模板，使用 noescape()
+將目標檔案中的 token 改寫為：
+{ “config_content”: “#{noescape(my_multiline_config)}#” }
+如此可讓 \n 在替換後仍保持原始格式，不會被轉成 \n。
+其他支援的轉換函數
+函數名稱	說明 noescape()	停用字元跳脫處理 base64()	將變數值編碼為 Base64 upper()	將變數值轉為大寫字母 lower()	將變數值轉為小寫字母
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-09 21:11:20 +0800 CST'>July 9, 2025</span>&nbsp;·&nbsp;1 min</footer>
+  <a class="entry-link" aria-label="post link to Azure ReplaceTokens 字串轉義問題" href="http://localhost:1313/posts/2025-07-09-azure-replacetokens/"></a>
+</article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">

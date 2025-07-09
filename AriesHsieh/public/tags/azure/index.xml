@@ -6,8 +6,15 @@
     <description>Recent content in Azure on Slash Life: Software developer / Lawyer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Jul 2025 16:27:33 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 09 Jul 2025 21:11:20 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/azure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Azure ReplaceTokens 字串轉義問題</title>
+      <link>http://localhost:1313/posts/2025-07-09-azure-replacetokens/</link>
+      <pubDate>Wed, 09 Jul 2025 21:11:20 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-09-azure-replacetokens/</guid>
+      <description>記錄 ReplaceTokens task 在處理字串換行符號時的問題與解法</description>
+    </item>
     <item>
       <title>Azure Pipeline 編譯 iOS App Groups 權限未簽入問題</title>
       <link>http://localhost:1313/posts/2025-07-03-ios-azure/</link>
