@@ -116,8 +116,8 @@
   "keywords": [
     "azure", "escape 字元", "pipeline"
   ],
-  "articleBody": "Azure ReplaceTokens 字串換行被轉義問題紀錄 在某個專案中，CI/CD 過程需要將設定以 token 替換的方式寫入 JSON 檔案，其中一個欄位包含多行文字內容。在 pipeline 中使用了 qetza.replacetokens.replacetokens-task.replacetokens@5 這個 Azure DevOps Task：\n- task: qetza.replacetokens.replacetokens-task.replacetokens@5 displayName: 'Replace token in xxx-config.json' inputs: targetFiles: '$(System.ArtifactsDirectory)\\\\drop\\\\$(Build.BuildId)\\\\xxx-config.json' 問題現象 完成替換並部署到測試環境後，發現無法正常啟動。檢查部署產出的 JSON 檔案時，發現原本應為多行的字串中的 \\n，在處理後變成了 \\\\n。\n這導致程式在解析該欄位時，無法還原出原本的格式，進而發生錯誤。\n問題原因 查閱文件後發現，ReplaceTokens 預設會對變數值進行 escape 處理。這對一般情況有幫助，但對於需要保留格式的多行字串（如憑證或編碼內容）就會導致格式錯誤。\n解法：使用 noescape() 函數停用自動 escape ReplaceTokens 支援開啟轉換函數（Transformations）功能，可用來自訂變數處理方式。具體做法如下：\n步驟 1：啟用 enableTransforms 在 ReplaceTokens 的 YAML 設定中加上 enableTransforms: true\n- task: qetza.replacetokens.replacetokens-task.replacetokens@5 displayName: 'Replace token in xxx-config.json' inputs: targetFiles: '$(System.ArtifactsDirectory)\\\\drop\\\\$(Build.BuildId)\\\\xxx-config.json' enableTransforms: true # 要加這行 步驟 2：修改 JSON，使用 noescape() 將目標檔案中的 token 改寫為：\n{ \"config_content\": \"#{noescape(multiline_config)}#\" } 如此可讓 \\n 在替換後仍保持原始格式，不會被轉成 \\\\n。\n其他支援的轉換函數 base64(): 將變數值編碼為 Base64 upper(): 將變數值轉為大寫字母 lower(): 將變數值轉為小寫字母 Ref Replace Tokens task on GitHub (qetza) ",
-  "wordCount" : "100",
+  "articleBody": "問題現象 在某個專案中，CI/CD 過程需要將設定以 token 替換的方式寫入 JSON 檔案，其中一個欄位包含多行文字內容。在 pipeline 中使用了 qetza.replacetokens.replacetokens-task.replacetokens@5 這個 Azure DevOps Task：\n- task: qetza.replacetokens.replacetokens-task.replacetokens@5 displayName: 'Replace token in xxx-config.json' inputs: targetFiles: '$(System.ArtifactsDirectory)\\\\drop\\\\$(Build.BuildId)\\\\xxx-config.json' 完成替換並部署到測試環境後，發現無法正常啟動。檢查部署產出的 JSON 檔案時，發現原本應為多行的字串中的 \\n，在處理後變成了 \\\\n。\n這導致程式在解析該欄位時，無法還原出原本的格式，進而發生錯誤。\n問題原因 查閱文件後發現，ReplaceTokens 預設會對變數值進行 escape 處理。這對一般情況有幫助，但對於需要保留格式的多行字串（如憑證或編碼內容）就會導致格式錯誤。\n解法：使用 noescape() 函數停用自動 escape ReplaceTokens 支援開啟轉換函數（Transformations）功能，可用來自訂變數處理方式。具體做法如下：\n步驟 1：啟用 enableTransforms 在 ReplaceTokens 的 YAML 設定中加上 enableTransforms: true\n- task: qetza.replacetokens.replacetokens-task.replacetokens@5 displayName: 'Replace token in xxx-config.json' inputs: targetFiles: '$(System.ArtifactsDirectory)\\\\drop\\\\$(Build.BuildId)\\\\xxx-config.json' enableTransforms: true # 要加這行 步驟 2：修改 JSON，使用 noescape() 將目標檔案中的 token 改寫為：\n{ \"config_content\": \"#{noescape(multiline_config)}#\" } 如此可讓 \\n 在替換後仍保持原始格式，不會被轉成 \\\\n。\n其他支援的轉換函數 base64(): 將變數值編碼為 Base64 upper(): 將變數值轉為大寫字母 lower(): 將變數值轉為小寫字母 Ref Replace Tokens task on GitHub (qetza) ",
+  "wordCount" : "97",
   "inLanguage": "en",
   "datePublished": "2025-07-09T21:11:20+08:00",
   "dateModified": "2025-07-09T21:11:20+08:00",
@@ -227,8 +227,6 @@
 
         <div class="inner"><ul>
                 <li>
-                    <a href="#azure-replacetokens-%e5%ad%97%e4%b8%b2%e6%8f%9b%e8%a1%8c%e8%a2%ab%e8%bd%89%e7%be%a9%e5%95%8f%e9%a1%8c%e7%b4%80%e9%8c%84" aria-label="Azure ReplaceTokens 字串換行被轉義問題紀錄">Azure ReplaceTokens 字串換行被轉義問題紀錄</a></li>
-                <li>
                     <a href="#%e5%95%8f%e9%a1%8c%e7%8f%be%e8%b1%a1" aria-label="問題現象">問題現象</a></li>
                 <li>
                     <a href="#%e5%95%8f%e9%a1%8c%e5%8e%9f%e5%9b%a0" aria-label="問題原因">問題原因</a></li>
@@ -251,14 +249,13 @@
     </details>
 </div>
 
-  <div class="post-content"><h2 id="azure-replacetokens-字串換行被轉義問題紀錄">Azure ReplaceTokens 字串換行被轉義問題紀錄<a hidden class="anchor" aria-hidden="true" href="#azure-replacetokens-字串換行被轉義問題紀錄">#</a></h2>
+  <div class="post-content"><h2 id="問題現象">問題現象<a hidden class="anchor" aria-hidden="true" href="#問題現象">#</a></h2>
 <p>在某個專案中，CI/CD 過程需要將設定以 token 替換的方式寫入 JSON 檔案，其中一個欄位包含多行文字內容。在 pipeline 中使用了 <code>qetza.replacetokens.replacetokens-task.replacetokens@5</code> 這個 Azure DevOps Task：</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">task</span>: <span style="color:#ae81ff">qetza.replacetokens.replacetokens-task.replacetokens@5</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">displayName</span>: <span style="color:#e6db74">&#39;Replace token in xxx-config.json&#39;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">inputs</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">targetFiles</span>: <span style="color:#e6db74">&#39;$(System.ArtifactsDirectory)\\drop\\$(Build.BuildId)\\xxx-config.json&#39;</span>
-</span></span></code></pre></div><h2 id="問題現象">問題現象<a hidden class="anchor" aria-hidden="true" href="#問題現象">#</a></h2>
-<p>完成替換並部署到測試環境後，發現無法正常啟動。檢查部署產出的 JSON 檔案時，發現原本應為多行的字串中的 <code>\n</code>，在處理後變成了 <code>\\n</code>。</p>
+</span></span></code></pre></div><p>完成替換並部署到測試環境後，發現無法正常啟動。檢查部署產出的 JSON 檔案時，發現原本應為多行的字串中的 <code>\n</code>，在處理後變成了 <code>\\n</code>。</p>
 <p>這導致程式在解析該欄位時，無法還原出原本的格式，進而發生錯誤。</p>
 <h2 id="問題原因">問題原因<a hidden class="anchor" aria-hidden="true" href="#問題原因">#</a></h2>
 <p>查閱文件後發現，ReplaceTokens 預設會對變數值進行 escape 處理。這對一般情況有幫助，但對於需要保留格式的多行字串（如憑證或編碼內容）就會導致格式錯誤。</p>

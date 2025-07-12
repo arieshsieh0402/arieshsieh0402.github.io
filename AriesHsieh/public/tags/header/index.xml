@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Header on Slash Life: Software developer / Lawyer</title>
+    <link>http://localhost:1313/tags/header/</link>
+    <description>Recent content in Header on Slash Life: Software developer / Lawyer</description>
+    <generator>Hugo -- 0.147.9</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 11 Jul 2025 14:23:12 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/header/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Safari Web Inspector 流量攔截延遲現象</title>
+      <link>http://localhost:1313/posts/2025-07-11-safari-inspector/</link>
+      <pubDate>Fri, 11 Jul 2025 14:23:12 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-11-safari-inspector/</guid>
+      <description>兼 iOS webView 的一些雜談</description>
+    </item>
+  </channel>
+</rss>

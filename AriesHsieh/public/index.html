@@ -166,7 +166,7 @@
 <main class="main"> 
 <article class="first-entry home-info">
     <header class="entry-header">
-        <h1>Hi, I&rsquo;m Hsieh-Te Hsieh 🧑🏻‍💻</h1>
+        <h1>Hi, I&rsquo;m Hsien-Te Hsieh 🧑🏻‍💻</h1>
     </header>
     <div class="entry-content">
         <ul>
@@ -194,12 +194,49 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Goals vs Systems
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前言 今天重新打開 Algomonster 時，點開了之前沒特別注意的 Getting Started 章節。其中一句話讓我停下來反覆思考：
+At AlgoMonster, we love systems. We are big believers in systems over goals.
+– 在 AlgoMonster，我們熱愛系統。我們堅信系統比目標更重要。
+這句話讓我產生好奇：「系統比目標更重要（systems over goals.）」這是什麼意思？點進連結後，發現是漫畫家 Scott Adams 的部落格文章1，內容來自他的一本書《How to Fail at Almost Everything and Still Win Big》2。這裡整理出我讀完後的理解與想法。
+目標（Goals） Scott Adams 指出，目標是「限制性的 (limiting)」。如果你只專注於一個特定的目標，雖然達成它的機率可能比沒有目標時高，但你可能會「錯過可能遠比你的目標更好的機會」 (miss out on opportunities that might have been far better than your goal)」。
+舉例來說，
+減重多少公斤：這類目標很常見，但實際上很難持之以恆（我自己也經歷過）。 每週去健身房三到四次：這也是一個目標，對於不喜歡運動的人來說可能感覺像懲罰，導致最終因為感到痛苦而放棄。 系統 (Systems) 而 Scott Adams 認為，「系統」旨在將你從低勝算的情況轉移到高勝算的情況 (move you from a game with low odds to a game with better odds)。 透過系統，你不太可能因為過於專注於一個機會而錯過另一個 (less likely to miss one opportunity because you were too focused on another)，並且總是在掃描任何機會 (always scanning for any opportunity)。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-12 20:18:53 +0800 CST'>July 12, 2025</span>&nbsp;·&nbsp;1 min</footer>
+  <a class="entry-link" aria-label="post link to Goals vs Systems" href="http://localhost:1313/posts/2025-07-12-goals-vs-systems/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Safari Web Inspector 流量攔截延遲現象
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前言 最近遇到一個需求，我們的 mobile app 需要用 web view 開啟某個網頁。因為該網頁的認證方式最近有調整，app 端也得跟著修改。也因此這次 iOS 也要從原本的 SFSafariViewController 換成 MKWebView 來實作內嵌網頁，結果問題就這樣冒出來了。
+過程 事情大概是這樣： 當我在頁面上點擊某個按鈕，會跳轉到另一個網頁，然後這個新頁面會自動彈出一個視窗到最前面。奇怪的是，首頁本身載入沒問題，如果在首頁觸發彈窗也都正常。但只要是跳轉後的頁面，彈窗就會出狀況。 一開始我懷疑是 cookie 沒有正確傳遞，或是 header 有缺漏，所以重點都放在這些地方。用 Safari Web Inspector 看 network，也沒看到什麼明顯的錯誤，只是覺得很怪，怎麼 request、response 的紀錄都不太完整，像是 header 竟然是空的。當下還以為這就是正常現象，只好很麻煩地回到 app 裡面用 NSLog 確認內容。
+後來不知道哪根筋突然不對，想說試試看手動按一下重新整理。沒想到這一按，network 頁面所有的請求紀錄都跑出來了，header、response 什麼資訊都有。這時才發現，原來是某個 JS 檔在執行時出錯。仔細追查才知道，是網頁開發者寫的「取得使用者瀏覽器類型」的 function 沒有考慮到 MKWebView 發出的 User-Agent，導致相關 UI 無法正常顯示。
+那段程式碼還註解「若非不得已，盡量少用此方法」，是一個拿 14 年前 stackoverflow 上的解答的函式XD
+User-Agent：WKWebView 預設的 User-Agent 與 Safari 或 SFSafariViewController 不同，若網頁端有依賴 User-Agent 進行判斷，需特別注意。
+關於 Safari Web Inspector 的觀察 這次讓我發現，Safari Web Inspector 其實有個不太直覺的地方。你必須先在手機上打開那個網頁，Inspector 的 develop 頁籤才會出現該網頁的選項。也就是說，當你點進去看的時候，網頁內容已經載入完成了，Inspector 只會顯示最後的狀態。過程中的流量、請求紀錄根本沒被捕捉到，除非你手動重新整理一次，才會看到完整的 network 資訊。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-11 14:23:12 +0800 CST'>July 11, 2025</span>&nbsp;·&nbsp;1 min</footer>
+  <a class="entry-link" aria-label="post link to Safari Web Inspector 流量攔截延遲現象" href="http://localhost:1313/posts/2025-07-11-safari-inspector/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Azure ReplaceTokens 字串轉義問題
     </h2>
   </header>
   <div class="entry-content">
-    <p>Azure ReplaceTokens 字串換行被轉義問題紀錄 在某個專案中，CI/CD 過程需要將設定以 token 替換的方式寫入 JSON 檔案，其中一個欄位包含多行文字內容。在 pipeline 中使用了 qetza.replacetokens.replacetokens-task.replacetokens@5 這個 Azure DevOps Task：
-- task: qetza.replacetokens.replacetokens-task.replacetokens@5 displayName: &#39;Replace token in xxx-config.json&#39; inputs: targetFiles: &#39;$(System.ArtifactsDirectory)\\drop\\$(Build.BuildId)\\xxx-config.json&#39; 問題現象 完成替換並部署到測試環境後，發現無法正常啟動。檢查部署產出的 JSON 檔案時，發現原本應為多行的字串中的 \n，在處理後變成了 \\n。
+    <p>問題現象 在某個專案中，CI/CD 過程需要將設定以 token 替換的方式寫入 JSON 檔案，其中一個欄位包含多行文字內容。在 pipeline 中使用了 qetza.replacetokens.replacetokens-task.replacetokens@5 這個 Azure DevOps Task：
+- task: qetza.replacetokens.replacetokens-task.replacetokens@5 displayName: &#39;Replace token in xxx-config.json&#39; inputs: targetFiles: &#39;$(System.ArtifactsDirectory)\\drop\\$(Build.BuildId)\\xxx-config.json&#39; 完成替換並部署到測試環境後，發現無法正常啟動。檢查部署產出的 JSON 檔案時，發現原本應為多行的字串中的 \n，在處理後變成了 \\n。
 這導致程式在解析該欄位時，無法還原出原本的格式，進而發生錯誤。
 問題原因 查閱文件後發現，ReplaceTokens 預設會對變數值進行 escape 處理。這對一般情況有幫助，但對於需要保留格式的多行字串（如憑證或編碼內容）就會導致格式錯誤。
 解法：使用 noescape() 函數停用自動 escape ReplaceTokens 支援開啟轉換函數（Transformations）功能，可用來自訂變數處理方式。具體做法如下：
@@ -255,46 +292,9 @@ Prompt 成為新時代的程式語言 隨著 LLMs 的出現，「prompts」本�
   <footer class="entry-footer"><span title='2025-07-06 22:01:54 +0800 CST'>July 6, 2025</span>&nbsp;·&nbsp;1 min</footer>
   <a class="entry-link" aria-label="post link to AI 時代的軟體工程師：Andrej Karpathy 影片觀後感" href="http://localhost:1313/posts/2025-07-06-ai-dev/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">n8n 本地部署紀錄
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>A basic record of local n8n deployment.
-Steps Docker docker-compose.yml version: &#34;3.9&#34; volumes: n8n_storage: services: n8n: image: n8nio/n8n:latest restart: always ports: - &#34;127.0.0.1:5678:5678&#34; volumes: - n8n_storage:/home/node/.n8n environment: - WEBHOOK_URL=https://&lt;your-ngrok-domain&gt;.ngrok-free.app # External webhook URL Usage Expose local port 5678 to the internet via ngrok: ngrok http http://localhost:5678 Copy the generated ngrok public URL (e.g., https://xxxx-xxx-xxx.ngrok-free.app).
-Edit the docker-compose.yml file and replace &lt;your-ngrok-domain&gt; in WEBHOOK_URL with your actual ngrok URL.
-Start the n8n service using Docker Compose:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-07-04 22:38:52 +0800 CST'>July 4, 2025</span>&nbsp;·&nbsp;1 min</footer>
-  <a class="entry-link" aria-label="post link to n8n 本地部署紀錄" href="http://localhost:1313/posts/2025-07-04-n8n-local/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Azure Pipeline 編譯 iOS App Groups 權限未簽入問題
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>前言 公司原本的上線流程最近要走 Azure DevOps 方式上線，我維護的 iOS App 不外乎也要走這個流程。原本測試都沒有太大問題，但上線之後發現 App Groups 功能沒有正確運作，就開始查找問題，最終找到問題所在並解決，記錄一下過程，並延伸相關知識。
-Trouble Shooting 一開始覺得很奇怪，這次上線的內容並沒有異動到 App Group 的設定，所以應該跟 source code 沒有太大關係。後來先嘗試在本機 build 一版，結果發現透過這個方式運作正常，但透過 Azure pipeline build 出來的就會發生問題。因此轉向研究 pipeline yaml 的設定是否出現狀況。
-先進一步確認透過 Azure pipeline 包出來的 artifacts 內容是否正確，一般而言，iOS App 打包後的成品如下：
-DistributionSummary.plist ExportOptions.plist YourAppName.ipa Packaging.log 查看 .ipa 我們可以查看 YourAppName.ipa 裡面到底簽入了哪些權限：
-解壓縮 .ipa 檔案：
-unzip YourAppName.ipa -d AppContents 進入 Payload 目錄：
-cd AppContents/Payload 執行 codesign 指令：
-codesign -d --entitlements :- YourAppName.app 每個部分的含義是：
-codesign：呼叫程式碼簽署工具 d：表示 “display”，用於顯示簽署資訊 -entitlements :-：要求工具顯示應用程式中包含的所有權限（entitlements） 這裡的 :- 是一個特殊的語法，表示將輸出導向到標準輸出（stdout） YourAppName.app：要檢查的應用程式套件路徑 如果有正確簽入 App Groups 的權限，應該要有 &lt;key&gt;com.apple.security.application-groups&lt;/key&gt; 的蹤跡，但發現透過 Azure pipeline 包出來 .ipa 沒有。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-07-03 16:27:33 +0800 CST'>July 3, 2025</span>&nbsp;·&nbsp;2 min</footer>
-  <a class="entry-link" aria-label="post link to Azure Pipeline 編譯 iOS App Groups 權限未簽入問題" href="http://localhost:1313/posts/2025-07-03-ios-azure/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="next" href="http://localhost:1313/page/2/">Next&nbsp;2/2&nbsp;»
+    <a class="next" href="http://localhost:1313/page/2/">Next&nbsp;2/3&nbsp;»
     </a>
   </nav>
 </footer>

@@ -6,8 +6,17 @@
     <description>Recent content in 雜談 on Slash Life: Software developer / Lawyer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Jun 2025 20:54:43 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 12 Jul 2025 20:18:53 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/%E9%9B%9C%E8%AB%87/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Goals vs Systems</title>
+      <link>http://localhost:1313/posts/2025-07-12-goals-vs-systems/</link>
+      <pubDate>Sat, 12 Jul 2025 20:18:53 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-12-goals-vs-systems/</guid>
+      <description>&lt;p&gt;今天重新打開 Algomonster 這個平台時，點開了之前沒有特別點的 Getting started 章節。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Algomonster 是由一群曾在 Google 擔任工程師的團隊創立，他們在使用 LeetCode 準備面試的過程中，發現缺乏系統性，於是打造 AlgoMonster 此 codinf interview 練習平台&lt;/p&gt;&lt;/blockquote&gt;</description>
+    </item>
     <item>
       <title>律師轉職軟體工程師 - 變換人生技能樹</title>
       <link>http://localhost:1313/posts/2025-06-30-lawyer-to-dev/</link>

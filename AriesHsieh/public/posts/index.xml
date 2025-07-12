@@ -6,8 +6,24 @@
     <description>Recent content in Posts on Slash Life: Software developer / Lawyer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Jul 2025 21:11:20 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 12 Jul 2025 20:18:53 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Goals vs Systems</title>
+      <link>http://localhost:1313/posts/2025-07-12-goals-vs-systems/</link>
+      <pubDate>Sat, 12 Jul 2025 20:18:53 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-12-goals-vs-systems/</guid>
+      <description>&lt;p&gt;今天重新打開 Algomonster 這個平台時，點開了之前沒有特別點的 Getting started 章節。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Algomonster 是由一群曾在 Google 擔任工程師的團隊創立，他們在使用 LeetCode 準備面試的過程中，發現缺乏系統性，於是打造 AlgoMonster 此 codinf interview 練習平台&lt;/p&gt;&lt;/blockquote&gt;</description>
+    </item>
+    <item>
+      <title>Safari Web Inspector 流量攔截延遲現象</title>
+      <link>http://localhost:1313/posts/2025-07-11-safari-inspector/</link>
+      <pubDate>Fri, 11 Jul 2025 14:23:12 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-11-safari-inspector/</guid>
+      <description>兼 iOS webView 的一些雜談</description>
+    </item>
     <item>
       <title>Azure ReplaceTokens 字串轉義問題</title>
       <link>http://localhost:1313/posts/2025-07-09-azure-replacetokens/</link>
