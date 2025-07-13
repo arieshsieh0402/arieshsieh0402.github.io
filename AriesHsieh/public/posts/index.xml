@@ -6,16 +6,59 @@
     <description>Recent content in Posts on Slash Life: Software developer / Lawyer</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 12 Jul 2025 20:18:53 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 13 Jul 2025 14:23:11 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>軟體架構學習紀錄(一)</title>
+      <link>http://localhost:1313/posts/2025-07-13-software-architecture-notes-01/</link>
+      <pubDate>Sun, 13 Jul 2025 14:23:11 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025-07-13-software-architecture-notes-01/</guid>
+      <description>&lt;p&gt;AI 工具雖然快速，但我仍偏好用書本學習一些需要深層理解的知識。軟體架構一直是我想補強的領域。平常工作中會嘗試從架構的角度理解問題，但我希望能讀些更嚴謹、系統化的書籍，從底層建立起紮實的認知框架。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;軟體架構是什麼&#34;&gt;軟體架構是什麼？&lt;/h2&gt;
+&lt;p&gt;軟體架構可以類比為房屋的結構設計。建築中可能包含承重牆、樑柱與屋頂等結構元件，沒有這些結構，房子就無法成立。至於地板材質、顏色，甚至沙發要擺在哪裡，這些並不會出現在建築的結構圖中，因為它們與&lt;strong&gt;設計&lt;/strong&gt;相關，而非結構。&lt;/p&gt;
+&lt;p&gt;類似地，軟體系統也有其結構，而我們對這種結構的理解，可以從四個維度來思考&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;架構特性（Architectural Characteristics）：系統著重於效能或是妥善性？&lt;/li&gt;
+&lt;li&gt;架構決策（Architectural Decisions）：例如系統的使用者介面是否允許與資料庫直接溝通，或是必續透過資料存取服務（如 API)來溝通？&lt;/li&gt;
+&lt;li&gt;邏輯組件（Logical Components）：每個業務功能的原始碼集合（成立訂單、付款）&lt;/li&gt;
+&lt;li&gt;架構風格（Architectural Styles）：微服務、分層架構等。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;因此當有人說「我們的架構是微服務」這句話只定義了一個維度（架構風格），不足以描述整體架構。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;架構角度--設計角度&#34;&gt;架構角度 &amp;amp; 設計角度&lt;/h2&gt;
+&lt;p&gt;上面提到，地板材質、顏色這些&lt;strong&gt;設計&lt;/strong&gt;，對系統而言是設計角度問題。舉例來說，更改網頁的背景顏色，這種較偏向設計，而非架構。
+但事實上架構與設計並沒有辦法那麼容易截然二分，他們是位於光譜的兩端。例如，將一個服務拆分為兩個獨立模組，這不僅涉及程式結構的重構與介面設計，也可能影響部署策略與服務間依賴關係。這類決策就處於設計與架構之間的模糊地帶。&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;參《深入淺出軟體架構》, Raju Gandhi, Mark Richards &amp;amp; Neal Ford。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+    </item>
     <item>
       <title>Goals vs Systems</title>
       <link>http://localhost:1313/posts/2025-07-12-goals-vs-systems/</link>
       <pubDate>Sat, 12 Jul 2025 20:18:53 +0800</pubDate>
       <guid>http://localhost:1313/posts/2025-07-12-goals-vs-systems/</guid>
-      <description>&lt;p&gt;今天重新打開 Algomonster 這個平台時，點開了之前沒有特別點的 Getting started 章節。&lt;/p&gt;
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;今天重新打開 Algomonster 時，點開了之前沒特別注意的 Getting Started 章節。其中一句話讓我停下來反覆思考：&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Algomonster 是由一群曾在 Google 擔任工程師的團隊創立，他們在使用 LeetCode 準備面試的過程中，發現缺乏系統性，於是打造 AlgoMonster 此 codinf interview 練習平台&lt;/p&gt;&lt;/blockquote&gt;</description>
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;At AlgoMonster, we love systems. We are big believers in systems over goals.&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&amp;ndash; 在 AlgoMonster，我們熱愛系統。我們堅信系統比目標更重要。&lt;/em&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;這句話讓我產生好奇：「系統比目標更重要（systems over goals.）」這是什麼意思？點進&lt;a href=&#34;https://web.archive.org/web/20210811125743/https://www.scottadamssays.com/2013/11/18/goals-vs-systems/&#34;&gt;連結&lt;/a&gt;後，發現是漫畫家 Scott Adams 的部落格文章&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;，內容來自他的一本書《How to Fail at Almost Everything and Still Win Big》&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;。這裡整理出我讀完後的理解與想法。&lt;/p&gt;
+&lt;h2 id=&#34;目標goals&#34;&gt;目標（Goals）&lt;/h2&gt;
+&lt;p&gt;Scott Adams 指出，目標是「限制性的 (limiting)」。&lt;strong&gt;如果你只專注於一個特定的目標，雖然達成它的機率可能比沒有目標時高，但你可能會「錯過可能遠比你的目標更好的機會」&lt;/strong&gt; (miss out on opportunities that might have been far better than your goal)」。&lt;/p&gt;
+&lt;p&gt;舉例來說，&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;減重多少公斤：這類目標很常見，但實際上很難持之以恆（我自己也經歷過）。&lt;/li&gt;
+&lt;li&gt;每週去健身房三到四次：這也是一個目標，對於不喜歡運動的人來說可能感覺像懲罰，導致最終因為感到痛苦而放棄。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;系統-systems&#34;&gt;系統 (Systems)&lt;/h2&gt;
+&lt;p&gt;而 Scott Adams 認為，「系統」旨在將你從&lt;strong&gt;低勝算的情況轉移到高勝算的情況&lt;/strong&gt; (move you from a game with low odds to a game with better odds)。
+透過系統，你不太可能因為過於專注於一個機會而錯過另一個 (less likely to miss one opportunity because you were too focused on another)，並且總是在掃描任何機會 (always scanning for any opportunity)。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Safari Web Inspector 流量攔截延遲現象</title>
