@@ -1,7 +1,8 @@
 # Site Information
 baseURL: "https://lawto.dev/"
 title: "Slash Life: Software developer / Lawyer"
-languageCode: en-us
+languageCode: zh-tw
+defaultContentLanguage: "zh-tw"
 
 # Theme
 theme: ["PaperMod"]
