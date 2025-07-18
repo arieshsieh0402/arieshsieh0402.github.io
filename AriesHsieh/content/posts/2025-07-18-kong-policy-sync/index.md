@@ -1,7 +1,7 @@
 ---
 title: "Control Plane 與 Data Plane 設置同步機制"
 date: 2025-07-18T14:19:32+08:00
-draft: true
+draft: false
 categories: ["api-gateway"]
 tags: ["kong"]
 description: "紀錄釐清在 kong hybrid mode 下，control plane 與 data plane 之間 sync 設置的方向"
