@@ -1,5 +1,5 @@
 ---
-title: "Control Plane 與 Data Plane 設置同步機制"
+title: "簡述 Kong API Gateway Control Plane 與 Data Plane 設置同步機制"
 date: 2025-07-18T14:19:32+08:00
 draft: false
 categories: ["api-gateway"]
@@ -13,7 +13,7 @@ comments: true
 
 ![pic](https://images.unsplash.com/photo-1752353739067-357d9ff65d4f?q=80&w=2084&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
 
-***其實我喜歡在文章裡面放張圖，雖然現在 AI 生圖很方便，但還是喜歡放自然一點的，不論是自己拍的或是網路上看到的(from unsplash)***
+***我喜歡在文章裡面放張圖，雖然現在 AI 生圖很方便，但還是喜歡放自然一點的，不論是自己拍的或是網路上看到的(from unsplash)***
 
 ---
 
@@ -25,11 +25,12 @@ comments: true
 
 >簡單畫，公司實際架構圖沒這麼醜
 
-但在查找相關問題時（別的問題，有機會再說XD），發現 kong 官方文件的流程圖卻顯示 Control plane 會主動「推送」設定到 Data plane。
+在看到公司架構圖標示 Data plane 會「拉取」設定時，其實我一開始沒有多想，且防火牆確實只開了 Data plane 到 Control plane 的 8005 port。
+但後來仔細思考，覺得這種設計有點奇怪——如果是 Data plane 不斷輪詢 Control plane 是否有設定變更，那輪詢頻率要怎麼抓？萬一設定異動很頻繁，會不會造成不必要的流量和效能浪費？而且從系統設計的角度來看，應該是由管理端（Control plane）主動通知執行端（Data plane）有異動才比較合理。這讓我開始思考，究竟同步機制的實際運作方式是什麼？
+
+這些疑問促使我去查官方文件，才發現實際上是 Control plane 主動推送設定(如下圖)，和我原本的認知有落差。
 
 ![kong-sync](2025-07-18-kong-policy-sync-2.png)
-
-這讓我開始思考，究竟同步機制的實際運作方式是什麼？是 Data plane 主動拉取，還是 Control plane 主動推送？為了釐清這個認知落差，決定深入查證 hybrid mode 下的 sync 流程。
 
 ## Control plane 與 Data plane
 
