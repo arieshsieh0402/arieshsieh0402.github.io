@@ -4,7 +4,7 @@ date: 2025-07-13T14:23:11+08:00
 draft: false
 categories: [軟體架構]
 tags: ["讀書筆記"]
-description: ""
+description: "軟體架構學習筆記"
 showToc: true
 TocOpen: false
 searchHidden: false

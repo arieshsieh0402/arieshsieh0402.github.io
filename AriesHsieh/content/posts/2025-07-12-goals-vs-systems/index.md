@@ -4,7 +4,7 @@ date: 2025-07-12T20:18:53+08:00
 draft: false
 categories: ["雜談"]
 tags: []
-description: ""
+description: "Scott Adams 提出的觀念"
 showToc: true
 TocOpen: false
 searchHidden: false
