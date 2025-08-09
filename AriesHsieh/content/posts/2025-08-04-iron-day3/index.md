@@ -3,7 +3,7 @@ title: "[Day 3]Xcode 專案初始化與 Git 流程"
 date: 2025-08-04T11:24:11+08:00
 draft: true
 categories: ["iOS"]
-tags: ["2025 iron"]
+tags: ["2025 iron", "SwiftUI"]
 description: "介紹 Xcode 專案結構；Git 基本操作與分支規則及 gitignore 配置。"
 showToc: true
 TocOpen: false
@@ -18,6 +18,8 @@ comments: true
 打開 Xcode，選取 Create New Project。
 
 ![xcodeCreate](xcodeCreate.png)
+
+>如果你的 mac 還沒有安裝 Xcode，請先到 [App Store](https://apps.apple.com/us/app/xcode/id497799835) 下載。
 
 我們這次要建立的是 iPhone 的 App，因此上方的平台要選擇「iOS」，並選擇 「App」來建立一個新專案。
 選擇 Next 來進入下一個流程。
