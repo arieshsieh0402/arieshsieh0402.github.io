@@ -1,5 +1,5 @@
 ---
-title: "[Day 6] SwiftUI 基礎元件與佈局實戰"
+title: "[Day 6] SwiftUI 基礎元件與佈局"
 date: 2025-08-09T11:12:04+08:00
 draft: true
 categories: ["iOS"]
@@ -283,6 +283,8 @@ VStack(spacing: 20) {  // spacing 設定元件間距
 }
 ```
 
+![vstack](vstack.png)
+
 ### HStack：水平堆疊
 ```swift
 HStack(alignment: .center) {  // alignment 設定對齊方式
@@ -290,6 +292,8 @@ HStack(alignment: .center) {  // alignment 設定對齊方式
     Text("使用者名稱")
 }
 ```
+
+![hstack](hstack.png)
 
 ### ZStack：重疊堆疊
 ```swift
@@ -299,63 +303,60 @@ ZStack {  // 後面的元件會疊在前面的上方
 }
 ```
 
-## 實戰練習：登入介面
+![zstack](zstack.png)
 
-讓我們運用上面學到的元件和佈局，製作一個簡單的登入介面：
+## 綜合使用：組合式佈局
+
+讓我們運用上面學到的 VStack、HStack 和 ZStack 來製作一個簡單的組合式佈局：
 
 ```swift
-struct LoginView: View {
-    @State private var username = ""
-    @State private var password = ""
-    @State private var isLoading = false
-
+struct CombinedStacksView: View {
     var body: some View {
         VStack(spacing: 20) {
-            Text("歡迎登入")
+            // 上方的標題區塊
+            Text("Stack 範例")
                 .font(.largeTitle)
                 .bold()
 
-            TextField("請輸入帳號", text: $username)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal)
+            // 中間的卡片區塊
+            ZStack {
+                // 底層的背景
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.blue.opacity(0.2))
+                    .frame(height: 100)
 
-            SecureField("請輸入密碼", text: $password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal)
+                // 上層的內容
+                HStack(spacing: 15) {
+                    Image(systemName: "star.fill")
+                        .foregroundColor(.yellow)
+                        .font(.title)
 
-            Button(action: {
-                isLoading = true
-                // 模擬登入過程
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                    isLoading = false
-                }
-            }) {
-                if isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                } else {
-                    Text("登入")
+                    VStack(alignment: .leading) {
+                        Text("主標題")
+                            .font(.headline)
+                        Text("副標題")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
                 }
             }
-            .frame(width: 200)
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(8)
+            .padding(.horizontal)
         }
         .padding()
     }
 }
 ```
 
-這個登入介面包含了：
-- 標題文字
-- 帳號輸入框
-- 密碼輸入框（使用 `SecureField` 確保密碼隱藏）
-- 具有載入動畫的登入按鈕
-- 適當的間距和樣式設定
+這個範例同時運用了三種 Stack：
+- 使用 VStack 作為最外層的垂直佈局
+- 使用 ZStack 創建一個帶背景的卡片效果
+- 使用 HStack 和 VStack 的巢狀組合來排列圖示和文字
 
-## 小結
+實際效果如下：
+
+![combined-stacks](combined.png)
+
+## 本日小結
 
 今天我們學習了 SwiftUI 的基本元件和佈局系統。SwiftUI 的宣告式語法讓我們能更直觀地描述想要的介面，而狀態管理機制則讓畫面能自動根據資料變化更新。雖然這些都是最基本的元件，但它們是構建更複雜介面的基礎。
 
