@@ -4,7 +4,7 @@ date: 2025-08-11T13:58:59+08:00
 draft: false
 categories: ["雜談"]
 tags: ["API", "OAS", "Open API"]
-description: ""
+description: "整理下目前自己對 API 的理解"
 showToc: true
 TocOpen: false
 searchHidden: false
