@@ -1,7 +1,7 @@
 ---
 title: "API 雜談"
 date: 2025-08-11T13:58:59+08:00
-draft: true
+draft: false
 categories: ["雜談"]
 tags: ["API", "OAS", "Open API"]
 description: ""
