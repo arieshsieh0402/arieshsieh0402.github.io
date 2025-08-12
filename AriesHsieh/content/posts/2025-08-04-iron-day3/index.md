@@ -1,5 +1,5 @@
 ---
-title: "[Day 3]Xcode 專案初始化與 Git 流程"
+title: "[Day 3] Xcode 專案初始化與 Git 流程"
 date: 2025-08-04T11:24:11+08:00
 draft: true
 categories: ["iOS"]

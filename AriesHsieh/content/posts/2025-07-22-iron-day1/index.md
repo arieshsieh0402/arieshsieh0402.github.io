@@ -1,5 +1,5 @@
 ---
-title: "[Day 1]前言"
+title: "[Day 1] 前言"
 date: 2025-07-22T22:00:01+08:00
 draft: true
 categories: ["iOS"]

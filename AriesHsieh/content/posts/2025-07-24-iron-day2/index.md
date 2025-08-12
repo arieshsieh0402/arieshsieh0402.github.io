@@ -1,5 +1,5 @@
 ---
-title: "[Day 2]SwiftUI 與 UiKit 之比較與選擇"
+title: "[Day 2] SwiftUI 與 UiKit 之比較與選擇"
 date: 2025-07-24T15:41:46+08:00
 draft: true
 categories: ["iOS"]
