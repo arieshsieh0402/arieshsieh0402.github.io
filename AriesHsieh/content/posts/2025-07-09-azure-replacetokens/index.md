@@ -2,7 +2,7 @@
 title: "Azure ReplaceTokens 字串轉義問題"
 date: 2025-07-09T21:11:20+08:00
 draft: false
-categories: ["devops"]
+categories: ["DevOps"]
 tags: ["azure", "escape 字元", "pipeline"]
 description: "記錄 ReplaceTokens task 在處理字串換行符號時的問題與解法"
 showToc: true

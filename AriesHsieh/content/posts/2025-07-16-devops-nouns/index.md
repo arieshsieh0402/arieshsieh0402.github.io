@@ -2,7 +2,7 @@
 title: "紀錄 DevOps 相關名詞"
 date: 2025-07-16T13:43:52+08:00
 draft: false
-categories: ["devops"]
+categories: ["DevOps"]
 tags: []
 description: "簡單紀錄幾個新學到的名詞，兼一些工作上的雜談"
 showToc: true
