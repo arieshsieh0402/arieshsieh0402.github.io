@@ -2,8 +2,8 @@
 title: "[Day 8] 讀取與解析 CSV 資料"
 date: 2025-08-13T07:33:11+08:00
 draft: true
-categories: []
-tags: []
+categories: ["iOS"]
+tags: ["Swift", "SwiftUI", "iOS", "List", "Navigation", "CSV"]
 description: "資料載入與管理，使用 SwiftUI 讀取並解析 CSV 資料"
 showToc: true
 TocOpen: false
@@ -50,10 +50,11 @@ struct Product: Identifiable {
 }
 ```
 
-# Step 3: 建立 SwiftUI view 與讀取邏輯
+# Step 3：建立 SwiftUI view 與讀取邏輯
 
 接下來，我們建立主要的 SwiftUI view。在這個 view 中，我們將：
 
+- 建立讀取 CSV 檔案的邏輯。
 - 建立一個 @State 變數 products 來儲存從 CSV 讀取的資料。
 - 使用 .onAppear 修飾符，在視圖出現時執行讀取 CSV 的邏輯。
 - 建立一個 List 來顯示所有產品。
@@ -96,7 +97,7 @@ private func loadData() {
 
 >private 是一個「存取控制」關鍵字。將函式標記為 private 表示只有在 ContentView 這個 struct 內部才能呼叫它。從外部是看不到也無法使用這個函式的。在這個範例裡 loadData() 的唯一目的就是為 ContentView 載入資料，其他任何地方都不應該、也不需要知道它的存在。將其設為私有，可以避免其他程式碼不小心呼叫它。
 
-我們逐行分析函式內部的程式碼：
+我們逐行解釋函式內部的程式碼：
 
 1. 尋找檔案路徑
 
@@ -117,7 +118,7 @@ guard let path = Bundle.main.path(forResource: "products", ofType: "csv") else {
 
 >可以把 App Bundle 想像成一個 「資源包裹」。當 Xcode 編譯並打包 App 時，它會將程式碼執行檔、圖片、音效、.csv 檔案，以及所有您加入專案的資源，全部整理好放進一個資料夾，這個資料夾就稱為 App 的 Main Bundle。
 
-- 為什麼用 guard let？
+- guard let？
 
   尋找檔案的操作是有可能失敗的（例如，你忘了把檔案加到專案裡，或是檔名打錯）。guard let 語法確保 path 必須有值（檔案找到了），程式才能繼續往下走。如果找不到檔案 (else 的部分)，它會立刻 print 出錯誤訊息並用 return 結束函式。（if let 是另一種用法，但適合場景不太相同）。
 
@@ -156,11 +157,17 @@ self.products = lines.compactMap { line in
 
 - `content.split(separator: "\n")`
 
-  CSV 檔案的內容是用「換行符 (\n)」來分隔每一筆資料的，所以我們先用它把字串切成一行一行的陣列。
+  CSV 檔案的內容是用「換行符 (\n)」來分隔每一筆資料的，所以我們先用它把字串組成陣列。
 
 - `.dropFirst()`
 
   將 CSV 的第一行欄位標題 (id,name,price,description)，去掉。
+
+此時 `lines` 內容會是：
+
+```
+["1,Apple,1.2,Fresh red apple", "2,Banana,0.5,Yellow ripe banana", "3,Orange,0.8,Juicy orange"]
+```
 
 - `lines.compactMap { ... }`
 
@@ -186,27 +193,97 @@ return Product(id: id, name: columns[1], price: price, description: columns[3])
 因此，我們需要將 `[Substring]` 陣列中的每一個元素，使用 `.map { String($0) }` 都轉換成一個獨立的 String。
 最後，如果所有驗證都通過，就用這些轉換好的資料建立一個 Product 物件並回傳。
 
-5. 更新 UI
+
+## 更新 UI
+
+首先，宣告一個 `@State` 變數 `products` 來儲存由 `Product` 組成的陣列。當這個陣列改變時，SwiftUI 會自動更新 view。
+
+```swift
+@State private var products: [Product] = []
+```
+
+接著，使用 `NavigationStack` 建立我們之前談到過的導覽，裡面包含著 List，讀取 `products`，再運用 `VStack`, `HStack`, `Text` 等元件構建出我們需要的畫面。
+
+```swift
+NavigationStack {
+    // List 會根據 products 陣列中的每個項目，動態生成列表行
+    List(products) { product in
+        // 使用 VStack 垂直排列每個產品的資訊
+        VStack(alignment: .leading, spacing: 5) {
+            // 主標題：顯示產品名稱和價格
+            HStack {
+                Text(product.name)
+                    .font(.headline)
+                Spacer()
+                Text(String(format: "$%.2f", product.price))
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+
+            // 次要資訊：顯示產品描述
+            Text(product.description)
+                .font(.body)
+                .foregroundColor(.gray)
+        }
+        .padding(.vertical, 5) // 為每個列表行增加一些垂直間距
+    }
+    .navigationTitle("商品列表") // 設定導覽列標題
+    .onAppear(perform: loadData) // 當視圖出現時，呼叫 loadData 函式
+}
+```
+
+這邊有個重點：`.onAppear(perform: loadData)`。我們使用 .onAppear 這個修飾符來觸發 loadData() 函式。但，為什麼要這麼做？我不能在 body 裡面直接呼叫它嗎？
+
+當你不確定自己的想法對不對的時候，做實驗就對了，我們來試試看會發生什麼事情。
+
+- 在 `body` 內部執行 `loadData()`
+
+```swift
+var body: some View {
+    // 直接在這裡呼叫 loadData()
+    loadData()
+
+    NavigationView {
+        List(products) { product in
+            // ...
+        }
+    }
+}
+```
+
+然後我們會得到這樣的錯誤：
+
+![opAppear](onAppear.png)
+
+>'buildExpression' is unavailable: this expression does not conform to 'View'
+
+因為在 SwiftUI 中，body 是用來「描述」畫面的，不是用來「執行」任務的。body 是一個 compute property，它的職責是根據目前的狀態（例如 products 陣列），回傳一個描述 UI 的藍圖。在裡面執行有「副作用 (Side Effect)」的函式（如讀取檔案、網路請求）會破壞這個規則。body 可能會被頻繁呼叫。SwiftUI 會在任何相關狀態改變時重新計算 body。想像一下，如果 loadData() 成功更新了 products 陣列，這個狀態的改變會再次觸發 body 的計算，於是 loadData() 又被呼叫了一次，導致無限迴圈。
+
+>SwiftUI 提供給我們 .onAppear 方法來完成任務
+
+.onAppear 用來處理「當畫面準備好要顯示時，需要執行一次的動作」。在 view 即將被渲染到螢幕上的那個時間點，執行我們的程式碼，載入該畫面所需資料。
+同時，避免重複執行，在正常的 View 生命週期中，.onAppear 只會被呼叫一次，同時亦符合宣告式思維，我們「宣告」了「當這個列表出現時，就去載入資料」，這讓程式碼更容易閱讀和理解。
 
 
-
+完整程式碼如下：
 
 ```swift
 import SwiftUI
 
+struct Product: Identifiable {
+    let id: Int
+    let name: String
+    let price: Double
+    let description: String
+}
+
 struct ContentView: View {
-    // 使用 @State 屬性包裝器來儲存產品陣列
-    // 當這個陣列改變時，SwiftUI 會自動更新視圖
     @State private var products: [Product] = []
 
     var body: some View {
-        // 使用 NavigationStack 為列表提供標題和導覽列
         NavigationStack {
-            // List 會根據 products 陣列中的每個項目，動態生成列表行
             List(products) { product in
-                // 使用 VStack 垂直排列每個產品的資訊
                 VStack(alignment: .leading, spacing: 5) {
-                    // 主標題：顯示產品名稱和價格
                     HStack {
                         Text(product.name)
                             .font(.headline)
@@ -216,16 +293,52 @@ struct ContentView: View {
                             .foregroundColor(.secondary)
                     }
 
-                    // 次要資訊：顯示產品描述
                     Text(product.description)
                         .font(.body)
                         .foregroundColor(.gray)
                 }
-                .padding(.vertical, 5) // 為每個列表行增加一些垂直間距
+                .padding(.vertical, 5)
             }
-            .navigationTitle("商品列表") // 設定導覽列標題
+            .navigationTitle("商品列表")
             .onAppear(perform: loadData) // 當視圖出現時，呼叫 loadData 函式
         }
     }
+
+    private func loadData() {
+        guard let path = Bundle.main.path(forResource: "products", ofType: "csv") else {
+            print("找不到 CSV 檔案")
+            return
+        }
+
+        do {
+            let content = try String(contentsOfFile: path, encoding: .utf8)
+            let lines = content.split(separator: "\n").dropFirst()
+            self.products = lines.compactMap { line in
+                let columns = line.split(separator: ",").map { String($0) }
+                guard columns.count == 4,
+                      let id = Int(columns[0]),
+                      let price = Double(columns[2]) else {
+                    return nil
+                }
+                return Product(id: id, name: columns[1], price: price, description: columns[3])
+            }
+        } catch {
+            print("讀取檔案時發生錯誤: \(error)")
+        }
+    }
+}
+
+
+#Preview {
+    ContentView()
 }
 ```
+
+![result](result.png)
+
+我們成功讀取並解析 CSV 檔案，並且將資料顯示在畫面上～
+
+
+# 本日小結
+
+今天就先到這裡，明天繼續！
