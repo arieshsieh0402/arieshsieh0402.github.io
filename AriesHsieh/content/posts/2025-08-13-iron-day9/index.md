@@ -15,132 +15,32 @@ comments: true
 
 Core Location 是 iOS 開發中用於處理地理位置相關功能的框架。今天的目標是了解如何使用 Core Location 來管理權限以及獲取用戶的當前位置。
 
-# CLLocationManager 權限管理
+# CLLocationManager 解析
 
-在使用 Core Location 時，首先需要處理用戶授權的問題。以下是基本步驟：
+## 授權
 
-1. **初始化 CLLocationManager**：創建一個 CLLocationManager 的實例。
-2. **請求權限**：根據需求請求 `whenInUse` 或 `always` 權限。
-3. **處理授權狀態**：監聽授權狀態的變化，並根據用戶的選擇進行相應處理。
+在使用 Core Location 時，首先需要處理用戶授權的問題，這也是我認為 iOS 開發有一點小複雜（惱人）的地方。
 
-範例程式碼：
+首先我們先在專案資料夾建立一個新的 .swift 檔 `LoactionManager.swift`。
+
+![addFile](addFile.png)
+
+可以在專案資料夾按快捷鍵 `cmd + N`，選擇 iOS -> Swift File。
+
+我們的目的是建立一個獨立的管理者 LocationManager，它會處理向使用者請求定位權限、接收座標更新、並將這些資訊即時「發布」給 SwiftUI 介面，讓畫面可以根據最新的位置或權限狀態自動更新。
 
 ```swift
 import CoreLocation
 
-class LocationManager: NSObject, CLLocationManagerDelegate {
-    private let locationManager = CLLocationManager()
-
-    override init() {
-        super.init()
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-    }
-
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .notDetermined:
-            print("權限尚未決定")
-        case .restricted, .denied:
-            print("權限被拒絕")
-        case .authorizedWhenInUse, .authorizedAlways:
-            print("權限已授予")
-        @unknown default:
-            print("未知的授權狀態")
-        }
-    }
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    // ....
 }
 ```
 
-# 獲取用戶當前位置
+- NSObject: 繼承自 NSObject。因為 Core Location 框架是基於早期 Objective-C 的設計模式。
 
-在獲取用戶位置之前，請確保已經獲得授權。以下是基本步驟：
+- ObservableObject: 遵循 ObservableObject 協定。這是一個來自 Combine 框架的宣告，表示這個物件可以被 SwiftUI 的 View 所「觀察」。一旦物件內被 `@Published` 標記的屬性發生改變，它會自動通知所有正在觀察它的 View 進行更新。
 
-1. **啟動位置更新**：調用 `startUpdatingLocation` 方法。
-2. **處理位置更新**：實現 `CLLocationManagerDelegate` 的 `didUpdateLocations` 方法來接收位置數據。
+- CLLocationManagerDelegate: 遵守 CLLocationManagerDelegate 協定。這表示我們的 LocationManager 類別有能力接收並處理來自 CLLocationManager 的各種事件回調，例如「權限狀態改變」或「位置更新」。
 
-範例程式碼：
-
-```swift
-extension LocationManager {
-    func startUpdatingLocation() {
-        locationManager.startUpdatingLocation()
-    }
-
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-        print("當前位置：\(location.coordinate.latitude), \(location.coordinate.longitude)")
-    }
-}
-```
-
-# 使用 Core Location
-
-以下是在 SwiftUI 中整合 Core Location 的邏輯，如何取得並顯示用戶的當前位置。
-
-## 範例程式碼
-
-```swift
-import SwiftUI
-import CoreLocation
-
-struct ContentView: View {
-    @State private var userLocation: CLLocationCoordinate2D?
-    private let locationManager = CLLocationManager()
-
-    var body: some View {
-        VStack {
-            if let location = userLocation {
-                Text("當前位置：\(location.latitude), \(location.longitude)")
-                    .padding()
-            } else {
-                Text("正在獲取位置...")
-                    .padding()
-            }
-        }
-        .onAppear {
-            setupLocationManager()
-        }
-    }
-
-    private func setupLocationManager() {
-        locationManager.delegate = LocationDelegate { location in
-            self.userLocation = location.coordinate
-        }
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-    }
-}
-
-class LocationDelegate: NSObject, CLLocationManagerDelegate {
-    private let onUpdate: (CLLocation) -> Void
-
-    init(onUpdate: @escaping (CLLocation) -> Void) {
-        self.onUpdate = onUpdate
-    }
-
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-        onUpdate(location)
-    }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("獲取位置失敗: \(error.localizedDescription)")
-    }
-}
-
-@main
-struct CoreLocationApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
-}
-```
-
-## 說明
-
-1. **ContentView**：直接在 SwiftUI 視圖中處理 Core Location 的邏輯，並顯示用戶的當前位置。
-2. **LocationDelegate**：用於處理 Core Location 的回調，將位置更新傳遞給視圖。
 
