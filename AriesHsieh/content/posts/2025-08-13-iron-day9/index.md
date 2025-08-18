@@ -3,7 +3,7 @@ title: "[Day 9] Core Location 基礎"
 date: 2025-08-13T13:22:43+08:00
 draft: true
 categories: ["iOS"]
-tags: ["Swift", "SwiftUI", "iOS", "Core Location"]
+tags: ["2025 iron", "Swift", "SwiftUI", "iOS", "Core Location"]
 description: ""
 showToc: true
 TocOpen: false

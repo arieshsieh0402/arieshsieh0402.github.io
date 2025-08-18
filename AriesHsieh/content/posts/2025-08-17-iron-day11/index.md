@@ -3,7 +3,7 @@ title: "[Day 11] Geofencing — 實作地理圍欄功能"
 date: 2025-08-17T14:24:14+08:00
 draft: true
 categories: ["iOS"]
-tags: ["Swift", "SwiftUI", "iOS", "Core Location", "MapKit", "Geofencing"]
+tags: ["2025 iron", "Swift", "SwiftUI", "iOS", "Core Location", "MapKit", "Geofencing"]
 description: ""
 showToc: true
 TocOpen: false
