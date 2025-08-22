@@ -62,27 +62,19 @@ Portfolio Backlog 與 Product Backlog 這兩個概念主要用在專案管理的
 
 - Issue:
 
-  - Issue 1: MVP 核心功能 - 里程定位與地圖顯示**
+  - MVP 核心功能 - 里程定位與地圖顯示**
     - 完成 App 最基本的功能：讀取資料、讓使用者搜尋單一里程點，並在地圖上顯示結果。
 
-  - Issue 2: UI/UX 前期規劃
+  - UI/UX 前期規劃
     - 進行 App 介面與使用者流程的初步設計。
 
-  - Issue 3: CI/CD 建設
+  - 單元測試
+    - 建立單元測試。
+
+  - CI/CD 建設
     - 規劃並最終建立自動化建置與測試的 CI/CD Pipeline。
 
-- Task:
-
-  - Task 1.1: 實作 CSV 資料讀取與解析
-  - Task 1.2: 為資料解析邏輯撰寫單元測試
-  - Task 1.3: 實作里程搜尋邏輯
-  - Task 1.4: 為里程搜尋邏輯撰寫單元測試
-  - Task 2.1: 手繪 App 畫面草圖 (Wireframe)
-  - Task 2.2: 繪製使用者流程圖
-  - Task 3.1: 撰寫基本的 build script（如 Xcode build 指令）
-  - Task 3.2: 設定自動化測試流程（單元測試/介面測試）
-  - Task 3.3: 建立自動化部署到 TestFlight 的流程
-  - Task 3.4: 驗證 CI/CD Pipeline 的運作並修正問題
+接著再就該 issue 建立預計要完成的 tasks。
 
 ## 建立 work item
 
