@@ -131,6 +131,82 @@ private var availableRoadNumbers: [String] {
 
 Good, 把列表整理出來了～
 
+# 建立基本 UI
+
+先把基本的搜尋框 UI 建構起來，使用 `TextField`，並指定 `.keyboardType` 為數字鍵盤，以及使用 `Button` 建立搜尋按鈕，並將兩者放入 `HStack` 水平堆疊。
+
+```swift
+struct ContentView: View {
+    @State private var category: RoadCategory = .highway
+    @State private var selectedRoad: String = ""
+    @State private var mileageInput: String = "" // 新增里程輸入的狀態變數
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // ... Picker 程式碼 ...
+
+            HStack {
+                TextField("請輸入里程數（例如 105.5）", text: $mileageText)
+                    .keyboardType(.decimalPad)
+                    .textFieldStyle(.roundedBorder)
+
+                Button("搜尋") {
+                    searchAction()
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(!canSearch)
+            }
+        }
+    }
+}
+```
+
+這邊為了增進使用者體驗以及避免誤按按鈕，我們可以用 `.disable` 修飾符，綁定 `canSearch` 計算屬性，在不允許/無法搜尋的情況禁用搜尋按鈕。
+
+```swift
+private var dataLoaded: Bool {
+    !dataManager.highwayMarkers.isEmpty || !dataManager.provincialMarkers.isEmpty
+}
+
+private var canSearch: Bool {
+    dataLoaded && !selectedRoad.isEmpty && Double(mileageText) != nil
+}
+```
+
+然後是地圖的部分：
+
+```swift
+struct ContentView: View {
+    // ...
+
+    @State private var cameraPosition: MapCameraPosition = .automatic
+
+    // ...
+
+    var body: some View {
+
+        // ...
+
+        Map(position: $cameraPosition) {
+
+        }
+        .mapControls {
+            MapUserLocationButton()
+            MapCompass() // 指北針
+            MapScaleView() // 比例尺
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .cornerRadius(12)
+
+        // ...
+    }
+}
+```
+
+基本的 UI 雛形出來了～
+
+![alt text](wholeUI.png)
+
 # 本日小結
 
 今天我們把里程搜尋功能的公路類型及道路列表給建立起來了。從定義 RoadCategory enum 開始，我們用 SwiftUI 的 Picker 和 SegmentedPickerStyle 快速搭建了公路類型與道路選擇的 UI。接著，我們透過一個計算屬性 (availableRoadNumbers)，結合 map 函式與一個處理排序和唯一性的輔助函式，成功地讓道路選單能根據使用者選擇的類型動態更新。
