@@ -3,7 +3,7 @@ title: "[Day 14] MVP 核心功能 - 里程搜尋邏輯（一）"
 date: 2025-08-21T13:55:31+08:00
 draft: true
 categories: ["iOS"]
-tags: ["2025 iron", "SwiftUI", "Azure", "DevOps", "CSV", "Unit test", "XCTest"]
+tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
 showToc: true
 TocOpen: false
