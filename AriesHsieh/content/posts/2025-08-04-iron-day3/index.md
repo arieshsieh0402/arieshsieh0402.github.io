@@ -185,7 +185,6 @@ git push -u origin main
 
 # 小結
 
-今天我們完成了 Azure DevOps 環境設定和 Xcode 專案的建立。
-下一篇我們將開始進行專案的基礎開發，並更深入地學習如何使用 Azure Repos 進行版本控制。
+今天我們完成了 Azure DevOps 環境設定和 Xcode 專案的建立。下一篇我們將開始進行專案的基礎開發。
 
 [^1]: https://www.toptal.com/developers/gitignore
