@@ -209,7 +209,7 @@ struct ContentView: View {
         VStack {
             Text("當前顏色：\(currentColor == .red ? "紅色" : "藍色")")
                 .font(.title)
-            ColorPanel(color: $currentColor)  // 傳遞『遙控器』
+            ColorPanel(color: $currentColor)  // 傳遞「遙控器」
         }
     }
 }
@@ -221,7 +221,7 @@ struct ContentView: View {
 
 這段程式碼實作了一個顏色切換器的功能，`ContentView` 維護一個可變的顏色狀態 `currentColor`，初始值為紅色 `.red`，畫面上用文字顯示當前顏色（紅色或藍色）。而我們使用 `ColorPanel` 這個元件來建立一個按鈕，該按鈕的背景色會隨 `currentColor` 變化，點擊按鈕時，會將顏色在紅色和藍色之間切換。
 
-父元鍵 `ContentView` 透過 `@State` 持有顏色狀態，並用 `$currentColor` 把綁定（Binding）傳給子元件 `ColorPanel`，這裡可以把 binding 想像成「遙控器」。`ColorPanel` 接收遙控器後，能讀取此遙控器的資料，並遙控改變父元件的 `currentColor`。按鈕的背景因此隨顏色狀態實時更新，文字也同步顯示變更後的顏色名稱。
+父元件 `ContentView` 透過 `@State` 持有顏色狀態，並用 `$currentColor` 把綁定（Binding）傳給子元件 `ColorPanel`，這裡可以把 binding 想像成「遙控器」。`ColorPanel` 接收遙控器後，能讀取此遙控器的資料，並遙控改變父元件的 `currentColor`。按鈕的背景因此隨顏色狀態實時更新，文字也同步顯示變更後的顏色名稱。
 
 
 ***為什麼我們需要這樣做？***
