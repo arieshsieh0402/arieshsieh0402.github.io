@@ -90,11 +90,9 @@ init() {
 
 ## 可自訂 label 的原生元件
 
-![alt text](image-2.png)
+以「選擇道路」這個功能為例，其實 SwiftUI 已經有很方便的元件可以用，就是 `Menu`。這個元件可以做出下拉選單，而且它的 `label` 可以放你想要的內容。
 
-以「選擇道路」這個元件為例，我們可以用 `Menu` 這個元件來達到接近上圖的效果。
-
-`Menu` 是 SwiftUI 提供可以建立下拉式選單的元件，而且我們可以在它的 `label` 裡面放我們想要的 view。
+舉個例子：
 
 ```swift
 Menu {
@@ -106,13 +104,13 @@ Menu {
 }
 ```
 
-在 `Menu` 這個下拉式選單中，我們依序對每條道路建立對應的 `Button`。
+這裡我們用 `ForEach` 幫每條道路都建立一個 `Button`，點下去就會選擇那條路。
+
+接下來，`Menu` 的 `label` 部分就可以自己設計外觀：
 
 ```swift
 Menu {
-
     // ...
-
 } label: {
     HStack {
         Text(selection)
@@ -124,13 +122,9 @@ Menu {
 }
 ```
 
-而在 `label` 裡，我們放入一個 `HStack` 容器來包含 `Text` 與 `Image`。`Spacer()` 是一個看不見但具有彈性的空白 view。Spacer 會自動填滿所有可用的剩餘空間。因為它被放在文字和圖片之間，所以它會把左邊的 Text 推到最左側，把右邊的 Image 推到最右側。
+這裡我用一個 `HStack`，左邊放選到的文字，右邊放一個下拉箭頭（用 SF Symbols 的 chevron.down），中間用 `Spacer()` 把兩邊撐開。這樣看起來就很像一般的下拉選單。
 
-下拉箭頭則選取 Apple 內建的 SF Symbols 圖示庫的 chevron.down。系統內建的 SF Symbols 種類很多，可以滿足絕大部分情況的需求。
-
-![alt text](image-3.png)
-
-接下來處理外框的部分。
+如果想讓它更像表單元件，可以加上一些修飾：
 
 ```swift
 HStack {
@@ -144,20 +138,28 @@ HStack {
 )
 ```
 
-1. .padding(.horizontal)
+- `.padding(.horizontal)`：讓內容左右有點空間，不會貼邊。
+- `.frame(height: 44)`：固定高度，看起來比較舒服。
+- `.background(...)`：加上一個有圓角的灰色邊框。
 
-在水平方向（也就是左右兩側）增加一些預設的空白距離，讓內容不會完全貼齊邊框，看起來更舒適。
+這樣就能快速做出一個有圓角方框、下拉箭頭的選單，外觀也很容易調整！
 
-2. .frame(height: 44)
+![alt text](image-5.png)
 
-將整個 HStack 的高度固定為 44 points，讓它看起來不會那麼窄。
+但仔細看～這邊框的灰色好像太灰了，在 `Color.` 裡面好像也找不到更淺的灰色。
 
-3. .background(...) + RoundedRectangle(cornerRadius: 8)
+這個時候我們可以使用 UIKit 的 UIColor 來幫忙！
 
-添加一個帶有邊框的圓角矩形背景層，圓角的半徑為 8 點
+我們可以這樣使用：
 
-4. .stroke(Color.gray)
+```swift
+.stroke(Color(UIColor.separator))
+```
 
-.stroke(...) 表示只繪製這個形狀的邊框，而不是用顏色填滿它，並用灰色來繪製這個圓角矩形的邊框線。
+這裡把 UIKit 的顏色（UIColor）轉成 SwiftUI 的 Color。UIColor.separator 是 Apple 定義的系統分隔線顏色，也就是在 UIKit 裡 UITableView 的 cell 分隔線、TextField 的邊框線，都是用這個顏色。
 
 ![alt text](image-4.png)
+
+這樣好看多了！
+
+接下來就是按照我們之前學過的方式，逐一將佈局建立起來。
