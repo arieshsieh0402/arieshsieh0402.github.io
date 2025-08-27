@@ -163,3 +163,44 @@ HStack {
 這樣好看多了！
 
 接下來就是按照我們之前學過的方式，逐一將佈局建立起來。
+
+![alt text](image-6.png)
+
+>上半部我比較喜歡卡片式的風格設計，因此與原本 AI 產出來的略有不同。
+
+# Tab bar
+
+在開始建立 tab bar 之前，我們先把原本全部塞在 ContentView 裡面的畫面獨立到另一個 MapView。
+
+首先，新增一個資料夾，選擇 SwiftUI View。
+
+![alt text](image-7.png)
+
+接著命名為 MapView，我們只要把目前建立好的畫面都貼到這個檔案裡面，接著回到 ContentView 將原本的程式碼清空，並加上：
+
+```swift
+struct ContentView: View {
+    @State private var selectedTab = 0
+
+    var body: some View {
+        TabView(selection: $selectedTab) {
+            MapView()
+                .tabItem {
+                    Label("搜尋", systemImage: "magnifyingglass")
+                }
+                .tag(0)
+        }
+        .toolbarBackground(Color.white, for: .tabBar) // 可自訂背景顏色
+    }
+}
+```
+
+MapView() 是原本包含所有的畫面，現在被乾淨地封裝成一個獨立的 View，並作為第一個 Tab 的內容。`.tabItem { ... }` 這個修飾符定義了 Tab Bar 上對應按鈕的外觀，包含圖示和文字。
+
+`.tag(...)` 為每個 Tab 設定一個唯一的標籤（通常是整數或字串），讓我們可以控制 Tab 的切換（透過 selectedTab 這個 @State 變數）。
+
+![alt text](image-8.png)
+
+這樣 tab bar 就建立好了～
+
+明天我們繼續把這個頁面完成！
