@@ -1,5 +1,5 @@
 ---
-title: "[Day 19] App 介面實作（一）"
+title: "[Day 19] 里程定位與地圖顯示（五）"
 date: 2025-08-22T10:55:20+08:00
 draft: true
 categories: []
@@ -168,9 +168,9 @@ HStack {
 
 >上半部我比較喜歡卡片式的風格設計，因此與原本 AI 產出來的略有不同。
 
-# Tab bar
+---
 
-在開始建立 tab bar 之前，我們先把原本全部塞在 ContentView 裡面的畫面獨立到另一個 MapView。
+現在程式碼的數量越來越多了，我們可以把原本全部塞在 ContentView 裡面的畫面獨立到另一個 MapView。
 
 首先，新增一個資料夾，選擇 SwiftUI View。
 
@@ -180,27 +180,9 @@ HStack {
 
 ```swift
 struct ContentView: View {
-    @State private var selectedTab = 0
-
     var body: some View {
-        TabView(selection: $selectedTab) {
-            MapView()
-                .tabItem {
-                    Label("搜尋", systemImage: "magnifyingglass")
-                }
-                .tag(0)
-        }
-        .toolbarBackground(Color.white, for: .tabBar) // 可自訂背景顏色
-    }
+        MapView()
 }
 ```
 
-MapView() 是原本包含所有的畫面，現在被乾淨地封裝成一個獨立的 View，並作為第一個 Tab 的內容。`.tabItem { ... }` 這個修飾符定義了 Tab Bar 上對應按鈕的外觀，包含圖示和文字。
-
-`.tag(...)` 為每個 Tab 設定一個唯一的標籤（通常是整數或字串），讓我們可以控制 Tab 的切換（透過 selectedTab 這個 @State 變數）。
-
-![alt text](image-8.png)
-
-這樣 tab bar 就建立好了～
-
-明天我們繼續把這個頁面完成！
+這樣 ContentView 就變成一個乾淨的入口，未來要新增新的頁面(Tab bar)時，更可以方便管理。

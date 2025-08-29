@@ -1,6 +1,6 @@
 ---
-title: "[Day 16] 為何 Picker 滑動時會亂跳？開立 bug 單吧！"
-date: 2025-08-22T10:55:07+08:00
+title: "[Day 16] 里程定位與地圖顯示（二）"
+date: 2025-08-21T13:55:31+08:00
 draft: true
 categories: ["iOS"]
 tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
@@ -11,148 +11,206 @@ searchHidden: false
 comments: true
 ---
 
-在我們昨天的進度中，我們建立了一個選擇道路的 Picker。但正當我興高采烈地測試時，發現了一個奇怪的 bug：當我快速滑動 Picker 的選項列表，手指一放開，列表的慣性滑動動畫到一半，它就自己重新整理了。
+今天要做另一個重要功能，我們要讓使用者能根據選擇的公路類型（國道／省道）和輸入的里程數，從預載的 CSV 資料中進行搜尋，並在地圖上精準標示出對應的地理位置。
 
-![alt text](viewBug.gif)
+![alt text](image-1.png)
+>可以在 Description 當中詳細描述這張 task 要完成些什麼事情，訂定「驗收標準（Acceptance Criteria）」。這是用來明確定義該 task 完成的條件和品質要求，確保開發人員和 user 對任務的完成有共同認知。即使是 Basic 架構，清楚的驗收標準依然能幫助提升開發效率和品質，避免誤解或遺漏需求。
 
-我的第一個反應是：「蝦米，這啥鬼？」我反覆檢查程式碼，Picker 的 `selection` 明明只綁定了 `@State private var selectedRoad`，在滑動過程中，這個變數的值也沒改變，為什麼它會自己跳回去？難道是 SwiftUI 的 bug？
+那就來解決掉這張 task 吧！
 
-# Troubleshooting
+---
 
-## SwiftUI View 的計算本質
+# 任務拆分
 
-經過一番研究（問 AI...XD），我發現問題的根源要回到 SwiftUI 對於 View 的本質：
->在 SwiftUI 裡，View 不是靜態的畫面，而是由「狀態 (State)」推導出來的結果。
+里程搜尋這個任務，可以拆分成三大區塊：
 
-我們透過以下簡單的例子再一次複習 SwiftUI 畫面更新的概念：
+
+1. 輸入
+    - 選擇國道／省道
+    - 選擇道路
+    - 里程輸入（公里）
+
+2. 搜尋
+    - 從 CSV 解析後的物件中，篩出該道路的所有里程點
+    - 轉為可比較的「公里數」再找最近距離
+    - 設定一個最大容忍差距（例如 2 公里），超過就視為查無合理結果
+
+3. 顯示
+    - 地圖置中到結果的區域
+    - 放上一個大頭針（顯示牌面或公里數）。
+
+但是，其實資料來源內容不太相同，解析規則要怎麼處理就會是個問題，例如國道牌面格式是「014K+800」，省道是「5.1」這種浮點數字串。重點是要將把人看得懂的牌面，轉成程式能比較的數字。哪些算、哪些不算，遇到異常如何處理，重點應該在這裡。
+
+至於搜尋邏輯採「最近距離」而不是「完全匹配」的原因很簡單：資料可能不完整。這是資料源的限制，只能說這是一種取捨。如果最近的點也超過 2 公里，就直接回「查無合理結果」，避免在資料有缺或輸入不準時，硬給一個很遠的點誤導使用者。若兩個點距離一樣近，可以選「里程較小」或「較大」，比較符合沿著里程增加方向搜尋的直覺。
+
+另外，搜尋邏輯的效能，先採取 linear time 就好，先把功能跑起來，目前手機端資料量還在可接受範圍內，未來若有進一步需要，效能不夠再談索引或空間資料結構，現階段主要先以完成 MVP 為主。
+
+
+---
+
+# 使用 Picker 建立道路選擇器
+
+## Enum 的運用
+
+我們目前的資料有國道與省道，因為之後的資料、邏輯都會個別綁定在這兩個類型上，因此我們可以用 enum 來列舉這兩個項目：
 
 ```swift
-struct CounterView: View {
-    @State private var count = 0
-
-    var body: some View {
-        VStack {
-            Text("Count: \(count)")
-            Button("加一") {
-                count += 1
-            }
-        }
-    }
+enum RoadCategory: String, CaseIterable, Identifiable {
+    case highway = "國道"
+    case provincial = "省道"
+    var id: String { rawValue }
 }
 ```
 
-這裡的 `body` 是一個 compute property，它的職責是根據目前的狀態 `count`，回傳一個描述 UI 的藍圖。輸入是 `count` 的值，輸出是一個新的 View，只要 count 改變，**整個 body**就會重新被計算，畫面就會跟著更新。這表示，只要一個 View 所依賴的任何一個「狀態來源」(@State, @StateObject 等) 發生改變，SwiftUI 就會重新執行這個 View 的 body 屬性，計算出一個新的 View 結構。
+這裡遵循了兩個特殊協定，CaseIterable 是為了讓 enum 能用 allCases 列出所有選項，方便做需要迭代的 Picker/Segment。而 Identifiable + var id 是讓每個選項有唯一識別，如此一來可以用 rawValue 當 id，可直接被 ForEach 使用，不必再加上 `id: \.self`。
 
-## 檢視專案程式碼
+## Picker / Segmented
 
-OK，複習了這個概念之後，回到我們專案的程式碼：
+有了 enum，可以先來做國道/省道的選項，通常會使用 Segment：
 
 ```swift
 struct ContentView: View {
-
-    @StateObject var locationManager = LocationManager() // 兇手
-
-    // ...
+    @State private var category: RoadCategory = .highway
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-
-            // ...
-
+            // 類型選擇
+            Picker("公路類型", selection: $category) {
+                ForEach(RoadCategory.allCases) { category in
+                    Text(category.rawValue).tag(category)
+                }
+            }
+            .pickerStyle(.segmented)
         }
     }
-    // ...
 }
 ```
 
-還記得我們在 Day 9 Core Location 基礎時有建立一個管理使用者位置的 `locationManager` 嗎？這個物件一直被保留在專案中（因為之後會用到 XD），也就是說，在我們的 ContentView 中，它透過 @StateObject 監聽著 locationManager 的一舉一動！有沒有要破案的感覺？我們來釐清一下流程：
+這裡使用的 SwiftUI 元件是 `Picker`，pickerStyle 選擇 segmented。在 Picker 當中，迭代 RoadCategory enum，並對每一個項目使用 `.tag`，這樣被綁定的 `category` 變數才會知道使用者選了哪一個選項。
 
-
-1. 使用者滑動 Picker：一個平順的滑動動畫正在進行。
-
-2. 背景狀態更新：就在此時，locationManager 在背景更新了 GPS 位置，這個更新通知了 ContentView。
-
-3. ContentView 收到通知後，立刻觸發 body 的重新計算，以反應這個新狀態。
-
-4. body 的重算，Picker 被銷毀重建，一個全新的 Picker 被建立出來。舊 Picker 正在執行的滑動動畫，就這樣被中斷並銷毀了。
-
-5. 新的 Picker 根據 $selectedRoad 目前的值（也就是滑動前的值）來設定自己的初始外觀，於是，在我們看來，就是 Picker 跳回最後選取的選項。
-
-為了證明這件事，只好無情地註解掉 `@StateObject var locationManager = LocationManager()`......
-
-![alt text](fix1.gif)
-
-Amazing! Bug 消失了～
-
-但是沒有人這樣做的啦，就算是 workaround 也太粗暴了。
-
-## 該獨立的 View 就讓它獨立
-
-正確的做法應該是，將 Picker 相關的邏輯，隔離到一個獨立 View 中，可以這樣做：
-
-1. 建立 RoadPickerView
+接著要建立一個道路選擇器讓使用者選擇例如哪一條省道，這裡也用 Picker 就好：
 
 ```swift
-struct RoadPickerView: View {
-    let title: String
-    let availableRoads: [String]
-    @Binding var selection: String
+@State private var selectedRoad: String = ""
+
+// ...
+
+Picker("選擇道路", selection: $selectedRoad) {
+    ForEach(availableRoadNumbers, id: \.self) { roadNumber in
+        Text(roadNumber).tag(roadNumber)
+    }
+}
+```
+
+這裡用 `availableRoadNumbers` 這個 computed property (計算屬性) 來動態產生道路清單。它會根據使用者選擇的 category，決定要處理國道還是省道的資料。
+
+```swift
+private var availableRoadNumbers: [String] {
+    switch category {
+    case .highway:
+        let all = dataManager.highwayMarkers.map { $0.roadNumber }
+        return uniqueSortedRoadNumbers(from: all)
+    case .provincial:
+        let all = dataManager.provincialMarkers.map { $0.roadNumber }
+        return uniqueSortedRoadNumbers(from: all)
+    }
+}
+```
+
+## Map 高階函式
+
+第一步，我們用 map 這個高階函式，把每一筆物件 map 成單純的 roadNumber 字串。這裡會回傳充滿重複資料的原始道路編號陣列。
+
+>補充說明：$0 是 closure 中第一個參數的簡寫。當 closure 只用到一個參數時，可以用 $0 取代命名參數。例如 .map { $0.roadNumber } 其實等同於 .map { item in item.roadNumber }。
+
+但這個原始陣列還不能直接用，所以最後，我們把這個列表交給 uniqueSortedRoadNumbers() 這個函式，回傳一個乾淨、唯一且排序正確的清單給 Picker 使用。
+
+![alt text](roadNumber1.png)
+
+![alt text](roadNumber2.png)
+
+Good, 把列表整理出來了～
+
+# 建立基本 UI
+
+先把基本的搜尋框 UI 建構起來，使用 `TextField`，並指定 `.keyboardType` 為數字鍵盤，以及使用 `Button` 建立搜尋按鈕，並將兩者放入 `HStack` 水平堆疊。
+
+```swift
+struct ContentView: View {
+    @State private var category: RoadCategory = .highway
+    @State private var selectedRoad: String = ""
+    @State private var mileageInput: String = "" // 新增里程輸入的狀態變數
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(title)
-            Picker(title, selection: $selection) {
-                ForEach(availableRoads, id: \.self) { roadNumber in
-                    Text(roadNumber).tag(roadNumber)
+        VStack(alignment: .leading, spacing: 12) {
+            // ... Picker 程式碼 ...
+
+            HStack {
+                TextField("請輸入里程數（例如 105.5）", text: $mileageText)
+                    .keyboardType(.decimalPad)
+                    .textFieldStyle(.roundedBorder)
+
+                Button("搜尋") {
+                    searchAction()
                 }
+                .buttonStyle(.borderedProminent)
+                .disabled(!canSearch)
             }
         }
     }
 }
 ```
 
-我們替道路選擇 Picker 建立一個獨立的 View，透過 @Binding 將選擇結果回傳。
-
-2. 在 ContentView 中使用它
+這邊為了增進使用者體驗以及避免誤按按鈕，我們可以用 `.disable` 修飾符，綁定 `canSearch` 計算屬性，在不允許/無法搜尋的情況禁用搜尋按鈕。
 
 ```swift
-// 在 ContentView 的 body 中
-// ...
-RoadPickerView(
-    title: "選擇道路",
-    availableRoads: availableRoadNumbers,
-    selection: $selectedRoad
-)
-// ...
+private var dataLoaded: Bool {
+    !dataManager.highwayMarkers.isEmpty || !dataManager.provincialMarkers.isEmpty
+}
+
+private var canSearch: Bool {
+    dataLoaded && !selectedRoad.isEmpty && Double(mileageText) != nil
+}
 ```
 
-如此一來，當 LocationManager 再次更新時，ContentView 的 body 依然會重算。但當它計算到 RoadPickerView(...) 這一行時，因為：
+然後是地圖的部分：
 
-- 傳入的 title 沒變。
-- 傳入的 availableRoads 沒變。
-- 傳入的 selection 也沒變。
+```swift
+struct ContentView: View {
+    // ...
 
-於是 SwiftUI 會跳過對 RoadPickerView 的更新，直接重用上一次的實例。如此一來 RoadPickerView 沒有被銷毀和重建，它內部的 Picker 動畫自然就能順利跑完，效果會跟剛剛把 LocationManager 註解掉的結果一樣（對，我懶得再錄影並且轉為 gif 了...真的請相信我有解掉 QQ）。
+    @State private var cameraPosition: MapCameraPosition = .automatic
 
-# Azure Board 開立 bug 單
+    // ...
 
-別忘了，我們這次開發有使用 Azure 作為管理工具，因此遇到了這個 bug，必須先開立 work item。
+    var body: some View {
 
-但是...我們的 process 選擇了 basic，只有 Epic, Issue 和 Task，沒有 Bug 單可以開啊～
+        // ...
 
-沒關係，我們參考微軟爸爸的[說明](https://learn.microsoft.com/en-us/azure/devops/boards/backlogs/manage-bugs?view=azure-devops)：
+        Map(position: $cameraPosition) {
 
->Bug work item types aren't available with the Basic process. The Basic process tracks bugs as Issues and is available when you create a new project from Azure DevOps Services or Azure DevOps Server 2020 or later versions.
+        }
+        .mapControls {
+            MapUserLocationButton()
+            MapCompass() // 指北針
+            MapScaleView() // 比例尺
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .cornerRadius(12)
 
-也就是說，你要開 bug 就用 issue 來開。好，聽微軟的建議，就開 issue。
+        // ...
+    }
+}
+```
 
-![alt text](image.png)
+基本的 UI 雛形出來了～
 
-開完之後就可以來改程式碼，改完後記得 commit message 加上此 issue 的編號，然後 push，並且開立 PR，merge 回 develop 分支。
->養成好習慣，此種解決 bug 的分支名稱，可以命名為 bugFix/<簡述你的 bug>
+![alt text](wholeUI.png)
 
 # 本日小結
 
-今天我們沒有前進去開發新功能，
-而是解決了一個在 SwiftUI 開發中容易踩的一個雷，讓我們對 SwiftUI 的運作原理有了更扎實的理解，
-並且在 Azure Boards 上以 Issue 的形式記錄了這個 bug，並在修復後將 bugFix 分支合併回 develop。這個過程確保了每一次的程式碼變更都有跡可循。
+今天我們把里程搜尋功能的公路類型及道路列表給建立起來了。從定義 RoadCategory enum 開始，我們用 SwiftUI 的 Picker 和 SegmentedPickerStyle 快速搭建了公路類型與道路選擇的 UI。接著，我們透過一個計算屬性 (availableRoadNumbers)，結合 map 函式與一個處理排序和唯一性的輔助函式，成功地讓道路選單能根據使用者選擇的類型動態更新。
+
+明天我們就要來填上核心的「搜尋」與「顯示」邏輯了，包含處理里程輸入，接收並驗證使用者輸入的公里數，並實作搜尋函式，處理不同里程格式的解析，找出最近的地理位置，最後在地圖上顯示結果。
+
+完成這幾步，我們最關鍵的功能就算大功告成了！

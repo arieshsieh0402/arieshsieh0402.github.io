@@ -62,11 +62,14 @@ Portfolio Backlog 與 Product Backlog 這兩個概念主要用在專案管理的
 
 - Issue:
 
-  - MVP 核心功能 - 里程定位與地圖顯示**
+  - UI/UX 前期規劃
+      - 進行 App 介面與使用者流程的初步設計。
+
+  - 里程定位與地圖顯示
     - 完成 App 最基本的功能：讀取資料、讓使用者搜尋單一里程點，並在地圖上顯示結果。
 
-  - UI/UX 前期規劃
-    - 進行 App 介面與使用者流程的初步設計。
+  - 地理圍欄通知功能
+    - 使用地理圍欄功能，追蹤選定標記點。
 
   - 單元測試
     - 建立單元測試。
@@ -104,18 +107,13 @@ Portfolio Backlog 與 Product Backlog 這兩個概念主要用在專案管理的
 
 建立 Task 也是相同邏輯，這邊就不再重複步驟。
 
-都建立完畢後，我們可以透過 Backlog 或是 board 模式來檢視我們的 work items 階層。
+>另一種建立 work item 的方式是，你可以在 Backlog 檢視模式當中，在欲建立 work item 的上階層，左方有個「+」號，這樣就不用再點進去上階層的 work item，並省去選擇 Parent 或 Child 的步驟。
+
+把接下來預計會處理到的 work items 建立完畢，我們可以透過 Backlog 或是 board 模式來檢視我們的 work items 階層。
+
 ![azureBoard6](azureBoard6.png)
 
 ![azureBoard7](azureBoard7.png)
-
-這邊補充說明，另一種建立 work item 的方式是，你可以在 Backlog 檢視模式當中，在欲建立 work item 的上階層，左方有個「+」號，這樣就不用再點進去上階層的 work item，並省去選擇 Parent 或 Child 的步驟。
-
-![azureBoard8](azureBoard8.png)
-
-把接下來預計會處理到的 work items 建立完畢。
-
-![azureBoard9](azureBoard9.png)
 
 # 本日小結
 

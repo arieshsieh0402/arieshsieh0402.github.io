@@ -1,9 +1,9 @@
 ---
-title: "[Day 14] MVP 核心功能 - 里程搜尋邏輯（一）"
-date: 2025-08-21T13:55:31+08:00
+title: "[Day 14] UI/UX 規劃 (二) - App 畫面草圖"
+date: 2025-08-22T10:55:16+08:00
 draft: true
 categories: ["iOS"]
-tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
+tags: ["2025 iron", "SwiftUI"]
 description: ""
 showToc: true
 TocOpen: false
@@ -11,206 +11,78 @@ searchHidden: false
 comments: true
 ---
 
-今天要做另一個重要功能，我們要讓使用者能根據選擇的公路類型（國道／省道）和輸入的里程數，從預載的 CSV 資料中進行搜尋，並在地圖上精準標示出對應的地理位置。
+# 前言
 
-![alt text](image-1.png)
->可以在 Description 當中詳細描述這張 task 要完成些什麼事情，訂定「驗收標準（Acceptance Criteria）」。這是用來明確定義該 task 完成的條件和品質要求，確保開發人員和 user 對任務的完成有共同認知。即使是 Basic 架構，清楚的驗收標準依然能幫助提升開發效率和品質，避免誤解或遺漏需求。
+今天我們來畫 App 畫面草圖，有了草圖，之後才有辦法按圖施工～
 
-那就來解決掉這張 task 吧！
+# 手繪 Wireframe or AI 工具？
 
----
+## Wireframe
 
-# 任務拆分
+一般來說，最初會從手繪草圖開始。你只需要一支筆和一張紙（或平板），可以快速畫出多種版本的設計，不滿意就立刻劃掉重來，幾乎沒有任何時間和金錢成本。
 
-里程搜尋這個任務，可以拆分成三大區塊：
+這個階段，我們完全不用考慮顏色、字體或精美的圖示。所有的精力都集中在「畫面上該放什麼元件？」、「按鈕應該在哪裡？」以及「使用者如何從 A 畫面跳到 B 畫面？」這些核心問題上。它能幫助你將腦中模糊的想法具體化，並檢查流程是否順暢。
 
+手繪草圖其實就是 Wireframe (線框圖) 的一種形式。Wireframe（線框圖）是 App 的低保真度設計原型，像是 App 的骨架或藍圖。它通常由簡單的線條和方框組成，用來呈現：
 
-1. 輸入
-    - 選擇國道／省道
-    - 選擇道路
-    - 里程輸入（公里）
+- 內容佈局：各個區塊（如圖片、文字、列表）在畫面中的位置。
+- 核心元件：包含哪些按鈕、輸入框、導航欄等。
+- 資訊架構：如何組織畫面上顯示的資訊。
 
-2. 搜尋
-    - 從 CSV 解析後的物件中，篩出該道路的所有里程點
-    - 轉為可比較的「公里數」再找最近距離
-    - 設定一個最大容忍差距（例如 2 公里），超過就視為查無合理結果
+Wireframe 主要著重於功能，而非視覺設計，同時也確保開發者和設計師在動手前對 App 的樣貌和流程有一致的理解。
 
-3. 顯示
-    - 地圖置中到結果的區域
-    - 放上一個大頭針（顯示牌面或公里數）。
+![alt text](IMG_0230.PNG)
 
-但是，其實資料來源內容不太相同，解析規則要怎麼處理就會是個問題，例如國道牌面格式是「014K+800」，省道是「5.1」這種浮點數字串。重點是要將把人看得懂的牌面，轉成程式能比較的數字。哪些算、哪些不算，遇到異常如何處理，重點應該在這裡。
+這張圖是我以前開發 App 時所畫過的草圖，使用的軟體是 Mockup，可以看到就是很大概的元件佈局以及流程。
 
-至於搜尋邏輯採「最近距離」而不是「完全匹配」的原因很簡單：資料可能不完整。這是資料源的限制，只能說這是一種取捨。如果最近的點也超過 2 公里，就直接回「查無合理結果」，避免在資料有缺或輸入不準時，硬給一個很遠的點誤導使用者。若兩個點距離一樣近，可以選「里程較小」或「較大」，比較符合沿著里程增加方向搜尋的直覺。
+## AI 工具的新可能
 
-另外，搜尋邏輯的效能，先採取 linear time 就好，先把功能跑起來，目前手機端資料量還在可接受範圍內，未來若有進一步需要，效能不夠再談索引或空間資料結構，現階段主要先以完成 MVP 為主。
+現在有一些 AI 工具，可以讓你用文字描述你想要的畫面，然後自動生成視覺設計稿或 Wireframe，甚至直接給你完整的 UI 設計。這類工具（如 Figma AI 等）非常適合作為初期發想的輔助，幫助你快速探索不同的設計方向。若你的 App 很簡單，或是只是想快速做個 MVP，那或許很適合直接請 AI 幫你產出畫面設計。
 
+但不論是自己全手動繪製，或是請 AI 產出，本質上你都還是得必須先透過自己思考你的 UI 佈局，畢竟請 AI 產，你還是得給予具一定精準度的提示，否則產出結果可能不如預期。
 
----
+而且，AI 產出的設計需要專業評估。你需要檢查功能完整性，是否涵蓋所有必要功能？流程是否符合使用者習慣？設計是否能實際開發實現？或是否符合你的 App 定位？
 
-# 使用 Picker 建立道路選擇器
+## 我的實際嘗試
 
-## Enum 的運用
+### 手繪先行
 
-我們目前的資料有國道與省道，因為之後的資料、邏輯都會個別綁定在這兩個類型上，因此我們可以用 enum 來列舉這兩個項目：
+先手繪基本流程，用平板快速勾勒頁面架構。
 
-```swift
-enum RoadCategory: String, CaseIterable, Identifiable {
-    case highway = "國道"
-    case provincial = "省道"
-    var id: String { rawValue }
-}
-```
+![alt text](IMG_0136.jpg)
 
-這裡遵循了兩個特殊協定，CaseIterable 是為了讓 enum 能用 allCases 列出所有選項，方便做需要迭代的 Picker/Segment。而 Identifiable + var id 是讓每個選項有唯一識別，如此一來可以用 rawValue 當 id，可直接被 ForEach 使用，不必再加上 `id: \.self`。
+- 搜尋畫面：國道/省道、道路選擇、地圖。
+- 追蹤畫面：這個頁面會顯示正在被監控的地理圍欄點，且包含：
+    - 里程標資訊： 例如「台19線 89公里」。
+    - 當前狀態： 顯示該點目前是「在範圍內」還是「在範圍外」。
+    - 停止追蹤/啟用追蹤功能
 
-## Picker / Segmented
+### AI 設計的評估與調整
 
-有了 enum，可以先來做國道/省道的選項，通常會使用 Segment：
+接著，試著請 AI 來產一份 UI 設計，看看成果如何。
 
-```swift
-struct ContentView: View {
-    @State private var category: RoadCategory = .highway
+我的使用方式跟工具是，先跟 Perplexity 溝通我的 App 功能與大概的架構，請他幫我產一份提示詞，再用該提示詞請 Figma AI 產 UI 設計。
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // 類型選擇
-            Picker("公路類型", selection: $category) {
-                ForEach(RoadCategory.allCases) { category in
-                    Text(category.rawValue).tag(category)
-                }
-            }
-            .pickerStyle(.segmented)
-        }
-    }
-}
-```
+>當然也可以直接請 AI 依據草圖產出 UI，但我自己的實驗結果，用文字敘述的方式會比較精確，但也可能跟我畫得不夠仔細有關，大家可以自己實驗看看囉。
 
-這裡使用的 SwiftUI 元件是 `Picker`，pickerStyle 選擇 segmented。在 Picker 當中，迭代 RoadCategory enum，並對每一個項目使用 `.tag`，這樣被綁定的 `category` 變數才會知道使用者選了哪一個選項。
+成果其實相當不錯，AI 確實能提供專業水準的視覺靈感。
 
-接著要建立一個道路選擇器讓使用者選擇例如哪一條省道，這裡也用 Picker 就好：
+![alt text](image.png)
 
-```swift
-@State private var selectedRoad: String = ""
+這是我第一次開發的時候使用 AI 來輔助產出 UI，我認為這種結合傳統 Wireframe 與 AI 工具的方式還不錯。先手繪基本流程，再透過 AI 輔助細部設計，用草圖或是具體的 prompt 讓 AI 產生視覺化設計，他甚至會增加你可能沒有想到的更好設計，最後再人工審查與調整。
 
-// ...
+我會從 AI 的設計中「借用」一些我覺得很棒的想法，例如它建議的色彩搭配、圓角的處理方式，或是元件的陰影細節。但最終的畫面，會以我自己的手繪稿為基礎進行調整與細化。
 
-Picker("選擇道路", selection: $selectedRoad) {
-    ForEach(availableRoadNumbers, id: \.self) { roadNumber in
-        Text(roadNumber).tag(roadNumber)
-    }
-}
-```
+重要的是，無論使用什麼工具，都要回到需求本質，即我們的 App 目前要解決的核心問題是什麼？例如：我可能不需要顯示路況，或是通知設定部分這比較像是 Android 的設定方式，道路資訊可能沒有這麼詳細的資訊（例如交流道名稱），我認為現階段可能也不需要再追蹤頁面提供新增追蹤地點的按鈕，我想要讓使用者流程盡量單純......等等。
 
-這裡用 `availableRoadNumbers` 這個 computed property (計算屬性) 來動態產生道路清單。它會根據使用者選擇的 category，決定要處理國道還是省道的資料。
-
-```swift
-private var availableRoadNumbers: [String] {
-    switch category {
-    case .highway:
-        let all = dataManager.highwayMarkers.map { $0.roadNumber }
-        return uniqueSortedRoadNumbers(from: all)
-    case .provincial:
-        let all = dataManager.provincialMarkers.map { $0.roadNumber }
-        return uniqueSortedRoadNumbers(from: all)
-    }
-}
-```
-
-## Map 高階函式
-
-第一步，我們用 map 這個高階函式，把每一筆物件 map 成單純的 roadNumber 字串。這裡會回傳充滿重複資料的原始道路編號陣列。
-
->補充說明：$0 是 closure 中第一個參數的簡寫。當 closure 只用到一個參數時，可以用 $0 取代命名參數。例如 .map { $0.roadNumber } 其實等同於 .map { item in item.roadNumber }。
-
-但這個原始陣列還不能直接用，所以最後，我們把這個列表交給 uniqueSortedRoadNumbers() 這個函式，回傳一個乾淨、唯一且排序正確的清單給 Picker 使用。
-
-![alt text](roadNumber1.png)
-
-![alt text](roadNumber2.png)
-
-Good, 把列表整理出來了～
-
-# 建立基本 UI
-
-先把基本的搜尋框 UI 建構起來，使用 `TextField`，並指定 `.keyboardType` 為數字鍵盤，以及使用 `Button` 建立搜尋按鈕，並將兩者放入 `HStack` 水平堆疊。
-
-```swift
-struct ContentView: View {
-    @State private var category: RoadCategory = .highway
-    @State private var selectedRoad: String = ""
-    @State private var mileageInput: String = "" // 新增里程輸入的狀態變數
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // ... Picker 程式碼 ...
-
-            HStack {
-                TextField("請輸入里程數（例如 105.5）", text: $mileageText)
-                    .keyboardType(.decimalPad)
-                    .textFieldStyle(.roundedBorder)
-
-                Button("搜尋") {
-                    searchAction()
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(!canSearch)
-            }
-        }
-    }
-}
-```
-
-這邊為了增進使用者體驗以及避免誤按按鈕，我們可以用 `.disable` 修飾符，綁定 `canSearch` 計算屬性，在不允許/無法搜尋的情況禁用搜尋按鈕。
-
-```swift
-private var dataLoaded: Bool {
-    !dataManager.highwayMarkers.isEmpty || !dataManager.provincialMarkers.isEmpty
-}
-
-private var canSearch: Bool {
-    dataLoaded && !selectedRoad.isEmpty && Double(mileageText) != nil
-}
-```
-
-然後是地圖的部分：
-
-```swift
-struct ContentView: View {
-    // ...
-
-    @State private var cameraPosition: MapCameraPosition = .automatic
-
-    // ...
-
-    var body: some View {
-
-        // ...
-
-        Map(position: $cameraPosition) {
-
-        }
-        .mapControls {
-            MapUserLocationButton()
-            MapCompass() // 指北針
-            MapScaleView() // 比例尺
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .cornerRadius(12)
-
-        // ...
-    }
-}
-```
-
-基本的 UI 雛形出來了～
-
-![alt text](wholeUI.png)
+透過這種「手繪為主，AI 為輔」的方式，我們既能保有自己對產品的核心掌控力，又能從 AI 的創造力中獲得啟發，我認為這是一個很高效的開發模式。
 
 # 本日小結
 
-今天我們把里程搜尋功能的公路類型及道路列表給建立起來了。從定義 RoadCategory enum 開始，我們用 SwiftUI 的 Picker 和 SegmentedPickerStyle 快速搭建了公路類型與道路選擇的 UI。接著，我們透過一個計算屬性 (availableRoadNumbers)，結合 map 函式與一個處理排序和唯一性的輔助函式，成功地讓道路選單能根據使用者選擇的類型動態更新。
+好了，到今天為止，我們 App 的藍圖已經相當完整了。
 
-明天我們就要來填上核心的「搜尋」與「顯示」邏輯了，包含處理里程輸入，接收並驗證使用者輸入的公里數，並實作搜尋函式，處理不同里程格式的解析，找出最近的地理位置，最後在地圖上顯示結果。
+我們有 Day 17 的使用者流程圖當作骨架，定義了使用者該怎麼走；今天又畫出了具體的畫面草圖，決定了畫面該長什麼樣，下一步當然就是——打開 Xcode，開始把這些設計用 SwiftUI 刻出來！
 
-完成這幾步，我們 MVP 最關鍵的功能就算大功告成了！
+明天，我們將正式從規劃階段進入實作階段。從最核心的「搜尋畫面」開始，將草圖上的元件，轉化為真實可互動的 SwiftUI 介面。終於要開始寫程式了！
+
+啊，對了！既然 UI/UX 的前期規劃都完成了，也別忘了回到我們的 Azure Boards (或你使用的任何專案管理工具)，把對應的這張 Issue closed 掉～

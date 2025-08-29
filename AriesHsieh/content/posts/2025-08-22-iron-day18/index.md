@@ -1,9 +1,9 @@
 ---
-title: "[Day 18] UI/UX 前期規劃 (二) - App 畫面草圖"
-date: 2025-08-22T10:55:16+08:00
+title: "[Day 18] 里程定位與地圖顯示（四）- Picker 滑動時會亂跳？開立 bug 單吧！"
+date: 2025-08-22T10:55:07+08:00
 draft: true
 categories: ["iOS"]
-tags: ["2025 iron", "SwiftUI"]
+tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
 showToc: true
 TocOpen: false
@@ -11,78 +11,148 @@ searchHidden: false
 comments: true
 ---
 
-# 前言
+在我們昨天的進度中，我們建立了一個選擇道路的 Picker。但正當我興高采烈地測試時，發現了一個奇怪的 bug：當我快速滑動 Picker 的選項列表，手指一放開，列表的慣性滑動動畫到一半，它就自己重新整理了。
 
-來到第 18 天了，今天我們來畫 App 畫面草圖，有了草圖，之後才有辦法按圖施工～
+![alt text](viewBug.gif)
 
-# 手繪 Wireframe or AI 工具？
+我的第一個反應是：「蝦米，這啥鬼？」我反覆檢查程式碼，Picker 的 `selection` 明明只綁定了 `@State private var selectedRoad`，在滑動過程中，這個變數的值也沒改變，為什麼它會自己跳回去？難道是 SwiftUI 的 bug？
 
-## Wireframe
+# Troubleshooting
 
-一般來說，最初會從手繪草圖開始。你只需要一支筆和一張紙（或平板），可以快速畫出多種版本的設計，不滿意就立刻劃掉重來，幾乎沒有任何時間和金錢成本。
+## SwiftUI View 的計算本質
 
-這個階段，我們完全不用考慮顏色、字體或精美的圖示。所有的精力都集中在「畫面上該放什麼元件？」、「按鈕應該在哪裡？」以及「使用者如何從 A 畫面跳到 B 畫面？」這些核心問題上。它能幫助你將腦中模糊的想法具體化，並檢查流程是否順暢。
+經過一番研究（問 AI...XD），我發現問題的根源要回到 SwiftUI 對於 View 的本質：
+>在 SwiftUI 裡，View 不是靜態的畫面，而是由「狀態 (State)」推導出來的結果。
 
-手繪草圖其實就是 Wireframe (線框圖) 的一種形式。Wireframe（線框圖）是 App 的低保真度設計原型，像是 App 的骨架或藍圖。它通常由簡單的線條和方框組成，用來呈現：
+我們透過以下簡單的例子再一次複習 SwiftUI 畫面更新的概念：
 
-- 內容佈局：各個區塊（如圖片、文字、列表）在畫面中的位置。
-- 核心元件：包含哪些按鈕、輸入框、導航欄等。
-- 資訊架構：如何組織畫面上顯示的資訊。
+```swift
+struct CounterView: View {
+    @State private var count = 0
 
-Wireframe 主要著重於功能，而非視覺設計，同時也確保開發者和設計師在動手前對 App 的樣貌和流程有一致的理解。
+    var body: some View {
+        VStack {
+            Text("Count: \(count)")
+            Button("加一") {
+                count += 1
+            }
+        }
+    }
+}
+```
 
-![alt text](IMG_0230.PNG)
+這裡的 `body` 是一個 compute property，它的職責是根據目前的狀態 `count`，回傳一個描述 UI 的藍圖。輸入是 `count` 的值，輸出是一個新的 View，只要 count 改變，**整個 body**就會重新被計算，畫面就會跟著更新。這表示，只要一個 View 所依賴的任何一個「狀態來源」(@State, @StateObject 等) 發生改變，SwiftUI 就會重新執行這個 View 的 body 屬性，計算出一個新的 View 結構。
 
-這張圖是我以前開發 App 時所畫過的草圖，使用的軟體是 Mockup，可以看到就是很大概的元件佈局以及流程。
+## 檢視專案程式碼
 
-## AI 工具的新可能
+OK，複習了這個概念之後，回到我們專案的程式碼：
 
-現在有一些 AI 工具，可以讓你用文字描述你想要的畫面，然後自動生成視覺設計稿或 Wireframe，甚至直接給你完整的 UI 設計。這類工具（如 Figma AI 等）非常適合作為初期發想的輔助，幫助你快速探索不同的設計方向。若你的 App 很簡單，或是只是想快速做個 MVP，那或許很適合直接請 AI 幫你產出畫面設計。
+```swift
+struct ContentView: View {
 
-但不論是自己全手動繪製，或是請 AI 產出，本質上你都還是得必須先透過自己思考你的 UI 佈局，畢竟請 AI 產，你還是得給予具一定精準度的提示，否則產出結果可能不如預期。
+    @StateObject var locationManager = LocationManager() // 兇手
 
-而且，AI 產出的設計需要專業評估。你需要檢查功能完整性，是否涵蓋所有必要功能？流程是否符合使用者習慣？設計是否能實際開發實現？或是否符合你的 App 定位？
+    // ...
 
-## 我的實際嘗試
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
 
-### 手繪先行
+            // ...
 
-先手繪基本流程，用平板快速勾勒頁面架構。
+        }
+    }
+    // ...
+}
+```
 
-![alt text](IMG_0136.jpg)
+還記得我們在 Day 9 Core Location 基礎時有建立一個管理使用者位置的 `locationManager` 嗎？這個物件一直被保留在專案中（因為之後會用到 XD），也就是說，在我們的 ContentView 中，它透過 @StateObject 監聽著 locationManager 的一舉一動！有沒有要破案的感覺？我們來釐清一下流程：
 
-- 搜尋畫面：國道/省道、道路選擇、地圖。
-- 追蹤畫面：這個頁面會顯示正在被監控的地理圍欄點，且包含：
-    - 里程標資訊： 例如「台19線 89公里」。
-    - 當前狀態： 顯示該點目前是「在範圍內」還是「在範圍外」。
-    - 停止追蹤/啟用追蹤功能
 
-### AI 設計的評估與調整
+1. 使用者滑動 Picker：一個平順的滑動動畫正在進行。
 
-接著，試著請 AI 來產一份 UI 設計，看看成果如何。
+2. 背景狀態更新：就在此時，locationManager 在背景更新了 GPS 位置，這個更新通知了 ContentView。
 
-我的使用方式跟工具是，先跟 Perplexity 溝通我的 App 功能與大概的架構，請他幫我產一份提示詞，再用該提示詞請 Figma AI 產 UI 設計。
+3. ContentView 收到通知後，立刻觸發 body 的重新計算，以反應這個新狀態。
 
->當然也可以直接請 AI 依據草圖產出 UI，但我自己的實驗結果，用文字敘述的方式會比較精確，但也可能跟我畫得不夠仔細有關，大家可以自己實驗看看囉。
+4. body 的重算，Picker 被銷毀重建，一個全新的 Picker 被建立出來。舊 Picker 正在執行的滑動動畫，就這樣被中斷並銷毀了。
 
-成果其實相當不錯，AI 確實能提供專業水準的視覺靈感。
+5. 新的 Picker 根據 $selectedRoad 目前的值（也就是滑動前的值）來設定自己的初始外觀，於是，在我們看來，就是 Picker 跳回最後選取的選項。
+
+為了證明這件事，只好無情地註解掉 `@StateObject var locationManager = LocationManager()`......
+
+![alt text](fix1.gif)
+
+Amazing! Bug 消失了～
+
+但是沒有人這樣做的啦，就算是 workaround 也太粗暴了。
+
+## 該獨立的 View 就讓它獨立
+
+正確的做法應該是，將 Picker 相關的邏輯，隔離到一個獨立 View 中，可以這樣做：
+
+1. 建立 RoadPickerView
+
+```swift
+struct RoadPickerView: View {
+    let title: String
+    let availableRoads: [String]
+    @Binding var selection: String
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(title)
+            Picker(title, selection: $selection) {
+                ForEach(availableRoads, id: \.self) { roadNumber in
+                    Text(roadNumber).tag(roadNumber)
+                }
+            }
+        }
+    }
+}
+```
+
+我們替道路選擇 Picker 建立一個獨立的 View，透過 @Binding 將選擇結果回傳。
+
+2. 在 ContentView 中使用它
+
+```swift
+// 在 ContentView 的 body 中
+// ...
+RoadPickerView(
+    title: "選擇道路",
+    availableRoads: availableRoadNumbers,
+    selection: $selectedRoad
+)
+// ...
+```
+
+如此一來，當 LocationManager 再次更新時，ContentView 的 body 依然會重算。但當它計算到 RoadPickerView(...) 這一行時，因為：
+
+- 傳入的 title 沒變。
+- 傳入的 availableRoads 沒變。
+- 傳入的 selection 也沒變。
+
+於是 SwiftUI 會跳過對 RoadPickerView 的更新，直接重用上一次的實例。如此一來 RoadPickerView 沒有被銷毀和重建，它內部的 Picker 動畫自然就能順利跑完，效果會跟剛剛把 LocationManager 註解掉的結果一樣（對，我懶得再錄影並且轉為 gif 了...真的請相信我有解掉 QQ）。
+
+# Azure Board 開立 bug 單
+
+別忘了，我們這次開發有使用 Azure 作為管理工具，因此遇到了這個 bug，必須先開立 work item。
+
+但是...我們的 process 選擇了 basic，只有 Epic, Issue 和 Task，沒有 Bug 單可以開啊～
+
+沒關係，我們參考微軟爸爸的[說明](https://learn.microsoft.com/en-us/azure/devops/boards/backlogs/manage-bugs?view=azure-devops)：
+
+>Bug work item types aren't available with the Basic process. The Basic process tracks bugs as Issues and is available when you create a new project from Azure DevOps Services or Azure DevOps Server 2020 or later versions.
+
+也就是說，你要開 bug 就用 issue 來開。好，聽微軟的建議，就開 issue。
 
 ![alt text](image.png)
 
-這是我第一次開發的時候使用 AI 來輔助產出 UI，我認為這種結合傳統 Wireframe 與 AI 工具的方式還不錯。先手繪基本流程，再透過 AI 輔助細部設計，用草圖或是具體的 prompt 讓 AI 產生視覺化設計，他甚至會增加你可能沒有想到的更好設計，最後再人工審查與調整。
-
-我會從 AI 的設計中「借用」一些我覺得很棒的想法，例如它建議的色彩搭配、圓角的處理方式，或是元件的陰影細節。但最終的畫面，會以我自己的手繪稿為基礎進行調整與細化。
-
-重要的是，無論使用什麼工具，都要回到需求本質，即我們的 App 目前要解決的核心問題是什麼？例如：我可能不需要顯示路況，或是通知設定部分這比較像是 Android 的設定方式，道路資訊可能沒有這麼詳細的資訊（例如交流道名稱），我認為現階段可能也不需要再追蹤頁面提供新增追蹤地點的按鈕，我想要讓使用者流程盡量單純......等等。
-
-透過這種「手繪為主，AI 為輔」的方式，我們既能保有自己對產品的核心掌控力，又能從 AI 的創造力中獲得啟發，我認為這是一個很高效的開發模式。
+開完之後就可以來改程式碼，改完後記得 commit message 加上此 issue 的編號，然後 push，並且開立 PR，merge 回 develop 分支。
+>養成好習慣，此種解決 bug 的分支名稱，可以命名為 bugFix/<簡述你的 bug>
 
 # 本日小結
 
-好了，到今天為止，我們 App 的藍圖已經相當完整了。
-
-我們有 Day 17 的使用者流程圖當作骨架，定義了使用者該怎麼走；今天又畫出了具體的畫面草圖，決定了畫面該長什麼樣，下一步當然就是——打開 Xcode，開始把這些設計用 SwiftUI 刻出來！
-
-明天，我們將正式從規劃階段進入實作階段。從最核心的「搜尋畫面」開始，將草圖上的元件，轉化為真實可互動的 SwiftUI 介面。終於要開始寫程式了！
-
-啊，對了！既然 UI/UX 的前期規劃都完成了，也別忘了回到我們的 Azure Boards (或你使用的任何專案管理工具)，把對應的這張 Issue closed 掉～
+今天我們沒有前進去開發新功能，
+而是解決了一個在 SwiftUI 開發中容易踩的一個雷，讓我們對 SwiftUI 的運作原理有了更扎實的理解，
+並且在 Azure Boards 上以 Issue 的形式記錄了這個 bug，並在修復後將 bugFix 分支合併回 develop。這個過程確保了每一次的程式碼變更都有跡可循。

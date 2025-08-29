@@ -1,9 +1,9 @@
 ---
-title: "[Day17] UI/UX 前期規劃 (一) - 使用者流程"
-date: 2025-08-22T10:55:12+08:00
+title: "[Day 17] 里程定位與地圖顯示（三）"
+date: 2025-08-22T09:06:35+08:00
 draft: true
 categories: ["iOS"]
-tags: ["2025 iron", "SwiftUI"]
+tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
 showToc: true
 TocOpen: false
@@ -11,104 +11,224 @@ searchHidden: false
 comments: true
 ---
 
-# 前言
+今天要來填上核心的「搜尋」與「顯示」邏輯了，包含處理里程輸入，接收並驗證使用者輸入的公里數，並實作搜尋函式，處理不同里程格式的解析，找出最近的地理位置，最後在地圖上顯示結果。
 
-不知不覺已經來到第 17 天！在我們開始繪製使用者介面之前，我們將先聚焦在使用者流程 (User Flow)。
+---
 
-這就好比建築師在蓋房子前，不會先煩惱沙發要買什麼顏色，而是會先畫出整棟建築的平面圖與動線規劃。使用者流程圖幫助我們釐清，使用者為了達成某個特定目標，需要依序經過哪些畫面、點擊哪些按鈕。
+# 實作搜尋邏輯
 
-預先規劃好完整的流程，再針對每一個環節去設計對應的畫面，才能確保 App 的功能環環相扣，既不會做出無用的設計，也不會遺漏掉關鍵的操作步驟。
+## filter 高階函式
 
-# 什麼是使用者流程圖？
+在搜尋按鈕按下之後，我們要執行的是 `searchAction()` 這個函式。第一步，透過 `filter` 此另一個 Swift 的高階函式來篩選我們要的資料：
 
-使用者流程圖（User Flow Diagram）它描繪了使用者為達成特定目標時，從進入 App 開始到完成任務的完整路徑。流程圖聚焦在：
+```swift
+private func searchAction() {
+    let candidates = dataManager.highwayMarkers.filter { $0.roadNumber == selectedRoad }
+}
+```
 
-1. 使用者如何在不同畫面/功能之間移動
+filter 函式的呼叫，它需要一個 closure 作為參數，這個 closure 就是你的「篩選條件」。filter 會依序將 highwayMarkers 陣列中的每一個元素傳入這個 closure。Closure 會回傳一個布林值，如果 closure 對某個元素回傳 true，filter 就會把這個元素保留下來，放進新的陣列；如果回傳 false，這個元素就會被丟棄。
 
-2. 每個操作觸發的系統反應與後續分支
+因此，`{ $0.roadNumber == selectedRoad }` 表示，目前正在檢查的這個物件，它的 roadNumber 是否等於使用者選擇的 selectedRoad？假設要搜尋的是國道 1 號，最後 filter 會回傳一個新的陣列 candidates，裡面只包含所有 roadNumber 是國道 1號的 HighwayMileageMarker 物件。這個 candidates 陣列就是我們接下來要進行里程搜尋的目標資料。
 
-3. 各種異常或錯誤狀況下的備援流程
 
-4. 決策點與不同選擇導致的結果
+## 泛型、Closure 與 KeyPath
 
-它與 Wireframe 不同在於，流程圖專注於流程的邏輯性與連貫性，而 Wireframe 則專注於畫面的佈局與排版。
+在這個 App ，核心功能是根據使用者輸入的里程，從資料中找出最接近的地理位置。然而，國道省道的資料來源、格式不盡相同。例如，國道的里程牌面可能是「014K+800」，而省道則是「5.1」這樣的浮點數。如果為兩者各寫一套搜尋邏輯，會導致程式碼大量重複且難以維護。為了解決這個問題，因此可以設計一個通用的搜尋函式。
 
-## 流程圖的價值
+為了達到這個目的，必須運用到 Swift 的幾個功能：
 
-當你在規劃流程圖時，你會用使用者的角度去看待操作過程，同時會意識到過程中的可能的瑕疵或邏輯不順的地方。如果沒有事先思考就開始開發，等你開發到一半發現有問題時，此時修改的成本可能會相當地高，最慘甚至可能導致整個功能必需重新設計。
+1. 泛型 (Generics)：我們用泛型 `<T>` 來定義這個函式，使其不限定處理特定的資料型別。這讓函式的宣告看起來像這樣，其中 `T` 可以是任何我們想傳入的資料型別：
 
-而從另一個角度來看，事先進行這個過程，同時也會思考如何提升使用者體驗，確保每個使用者路徑都有清楚的起點、過程與結果，讓使用者在使用 App 時感到順暢自然。
+```swift
+private func findClosestMarker<T>(
+    in items: [T],
+    targetMile: Double,
+    mileExtractor: (T) -> Double?,
+    titleExtractor: (T) -> String,
+    latKey: KeyPath<T, Double>,
+    lonKey: KeyPath<T, Double>,
+    maxAllowedDiffKm: Double? = nil
+) -> // ... 回傳值
+```
 
-## 工具 - draw.io
+這樣一來，不論傳入的是國道標記陣列還是省道標記陣列都能處理。
 
-我通常使用 [draw.io](https://www.drawio.com/) 這個工具來建立流程圖，它是免費、功能完整且支援多種匯出格式的流程圖工具。流程圖的圖示皆有代表的意義，例如：
+2. Closure 與 KeyPath 作為參數：
 
-- 圓角矩形（開始/結束）：代表流程的起點與終點
+現在函式本身不認得特定資料結構，我們就必須在呼叫它時，把「如何解析資料」的方法當作參數傳遞進去。
 
-- 矩形（畫面/動作）：代表具體的畫面或使用者動作
+```swift
+mileExtractor: (T) -> Double?
+```
 
-- 菱形（決策點）：代表需要判斷或選擇的節點
+我們傳入一個閉包，這個閉包知道如何將特定格式（如 "014K+800"）轉換成可供比對的 `Double?` 格式公里數。
 
-- 箭頭（流向）：表示流程的方向與順序
+```swift
+// 國道
+let result = findClosestMarker(
+    // ...
 
-## 規劃專案 App 的流程
+    mileExtractor: { parseHighwayMile(display: $0.display) },
 
-在我們的 App 構想中，包含了地理圍欄通知、搜尋歷程等功能，但在本篇文章中，我們將以核心功能公路里程搜尋為例，從頭到尾走一遍使用者流程圖的規劃過程。掌握了這個概念，實作其他功能的流程圖時，原理都是一樣的。
+    // ...
+)
 
-### 範例：搜尋特定里程點
+// 省道
+let result = findClosestMarker(
+    // ...
 
-App 最基本的功能流程，這裡我就使用 draw.io 來繪製：
+    mileExtractor: { parseProvincialMile(display: $0.content) },
 
-![alt text](image.png)
+    // ...
+)
+```
 
-可以輸出成圖片：
+這樣我們就可以依據不同的情況，分別傳入 `parseHighwayMile()` 或 `parseProvincialMile()` 的邏輯。
 
-![alt text](flow.png)
+同樣地，我們也用 `KeyPath` 傳入取得緯度 (`latKey`) 和經度 (`lonKey`) 的路徑，告訴函式請用 KeyPath 去 T 身上找到那個 Double 型別的屬性，從而函式就知道要去哪裡找座標資料。
 
-流程從綠色的「開始」到紅色的「結束」。頁面與動作 (矩形)則代表使用者看到的畫面或執行的操作。抉擇點 (菱形)則為使用者需要做選擇，且不同的選擇會導向不同結果的地方。
+```swift
+// 定義
+private func findClosestMarker<T>(
+    // ...
 
-1. 開始 → 主畫面
+    latKey: KeyPath<T, Double>,
+    lonKey: KeyPath<T, Double>,
 
-使用者打開 App，看到地圖及上方的搜尋欄。
+    // ...
+) -> (title: String, coordinate: CLLocationCoordinate2D, mile: Double, diff: Double)? {
 
-2. 點擊「道路類型」→ 抉擇：國道或省道？
+    for item in items {
+        // ..
 
-這是使用者的第一個岔路，根據使用者的選擇（國道／省道），系統會載入不同的道路列表。
+        // 使用 KeyPath 在泛型物件當中找尋 wgs84Lat, wgs84Lon
+        let coord = CLLocationCoordinate2D(latitude: item[keyPath: latKey], longitude: item[keyPath: lonKey])
 
-3. 顯示列表 → 道路選擇 + 里程輸入
+        // 其餘處理最近里程比較、差距過遠之門檻檢查等邏輯
+    }
 
-使用者從列表中選定一條具體的道路（如：國道一號），並在下方的欄位輸入里程數字。
+    // ..
+}
 
-4. 點擊搜尋 → 抉擇：搜尋結果是否存在？
+// 呼叫
+let result = findClosestMarker(
+    // ...
 
-系統拿著「道路編號」和「里程」去跟資料做比對是否存在：
+    latKey: \.wgs84Lat,
+    lonKey: \.wgs84Lon,
 
-- 是：順利地走向了成功路徑。
+    // ...
+)
+```
 
-- 否：使用者會被引導至另一條「查無結果」的路徑，接著便結束流程。
+最後，`findClosestMarker()` 會回傳最匹配的結果。
 
-5. 地圖頁面（顯示標記點）
+## 以頭針顯示於地圖
 
-若搜尋成功，App 會自動將地圖移動到目標位置，並在上面放置一個醒目的圖標 (Pin)。到這一步，App 的核心任務已經完成。使用者已經得到了他想要的視覺化結果。
+得到結果後要做的事情是將它顯示在地圖上。我們取得結果的名稱（里程牌面）及所在經緯度，首先要先更新地圖位置：
 
-6. 可選的「延伸路徑」
+```swift
+struct MarkerPin: Identifiable {
+    let id = UUID()
+    let title: String
+    let coordinate: CLLocationCoordinate2D
+}
 
-從「地圖頁面（顯示標記點）」之後，設計了兩層可選的延伸互動：
+private func showOnMap(title: String, coordinate: CLLocationCoordinate2D) {
+    pins = [MarkerPin(title: title, coordinate: coordinate)]
 
-7. 抉擇：使用者點擊標記？
+    withAnimation {
+        cameraPosition = .region(
+            MKCoordinateRegion(
+                center: coordinate,
+                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            )
+        )
+    }
+}
+```
 
-- 否：使用者可能看一眼就滿足了，流程在此就可以結束。
+使用 `withAnimation` 可以讓地圖平移效果更滑順。我們把新的 region 塞到 `cameraPosition` 這個狀態變數，綁定他的 `Map()` 物件就會自動更新：
 
-- 是：使用者想知道更多資訊，於是我們進入下一步。
+```swift
+Map(position: $cameraPosition) {
+    ForEach(pins) { pin in
+        Annotation("\(pin.title)\(pin.coordinate)", coordinate: pin.coordinate) {
+            Image(systemName: "mappin.and.ellipse")
+                .font(.title)
+                .foregroundStyle(.red)
+                .shadow(radius: 2)
+    }
+}
+.mapControls {
+    MapUserLocationButton()
+    MapCompass()
+    MapScaleView()
+}
+.frame(maxWidth: .infinity, maxHeight: .infinity)
+.cornerRadius(12)
+```
 
-8. 顯示標記資訊 → 抉擇：用 Apple Map 開啟？
+`Annotation` 是大頭針物件，我們讓他的標題顯示為牌面名稱及經緯度，然後給他一張系統圖示，跟簡單設計一下外觀。`.mapControls` 是附加於地圖上的一些工具，例如 `MapUserLocationButton` 是使用者定位按鈕，`MapCompass` 是指北針，而 `MapScaleView` 是比例尺。想了解更多可參考[官方說明](https://developer.apple.com/documentation/swiftui/view/mapcontrols(_:))。
 
-畫面上會彈出一個小視窗顯示詳細資料，並提供一個「在 Apple Map 中顯示」的按鈕。
+## 測試功能
 
-- 否：使用者看完資訊就關閉視窗，流程結束。
+經過一番努力，搜尋邏輯的核心功能終於完成。是時候見證成果了！
+我們將 App build and run，模擬一次完整的使用者操作流程，驗證這套系統是否能準確地將抽象的里程數字，對應到現實世界中的具體地理位置。
 
-- 是：App 會跳轉至 Apple Maps，開始導航，流程也在此結束。
+1. 公路類型：選擇「省道」。
+2. 道路：從列表中選擇「台19線」。
+3. 里程：在輸入框中鍵入「89」。
+
+![alt text](IMG_7034.PNG)
+
+
+按下「搜尋」按鈕後，App 畫面上的地圖作出了反應，地圖中心平移到一個新的位置，並在上面標示出一個紅色的圖釘，顯示著「89K」的字樣。
+第一步成功了！但這只是程式內的驗證，為了確認這個結果是否精準無誤，將 App 找到的經緯度座標，複製並貼到 Google Maps 中查看街景服務。
+
+![alt text](IMG_7035.PNG)
+
+在畫面中央，一支熟悉的綠色路牌清晰可見，上面印著的正是——「台 19 線 89 公里」（我朝思暮想的 1989 XD）。
+
+這證明了我們的資料解析、篩選邏輯和搜尋演算法是正確且有效的！
+
+# Pull Request
+
+我們現在已經完成了一個 Issue，也是時候可以將現在開發的分支合併回 develop 了。
+
+我們到 Azure 的 Repo 的 Pull Request 頁面。
+
+![alt text](pr1.png)
+
+接著點選 New pull request。
+
+![alt text](pr2.png)
+
+你可以在這裡輸入基本的標題、描述，也可以關聯相關的 work item，這樣日後回頭才會更清楚這次的 PR 做了什麼事情。好了之後就按 Create。
+
+![alt text](pr3.png)
+
+這邊會幫你審查程式碼有無衝突，沒衝突的話就按右上角的 Completed。
+
+![alt text](pr4.png)
+
+這裡可以選擇合併模式，這會決定你的線圖長什麼樣子。也可以勾選合併後自動完成相關的 work item，以及刪除被合併的分支。
+
+選好後就下一步。
+
+![alt text](pr5.png)
+
+這樣就合併完成了。
 
 # 本日小結
 
-以上就是我們 App 核心功能的完整使用者流程圖。把它詳細地畫出來之後，接下來要怎麼動工，整個開發的輪廓就清晰多了。在規劃其餘功能的流程圖，概念基本上是差不多的，這裡就不一一畫給大家看囉！我們明天就進入 UI 的部分～
+今天，我們成功地完成了 MVP 關鍵的核心功能：
+
+我們利用 filter 高階函式，從資料庫中精準地篩選出使用者指定道路的所有里程點，為後續的搜尋做好準備；面對國道與省道不同的里程格式，我們沒有選擇重複撰寫兩套邏輯，而是透過 Swift 泛型 (Generics)、閉包 (Closure) 與 KeyPath，設計了一個可重用的 findClosestMarker 函式，將如何解析里程、如何取得座標等與特定資料結構相關的任務，交由呼叫端以參數的形式傳入。
+
+搜尋到結果後，我們利用 MapKit 的 Annotation，將最接近的里程點以大頭針的形式清晰地標示在地圖上，並透過 withAnimation 讓地圖的平移動畫更加滑順自然。
+
+最後，我們也完成了一次完整的開發循環，將實現功能的 feature 分支透過 Pull Request (PR) 合併回 develop 主幹，並關聯了對應的 Work Item。這不僅是程式碼的合併，也代表著一個需求的完整交付。
+
+完成這項核心功能後，我們的 App 已經從一個靜態的資料瀏覽器，蛻變成一個真正能解決問題的實用工具。下一步，我們將繼續完善周邊功能與使用者體驗，讓這個 MVP 更加完整。

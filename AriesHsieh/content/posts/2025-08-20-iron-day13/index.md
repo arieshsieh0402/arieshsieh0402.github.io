@@ -1,9 +1,9 @@
 ---
-title: "[Day 13] MVP 核心功能 - 里程定位與地圖顯示"
-date: 2025-08-20T07:26:27+08:00
+title: "[Day 13] UI/UX 規劃 (一) - 使用者流程"
+date: 2025-08-22T10:55:12+08:00
 draft: true
 categories: ["iOS"]
-tags: ["2025 iron", "SwiftUI", "Azure", "DevOps", "CSV"]
+tags: ["2025 iron", "SwiftUI"]
 description: ""
 showToc: true
 TocOpen: false
@@ -13,170 +13,102 @@ comments: true
 
 # 前言
 
-昨天我們在 Azure Board 上把目前所需的 work items 開立完畢，今天就正式要進入我們這次 App 的實作範圍了！
+在我們開始繪製使用者介面之前，我們將先聚焦在使用者流程 (User Flow)。
 
-第一個要進行的 issue 是「MVP 核心功能 - 里程定位與地圖顯示」，因為這次我想要實作的功能，應該說仰賴政府公開的這份資料能否正確讀取跟運用...不然就沒戲唱了XD
->記得把要開始做的 work item 的 state 從 To Do 改為 Doing。
+這就好比建築師在蓋房子前，不會先煩惱沙發要買什麼顏色，而是會先畫出整棟建築的平面圖與動線規劃。使用者流程圖幫助我們釐清，使用者為了達成某個特定目標，需要依序經過哪些畫面、點擊哪些按鈕。
 
-先用 VS code 來看一下這兩份 CSV(省道與國道)長什麼樣子：
+預先規劃好完整的流程，再針對每一個環節去設計對應的畫面，才能確保 App 的功能環環相扣，既不會做出無用的設計，也不會遺漏掉關鍵的操作步驟。
 
+# 什麼是使用者流程圖？
 
+使用者流程圖（User Flow Diagram）它描繪了使用者為達成特定目標時，從進入 App 開始到完成任務的完整路徑。流程圖聚焦在：
 
-我們現在的目標是，讀取 CSV 檔案，然後將其轉成我們定義好的物件類型。
+1. 使用者如何在不同畫面/功能之間移動
 
+2. 每個操作觸發的系統反應與後續分支
 
-# Git 分支規劃
+3. 各種異常或錯誤狀況下的備援流程
 
-- 從 main 分出 develop
-- 再從 develop 分出 feature/parse-csv 分支
-- 於 feature/parse-csv 分支進行開發
+4. 決策點與不同選擇導致的結果
 
-![alt text](image-1.png)
+它與 Wireframe 不同在於，流程圖專注於流程的邏輯性與連貫性，而 Wireframe 則專注於畫面的佈局與排版。
 
-# 資料結構
+## 流程圖的價值
 
-依據 CSV 欄位，定義我們需要的結構：
+當你在規劃流程圖時，你會用使用者的角度去看待操作過程，同時會意識到過程中的可能的瑕疵或邏輯不順的地方。如果沒有事先思考就開始開發，等你開發到一半發現有問題時，此時修改的成本可能會相當地高，最慘甚至可能導致整個功能必需重新設計。
 
-```swift
-struct ProvincialMileageMarker {
-    let roadNumber: String      // 公路編號
-    let county: String          // 隸屬縣市
-    let wgs84Lon: Double        // 坐標-E-WGS84
-    let wgs84Lat: Double        // 坐標-N-WGS84
-    let township: String        // 隸屬鄉鎮
-    let location: String        // 設置位置
-    let content: String         // 牌面內容
-    let condition: String       // 現況
-    let direction: String       // 牌面方向
-}
+而從另一個角度來看，事先進行這個過程，同時也會思考如何提升使用者體驗，確保每個使用者路徑都有清楚的起點、過程與結果，讓使用者在使用 App 時感到順暢自然。
 
-struct HighwayMileageMarker {
-    let roadNumber: String      // 國道編號
-    let county: String          // 隸屬縣市
-    let wgs84Lon: Double        // 坐標X-WGS84
-    let wgs84Lat: Double        // 坐標Y-WGS84
-    let display: String         // 牌面內容
-    let direction: String       // 方向與備註
-}
-```
+## 工具 - draw.io
 
-# 資料讀取與顯示
+我通常使用 [draw.io](https://www.drawio.com/) 這個工具來建立流程圖，它是免費、功能完整且支援多種匯出格式的流程圖工具。流程圖的圖示皆有代表的意義，例如：
 
-搭配 Combine，建立 RoadDataManager，實作資料背景讀取與在 Day 9 介紹過的 Combine 來自動更新畫面：
+- 圓角矩形（開始/結束）：代表流程的起點與終點
 
-```swift
-class RoadDataManager: ObservableObject {
-    @Published var highwayMarkers: [HighwayMileageMarker] = []
-    @Published var provincialMarkers: [ProvincialMileageMarker] = []
-    @Published var highwayFailedCount: Int = 0
-    @Published var provincialFailedCount: Int = 0
+- 矩形（畫面/動作）：代表具體的畫面或使用者動作
 
-    func loadData() {
-        // 背景讀取，讀取完畢後切換回主執行緒更新資料
-        DispatchQueue.global().async {
-            let (highways, highwayFails) = self.loadHighwayMarkersWithFailures(from: "highway_markers")
-            let (provincials, provincialFails) = self.loadProvincialMarkersWithFailures(from: "provincial_markers")
+- 菱形（決策點）：代表需要判斷或選擇的節點
 
-            DispatchQueue.main.async {
-                self.highwayMarkers = highways
-                self.provincialMarkers = provincials
-                self.highwayFailedCount = highwayFails
-                self.provincialFailedCount = provincialFails
-            }
-        }
-    }
+- 箭頭（流向）：表示流程的方向與順序
 
-    // ...
+## 規劃專案 App 的流程
 
-    private func loadHighwayMarkersWithFailures(from csvName: String) -> ([HighwayMileageMarker], Int) {
-        guard let path = Bundle.main.path(forResource: csvName, ofType: "csv"),
-              let text = try? String(contentsOfFile: path, encoding: .utf8) else {
-            return ([], 0)
-        }
-        let rows = parseCSV(text).dropFirst()
-        var result: [HighwayMileageMarker] = []
-        var failed = 0
+在我們的 App 構想中，包含了地理圍欄通知、搜尋歷程等功能，但在本篇文章中，我們將以核心功能公路里程搜尋為例，從頭到尾走一遍使用者流程圖的規劃過程。掌握了這個概念，實作其他功能的流程圖時，原理都是一樣的。
 
-        for (index, cols) in rows.enumerated() {
-            // 檢查欄位數量
-            guard cols.count >= 10 else {
-                print("Highway row \(index + 2) failed: expected ≥10 columns but got \(cols.count). data = \(cols)")
-                failed += 1
-                continue
-            }
-            // 檢查經度轉型
-            guard let lon = Double(cols[4]) else {
-                print("Highway row \(index + 2) failed at column 4 (WGS84 Lon): value = '\(cols[4])'")
-                failed += 1
-                continue
-            }
-            // 檢查緯度轉型
-            guard let lat = Double(cols[5]) else {
-                print("Highway row \(index + 2) failed at column 5 (WGS84 Lat): value = '\(cols[5])'")
-                failed += 1
-                continue
-            }
+### 範例：搜尋特定里程點
 
-            let m = HighwayMileageMarker(
-                roadNumber: cols[0],      // 國道編號
-                county: cols[1],          // 隸屬縣市
-                wgs84Lon: lon,            // 坐標X-WGS84
-                wgs84Lat: lat,            // 坐標Y-WGS84
-                display: cols[8],         // 牌面內容
-                direction: cols[9]        // 方向與備註
-            )
-            result.append(m)
-        }
-        return (result, failed)
-    }
-}
-
-
-// ContentView
-struct ContentView: View {
-    @StateObject private var dataManager = RoadDataManager()
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Button("讀取資料") {
-                dataManager.loadData()
-            }
-            .padding()
-        }
-    }
-}
-```
-
-這裡快速複習一下 Combine：
-
->Combine 是 SwiftUI 用來處理非同步事件流的框架；RoadDataManager 遵循 Combine 的 ObservableObject 協定，表示它是一個可被監測（觀察）的物件；物件中用 @Published 標註的屬性會在變更時自動發送通知給監聽者；而在 SwiftUI 的 View 裡，我們用 @StateObject 來持有並監聽這個 ObservableObject 實例，當物件內的 @Published 屬性變動時，View 會自動更新畫面。
-
-簡單來說，RoadDataManager 會先載入資料，接著解析 CSV，過程中檢查欄位數量、解析時檢查每列的欄位數量是否符合預期（國道為 10 欄、省道為 23 欄以上），不符就跳過並計數失敗筆數。
-另外也確保必要欄位能正確轉成 Double 如經緯度，若失敗同樣跳過並計數。
-
-在 ContentView 中按下 Button 後讀取資料，接著我們先讓他簡單顯示出來：
+App 最基本的功能流程，這裡我就使用 draw.io 來繪製：
 
 ![alt text](image-2.png)
 
-初步測試顯示資料可成功讀取，看來這資料可以用！
+可以輸出成圖片：
 
-接著趕緊先 commit & push。在 commit message 的開頭加上 # 字號，後面的數字是 work item 的編號，這樣就可以將 commit 與 work item 關聯起來。
+![alt text](image-1.png)
 
-![alt text](image-3.png)
+流程從綠色的「開始」到紅色的「結束」。頁面與動作 (矩形)則代表使用者看到的畫面或執行的操作。抉擇點 (菱形)則為使用者需要做選擇，且不同的選擇會導向不同結果的地方。
 
-在 Task 3 頁面的右方，可以看到剛剛的 commit 有成功關聯起來。
+1. 開始 → 主畫面
 
-![alt text](image-4.png)
+使用者打開 App，看到地圖及上方的搜尋欄。
 
-在 commit 頁面，也會看到與之關聯的 work item。
+2. 點擊「道路類型」→ 抉擇：國道或省道？
 
-![alt text](image-5.png)
+這是使用者的第一個岔路，根據使用者的選擇（國道／省道），系統會載入不同的道路列表。
 
-這對於日後追蹤很有幫助！
+3. 顯示列表 → 道路選擇 + 里程輸入
 
----
+使用者從列表中選定一條具體的道路（如：國道一號），並在下方的欄位輸入里程數字。
 
-資料來源：
+4. 點擊搜尋 → 抉擇：搜尋結果是否存在？
 
-1. 國道：[政府開放資料平台](https://data.gov.tw/dataset/98447)
-2. 省道：[交通部政府開放資料](https://www.motc.gov.tw/201506260001/app/govdata_list/view?module=&id=1615&uid=201705110046)
+系統拿著「道路編號」和「里程」去跟資料做比對是否存在：
+
+- 是：順利地走向了成功路徑。
+
+- 否：使用者會被引導至另一條「查無結果」的路徑，接著便結束流程。
+
+5. 地圖頁面（顯示標記點）
+
+若搜尋成功，App 會自動將地圖移動到目標位置，並在上面放置一個醒目的圖標 (Pin)。到這一步，App 的核心任務已經完成。使用者已經得到了他想要的視覺化結果。
+
+6. 可選的「延伸路徑」
+
+從「地圖頁面（顯示標記點）」之後，設計了兩層可選的延伸互動：
+
+7. 抉擇：使用者點擊標記？
+
+- 否：使用者可能看一眼就滿足了，流程在此就可以結束。
+
+- 是：使用者想知道更多資訊，於是我們進入下一步。
+
+8. 顯示標記資訊 → 抉擇：用地圖 App 開啟？
+
+畫面上會彈出一個小視窗顯示詳細資料，並提供一個「在地圖 App 中顯示」的按鈕。
+
+- 否：使用者看完資訊就關閉視窗，流程結束。
+
+- 是：App 會跳轉至地圖 App ，開始導航，流程也在此結束。
+
+# 本日小結
+
+以上就是我們 App 核心功能的完整使用者流程圖。把它詳細地畫出來之後，接下來要怎麼動工，整個開發的輪廓就清晰多了。在規劃其餘功能的流程圖，概念基本上是差不多的，這裡就不一一畫給大家看囉！我們明天就進入 UI 的部分～
