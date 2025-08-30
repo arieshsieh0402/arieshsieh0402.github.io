@@ -1,5 +1,5 @@
 ---
-title: "[Day 15] 里程定位與地圖顯示（一）"
+title: "[Day 15] 里程定位與地圖顯示（一）- 資料讀取"
 date: 2025-08-20T07:26:27+08:00
 draft: true
 categories: ["iOS"]
@@ -15,12 +15,12 @@ comments: true
 
 昨天我們在 Azure Board 上把目前所需的 work items 開立完畢，今天就正式要進入我們這次 App 的實作範圍了！
 
-第一個要進行的 issue 是「MVP 核心功能 - 里程定位與地圖顯示」，因為這次我想要實作的功能，應該說仰賴政府公開的這份資料能否正確讀取跟運用...不然就沒戲唱了XD
+第一個要進行的 issue 是「里程定位與地圖顯示」，因為這次我想要實作的功能，應該說仰賴政府公開的這份資料能否正確讀取跟運用...不然就沒戲唱了XD
 >記得把要開始做的 work item 的 state 從 To Do 改為 Doing。
 
 先用 VS code 來看一下這兩份 CSV(省道與國道)長什麼樣子：
 
-
+![csv](csv.png)
 
 我們現在的目標是，讀取 CSV 檔案，然後將其轉成我們定義好的物件類型。
 
@@ -31,9 +31,9 @@ comments: true
 - 再從 develop 分出 feature/parse-csv 分支
 - 於 feature/parse-csv 分支進行開發
 
-![alt text](image-1.png)
-
 # 資料結構
+
+![alt text](image-1.png)
 
 依據 CSV 欄位，定義我們需要的結構：
 

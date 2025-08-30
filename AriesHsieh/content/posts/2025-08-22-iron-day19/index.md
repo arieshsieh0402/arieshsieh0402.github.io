@@ -1,5 +1,5 @@
 ---
-title: "[Day 19] 里程定位與地圖顯示（五）"
+title: "[Day 19] 里程定位與地圖顯示（五）- 自訂元件樣式"
 date: 2025-08-22T10:55:20+08:00
 draft: true
 categories: []
@@ -11,11 +11,7 @@ searchHidden: false
 comments: true
 ---
 
-# 開立 Issue, Task
-
-現在有新的任務了，我們要依據前兩天的規劃來開發 App，這是新的任務，先在 Azure Board 上把 work items 開好。
-
-![alt text](image.png)
+今天繼續刻 UI！
 
 # 在 SwiftUi 中自訂元件樣式
 
