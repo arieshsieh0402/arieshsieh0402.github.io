@@ -13,12 +13,7 @@ comments: true
 
 # 前言
 
-昨天我們在 Azure Board 上把目前所需的 work items 開立完畢，今天就正式要進入我們這次 App 的實作範圍了！
-
-第一個要進行的 issue 是「里程定位與地圖顯示」，因為這次我想要實作的功能，應該說仰賴政府公開的這份資料能否正確讀取跟運用...不然就沒戲唱了XD
->記得把要開始做的 work item 的 state 從 To Do 改為 Doing。
-
-先用 VS code 來看一下這兩份 CSV(省道與國道)長什麼樣子：
+第一個進行的 issue 是「里程定位與地圖顯示」，先用 VS code 來看一下這兩份 CSV(省道與國道)長什麼樣子：
 
 ![csv](csv.png)
 

@@ -109,9 +109,7 @@ Portfolio Backlog 與 Product Backlog 這兩個概念主要用在專案管理的
 
 >另一種建立 work item 的方式是，你可以在 Backlog 檢視模式當中，在欲建立 work item 的上階層，左方有個「+」號，這樣就不用再點進去上階層的 work item，並省去選擇 Parent 或 Child 的步驟。
 
-把接下來預計會處理到的 work items 建立完畢，我們可以透過 Backlog 或是 board 模式來檢視我們的 work items 階層。
-
-![azureBoard6](azureBoard6.png)
+把接下來預計會處理到的 work items 建立完畢。
 
 ![azureBoard7](azureBoard7.png)
 
