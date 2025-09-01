@@ -66,6 +66,47 @@ canOpenURL 的主要目的在於「查詢」，它讓開發者可以在嘗試跳
 
 順帶一提，我這裡按鈕的實際功能，也就是開啟地圖的邏輯，是透過 closure openInMaps 和 openInGoogleMaps 從外部傳入的。這樣可以將畫面的呈現與功能邏輯分離，讓  PinDetailSheet 變得更加單純。
 
+```swift
+struct PinDetailSheet: View {
+    // ...
+    let openInMaps: () -> Void
+    let openInGoogleMaps: () -> Void
+    // ...
+
+    var body: some View {
+
+            // ...
+
+        VStack(spacing: 12) {
+            HStack(spacing: 12) {
+                // Apple Maps Button
+                Button(action: openInMaps) { // 點擊後會執行傳入的 closure
+                    HStack {
+                        Image(systemName: "apple.logo")
+                        Text("Apple Maps")
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .tint(.secondary)
+
+                // Google Maps Button
+                Button(action: openInGoogleMaps) { // 點擊後會執行傳入的 closure
+                    HStack {
+                        Image(systemName: "map")
+                        Text("Google Maps")
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .tint(.secondary)
+            }
+        }
+    }
+    .padding(EdgeInsets(top: 12, leading: 16, bottom: 20, trailing: 16))
+}
+```
+
 # 跳轉邏輯建立
 
 ## Apple Maps
@@ -136,3 +177,5 @@ private func openInGoogleMaps(coordinate: CLLocationCoordinate2D, name: String) 
 雖然同樣是開啟地圖，但內建的 Apple Maps 我們可以使用 MapKit 框架中簡潔的 MKMapItem.openInMaps() 方法；而對於第三方的 Google Maps，則需要我們手動組合 URL Scheme，並透過 canOpenURL 搭配白名單來檢查 App 是否安裝，以提供更完善的使用者體驗與備用方案。
 
 明天我們將實作地理圍欄 (Geofencing)，當使用者開車靠近我們預先設定好的里程標時，App 將能自動發出通知提醒。
+
+而里程定位與地圖顯示功能這個功能也算開發完成，同樣記得在一個功能完成後，合併回 develop 分支，並且將相關的 work items 給 close 掉，再來進行我們的下一步。

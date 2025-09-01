@@ -205,7 +205,7 @@ func startGeofencing(latitude: Double, longitude: Double, identifier: String = "
         print("中心座標無效")
         return
     }
-    let radius: CLLocationDistance = 150 // 先用150m提升穩定度
+    let radius: CLLocationDistance = 150
 
     // 4. 清除同名 region，避免重複
     for region in manager.monitoredRegions where region.identifier == identifier {
