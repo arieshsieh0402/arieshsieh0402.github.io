@@ -123,5 +123,26 @@ struct PinDetailSheet: View {
 
 結果符合預期！
 
+## Sheet 無法彈出？
+
+我在測試的時候，發現有時 sheet 無法彈出。研究了一下，發現因為我們接受觸碰事件的 view 是 Map，Map 本身就有一連串的點擊事件，因此如果我們自訂了
+
+```swift
+.onTapGesture {
+    selectedPin = pin // 當圖標被點擊，將其設為 selectedPin
+}
+```
+
+有時候會無法被系統偵測到。因此，我們可以用 `highPriorityGesture` 來優先判斷，如果是點擊在 Annotation 的 ZStack 上的觸碰事件，優先處理 `selectedPin = pin`。
+
+```swift
+.highPriorityGesture( // 1. 使用高優先級手勢
+    TapGesture()
+        .onEnded { _ in // 2. 在手勢結束時觸發動作
+            selectedPin = pin
+        }
+)
+```
+
 # 本日小結
 今天我們完成了地圖互動中點擊圖標並顯示詳細資訊的部分。明天，我們將繼續完善 sheet 裡的功能，將加入「在 Apple Maps 或 Google Maps 中打開」，方便使用者透過這些地圖 App 以查看街景等近一步的資訊。

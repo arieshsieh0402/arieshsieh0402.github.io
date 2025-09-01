@@ -66,6 +66,51 @@ struct PinDetailSheet: View {
 
 ## 保持追蹤狀態的持久化
 
-因此最佳實踐應該是，將追蹤的地理區域資訊持久化儲存在本地儲存裝置（例如 UserDefaults）。這樣即使 app 被關閉，重啟後也能讀取這些持久化資料，更新 UI 告訴使用者目前正在追蹤的地點。
+因此最佳實踐應該是，將追蹤的地理區域資訊持久化儲存在本地（例如 UserDefaults）。這樣即使 app 被關閉，重啟後也能讀取這些持久化資料，更新 UI 告訴使用者目前正在追蹤的地點。
 
+```swift
+import Foundation
+
+struct PersistenceManager {
+    private static let userDefaults = UserDefaults.standard
+    private static let trackedPinKey = "trackedPinKey"
+
+    /// 儲存正在追蹤的 Pin
+    static func saveTrackedPin(_ pin: MarkerPin) {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(pin)
+            userDefaults.set(data, forKey: trackedPinKey)
+        } catch {
+            print("無法將 tracked pin 編碼: \(error)")
+        }
+    }
+
+    /// 讀取已儲存的 Pin
+    static func loadTrackedPin() -> MarkerPin? {
+        guard let data = userDefaults.data(forKey: trackedPinKey) else {
+            return nil
+        }
+        do {
+            let decoder = JSONDecoder()
+            let pin = try decoder.decode(MarkerPin.self, from: data)
+            return pin
+        } catch {
+            print("無法將 tracked pin 解碼: \(error)")
+            return nil
+        }
+    }
+
+    /// 清除已儲存的 Pin
+    static func clearTrackedPin() {
+        userDefaults.removeObject(forKey: trackedPinKey)
+    }
+}
+```
+
+這裡 Xcode 會發出警告 Instance method 'encode' requires that 'MarkerPin' conform to 'Encodable'，因為 UserDefaults 只能儲存一些基本的 data type，參照官方文件說明為：
+
+>A default object must be a property list—that is, an instance of (or for collections, a combination of instances of) NSData, NSString, NSNumber, NSDate, NSArray, or NSDictionary. If you want to store any other type of object, you should typically archive it to create an instance of NSData.
+
+而 `MarkerPin` 是一個我們自訂的 struct，必須要轉成 NSData 來儲存，而 `MarkerPin` 就必須遵循 Codable 協議。因此，我們要回頭修改 `MakerPin`。
 
