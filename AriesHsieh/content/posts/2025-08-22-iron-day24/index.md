@@ -71,3 +71,16 @@ comments: true
 
 下方可以選擇模擬的速度，選定一個適當的速度後，點選 Download GPX，並將檔案加入 Xcode 專案裡。
 
+```xml
+<?xml version="1.0"?>
+<gpx version="1.1" creator="gpxgenerator.com">
+<wpt lat="25.025477270953566" lon="121.52352028106334">
+    <ele>5.73</ele>
+    <time>2025-09-03T04:38:08Z</time>
+</wpt>
+<wpt lat="25.01633861688097" lon="121.53257541869762">
+    <ele>7.59</ele>
+    <time>2025-09-03T04:39:46Z</time>
+</wpt>
+</gpx>
+```
