@@ -71,7 +71,7 @@ comments: true
 
 ![alt text](azureSetting5.png)
 
-3. 接下來，填入先前在 App Store Connect 取得的資訊。將 .p8 金鑰檔的內容、Key ID 和 Issuer ID 依序填入對應欄位。由於我們的目標是發布到公開的 TestFlight 和 App Store，因此「In house deployment」選項請選擇 No。
+3. 接下來，填入先前在 App Store Connect 取得的資訊。將 .p8 金鑰檔的內容、Key ID 和 Issuer ID 依序填入對應欄位。由於我們的目標是發布到 App Store，因此「In house deployment」選項請選擇 No。
 
 ![alt text](azureSetting6.png)
 
