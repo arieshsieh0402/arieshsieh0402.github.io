@@ -94,12 +94,16 @@ pool:
   vmImage: 'macOS-13'
 
 steps:
+- script: echo "Fake IPA file" > fake.ipa
+  displayName: '建立假 IPA 檔案'
+
 - task: AppStoreRelease@1
   displayName: '測試 App Store 連線'
   inputs:
     serviceEndpoint: 'App Store Connect API'
-    appIdentifier: ''
+    appIdentifier: 'com.example.app'
     releaseTrack: 'TestFlight'
+    ipaPath: 'fake.ipa'
 
 - script: echo "App Store 連線測試完成"
 ```
@@ -139,3 +143,16 @@ steps:
 發生錯誤「No hosted parallelism has been purchased or granted」，去查了一下發現，現在 Azure 雖然免費帳號有每月 1800 分鐘的 pipeline 執行時間，但這個必須要填表單申請，詳解可以猜考前人文章。
 
 > 參考資料：[iT 邦幫忙教學](https://ithelp.ithome.com.tw/articles/10268594)
+
+---
+
+經過漫長的等待，終於開通權限了！讓我們重新 run 一次 pipeline：
+
+
+![alt text](azureSetting16.png)
+
+Log 中的 `Creating authorization token for App Store Connect API` 這一行顯示，Fastlane（Azure DevOps 在背景使用的工具）已經成功使用我們在 Service Connection 中設定的 API Key、Key ID 和 Issuer ID 來向蘋果的伺服器進行驗證並取得了授權 token，而因為我們的 appIdentifier 設定為不存在的 com.example.app，因此報錯 `[!] Couldn't find app 'com.example.app' on the account of '' on App Store Connect`，表示在我們的帳號下，找不到 Bundle Identifier 為 com.example.app 的應用程式。
+
+## 本日小結
+
+今天的執行結果達成了我們「測試連線」的目的，並證明了連線是通的。接著，我們就可以替 app 做最後的一些小修改，並且可以正式撰寫 pipeline，將 App 部署到 App Store Connect 上。
