@@ -73,6 +73,18 @@ comments: true
 
 3. 接下來，填入先前在 App Store Connect 取得的資訊。將 .p8 金鑰檔的內容、Key ID 和 Issuer ID 依序填入對應欄位。由於我們的目標是發布到 App Store，因此「In house deployment」選項請選擇 No。
 
+---
+
+值得一提的是，我們取得的 .p8 是 PEM 格式，有著 -----BEGIN PRIVATE KEY----- 和 -----END PRIVATE KEY----- 這樣的標頭和結尾。中間的亂碼部分是金鑰的實際資料，經過 Base64 編碼。但是，在 Azure 的 App Store Service 的 Key 欄位下面標注 "Base64-encoded content of the App Store Connect API P8 private key file"，這表示你必須將整份 .p8 文件內容再作一次 base64 encode，然後將結果貼上來才可以。
+
+這裡我是使用以下命令來轉換：
+
+```shell
+base64 -i YOUR_P8_KEY_FILE.p8 -o base64Encode_key
+```
+
+---
+
 ![alt text](azureSetting6.png)
 
 完成後儲存，這樣就成功建立了一個安全的服務連線。
