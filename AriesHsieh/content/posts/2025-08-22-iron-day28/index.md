@@ -13,11 +13,9 @@ comments: true
 
 ## 為我們的 App 加上 logo
 
-突然想到一件很重要的事情，那就是我們的 App 還沒有一個看起來很讚的 icon。
+在我們開始寫我們的 pipeline 之前，我突然想到有一件很重要的事情，那就是為我們的 App 加上一個看起來很讚的 icon。App icon 是使用者在 App Store 的第一個接觸點，某種程度上算是決定使用者有沒有興趣的關鍵。
 
-Icon 格式官方要求是 1024x1024 像素、方形、無透明度的 PNG 檔案。
-
-準備好了之後，就丟到 Xcode 的 Asset 裡：
+蘋果對 icon 的格式有明確的要求，必須是一個 1024x1024 像素、方形、無圓角、無透明度的 PNG 檔案。當你圖片檔拖入 Xcode 的 Assets.xcassets 中對應的 AppIcon 位置時，Xcode 會自動根據這個圖檔，生成所有需要的尺寸，以適應 iPhone、iPad、通知、Spotlight 搜尋、設定頁面等各種顯示情境。
 
 ![alt text](image.png)
 
@@ -33,7 +31,7 @@ Icon 格式官方要求是 1024x1024 像素、方形、無透明度的 PNG 檔�
 
 蘋果希望確保用戶從 App Store 下載或安裝的每一個 App，都來自於「已知的開發者」，且「未被竄改」。為了實現這個目標，蘋果建立了一套基於數位簽章的信任鏈。
 
-為了達到這個目的，有以下概念：
+為了達到這個目的，有以下幾個核心概念：
 
 1. 開發者憑證 (Certificate)
 
@@ -96,36 +94,37 @@ Azure Pipeline 的虛擬機是一個乾淨、無記憶的環境。它不知道�
 
 ### 產出 CSR 並匯入憑證
 
-先到 Mac 的鑰匙圈，目前只有開發憑證，而沒有分發憑證。
+首先，打開你 Mac 上的「鑰匙圈存取(Keychain Access)」應用程式。檢查一下你的憑證列表，通常你會看到已有的開發憑證，但可能還沒有用於 App Store 上架的分發憑證。
 
 ![alt text](keychain1.png)
 
-點選左上角「Keychain Access」> 「Certificate Assistant」> 「Request a Certificate From a Certificate Authority...」
+點擊螢幕左上角的選單列「Keychain Access」> 「Certificate Assistant」> 「Request a Certificate From a Certificate Authority...」
 
 ![alt text](image-3.png)
 
-輸入 Email 與名字，勾選 Save to Disk，按 Continue 後，會產出一份 CSR 檔案在你的電腦。
+在彈出的視窗中，輸入你的 Email 和名字（建議與 Apple 開發者帳號一致），然後勾選「Saved to disk」選項，點擊 Continue。系統將會在你指定的位置產出一份 CSR 檔案。
 
 ![alt text](image-4.png)
 
-
 接著到 Apple Developer Portal，選取 Certificates。
+
 ![alt text](image-2.png)
 
-選取 iOS Distribution (App Store Connect and Ad Hoc)後，按 Continue。
+在類型選擇中，我們要選擇 iOS Distribution (App Store and Ad Hoc)，這就是我們上架 App Store 所需的憑證類型，然後點擊 Continue。
 
 ![alt text](image-5.png)
 
-上傳剛剛產出的 CSR
+上傳我們剛剛在本地產出的那份 .certSigningRequest (CSR) 檔案。
 
 ![alt text](image-6.png)
 
-產出分發憑證，並點選 Download。
+上傳成功後，蘋果就會立即為我們簽發一張分發憑證。點擊「Download」將它下載到你的 Mac 上。
 
 ![alt text](image-7.png)
 
 下載後安裝該憑證，就會看到在 keychain 裡面我們多了一張分發憑證。
-按右鍵選取「Export」這張憑證，匯出為 .p12 檔案（記得設定密碼，稍後會用在 Pipeline）。
+
+接著我們需要匯出這份憑證。在該分發憑證上按右鍵，選取「Export...」。將其儲存為 .p12 格式。系統會提示你設定一個匯出密碼，記住這個密碼，因為稍後在 Pipeline 中我們需要用它來解鎖這個檔案。
 
 ![alt text](image-9.png)
 
@@ -155,9 +154,9 @@ Azure Pipeline 的虛擬機是一個乾淨、無記憶的環境。它不知道�
 
 有了分發憑證與描述檔後，我們回到 Azure DevOps，在側邊欄選擇 Pipelines > Library > Secure files
 
-![alt text](image-14.png)
+點擊「+Secure file」，分別將剛剛準備好的 .p12 和 .mobileprovision 檔案上傳。Secure Files 是一個加密的儲存空間，專為存放這類敏感資料而設計，確保它們不會以明文形式暴露出來。
 
-上傳這兩個檔案
+![alt text](image-14.png)
 
 ![alt text](image-15.png)
 
@@ -165,11 +164,16 @@ Azure Pipeline 的虛擬機是一個乾淨、無記憶的環境。它不知道�
 
 ![alt text](image-16.png)
 
-我們新增一個 Variable group，讓 pipeline 執行的時候可以來這裡存取變數。
-因為使用分發憑證時需要輸入我們匯出時設定的密碼，我們可以在這裡設置，輸入完畢後點選鎖頭圖示，就可以隱藏起來，也不能被複製。
+我們新增一個 Variable group，可以自由命名。在這裡，我們可以建立變數，讓 Pipeline 在執行時可以讀取。
+
+點擊「+Add」，新增一個變數，在 Value 欄位中，輸入你匯出 .p12 檔案時設定的密碼。輸入完畢後，點選右側的「鎖頭」圖示。這會將該變數標記為「Secret」，它的值將會被加密儲存，不會顯示在 UI 上，也無法被複製，更重要的是，它不會在 Pipeline 的 log 中被 print 出來。
 
 ![alt text](image-17.png)
 
 ## 建立 Pipeline
 
 前置作業準備完畢，接著可以來撰寫我們的 pipeline 了！
+
+### 觸發條件
+
+

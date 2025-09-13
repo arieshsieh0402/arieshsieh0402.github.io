@@ -1,7 +1,7 @@
 ---
-title: "[Day 1] 前言"
-date: 2025-07-22T22:00:01+08:00
-draft: true
+title: "[2025 Iron Day 1] 前言"
+date: 2025-09-14T00:10:00+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: "SwiftUI x 里程標：打造公路定位工具記錄"
