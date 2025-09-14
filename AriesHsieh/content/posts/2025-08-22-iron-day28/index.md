@@ -176,4 +176,203 @@ Azure Pipeline 的虛擬機是一個乾淨、無記憶的環境。它不知道�
 
 ### 觸發條件
 
+首先最重要的是決定 pipeline 應該在「什麼時候」執行，也就是我們必須為它設定觸發條件。
 
+***一條建置與部署 App 的 pipeline，「發布的觸發點，應該是代表『過程』的分支，還是代表『結果』的標籤？」***
+
+這其實是一個蠻值得思考的問題。
+
+我們可能有兩種方案，一個是用 `git tag` 來觸發，另一個是 `main` branch 有變動時觸發。
+
+1. 使用 git tag 作為觸發條件
+
+    當某個 commit 加上例如 v1.0.0 的標籤時，才觸發 pipeline，他的優點是意圖明確，這是最大的優點。建立標籤是一個有意識且慎重的動作。它代表開發團隊一致認為「這個 commit 的狀態已經準備好，可以作為一個特定版本發布了」。因為是有意識的行為，某種程度上可以防止未經測試或不完整的程式碼被意外發布出去。
+
+    同時，版本追蹤性強，每個上傳到 TestFlight 或 App Store 的 build 都會直接對應到一個 tag，而這個 tag 代表版本號，如此一來你可以非常清楚地知道是哪一個版本的程式碼出了問題。
+
+    從開發與維運的角度來看，開發人員可以頻繁地將程式碼 merge 到 main，不用擔心每次合併都會觸發一次發布。發布的權力掌握在需要的人手上，他們可以在適當的時機點決定發布。
+
+    當然，反過來說，這變成需要有個人或角色專門負責在正確的時機點打上標籤。相比合併就自動觸發多了一個手動步驟。另外，如果團隊文化是累積了大量功能後才打一個標籤，main 的多次合併才對應到某個 tag，那麼從程式碼完成到交付測試，中間的等待時間可能會變長。
+
+2. 使用 main 分支被合併作為觸發條件
+
+    只要有任何程式碼被合併進入 main 分支，就立即觸發 pipeline。
+
+    這樣的做法，開發人員一完成功能並合併，幾分鐘後測試人員就能在 TestFlight 上收到新版本。這可以盡可能縮短發現問題和修復問題的時間。另外整個流程從 PR 開始，完全自動，無需任何手動干預，降低了人為疏忽的可能性。同時也確保，讓團隊意識到，任何要合併到 main 的程式碼都必須是正確、品質好，且可運行的，因為只要一合併，它就會被發布。
+
+    同樣地，如此一來即使只是一個小小的修改，合併後也會產生一個新的 TestFlight 版本，且如果 PR 的審查不夠嚴謹，一個有潛在問題的功能被合併後，會立刻影響到所有測試人員。
+
+但回到現在的場景：一人團隊。在單人開發的情境下，兩者似乎沒什麼太大區別，但它們依然代表著兩種不同的工作心態與工作流程。
+
+使用 main 分支合併觸發，省了還要下 tag 的步驟。而頻繁的更新，不小心合進一個有問題的版本，也沒有太大影響。但在日常開發、快速原型驗證的階段，使用 main 分支觸發對單人開發者來說，卻是比較方便的。
+
+而另一方面，選擇使用 git tag 作為觸發時，某種程度上會強迫建立「版本」概念的心態。打上 v1.0.0 標籤這個動作，會強迫你停下來思考：「我這次發布包含了哪些功能？」「這個版本真的完成、可以發布了嗎？」。這有助於您更有條理地思考產品目前的狀態。而且，在一年後，當你想知道某個版本到底改了什麼，或是需要修復一個舊版本的特定問題時，一個清楚 git tag 會幫助你回憶跟查找。
+
+---
+
+回到專案本身，我自己習慣用下 git tag 的方式來管理，因此這裡就先沿用我習慣的方式：
+
+```yaml
+# release-iOS.yaml
+
+# 我們不希望這個 YAML 檔所在的 Repo 有任何 push 或 PR 時觸發自己
+trigger: none
+pr: none
+
+# 定義我們要監聽的目標 Repo
+resources:
+  repositories:
+    - repository: Roadmile_Locator
+      type: git
+      name: Roadmile_Locator/Roadmile_Locator
+      trigger:
+        tags:
+          include:
+            - 'v*' # 符合 'v*' 格式的 tag 將會觸發 pipeline
+```
+
+這樣 Pipeline 會在 Roadmile_Locator Repo 出現新版本標籤時觸發。
+
+### 決定在哪裡執行：設定環境與變數
+
+```yaml
+# 指定要在內建 Xcode 的 macOS 虛擬機上執行
+pool:
+  vmImage: 'macOS-15'
+
+# 定義會用到的變數
+variables:
+  # 匯入我們在 Library 建立的 Certificate 變數群組，這樣才能讀取到憑證密碼
+  - group: Certificate
+  # 定義一些常用字串，方便後續使用
+  - name: scheme
+    value: 'RoadMileLocator'
+  - name: project
+    value: 'RoadMileLocator.xcodeproj'
+```
+
+### 設計「做什麼」：編寫執行步驟 (Steps)
+
+我們將在這裡一步步定義具體的執行動作。
+
+#### 取得程式碼並安裝憑證
+
+我們要把準備好的簽署憑證和描述檔安裝到虛擬機中，這樣 Xcode 才能辨認。
+
+```yaml
+steps:
+# 第 1 步：取得觸發此 Pipeline 的 Repo 原始碼
+- checkout: Roadmile_Locator
+  displayName: 'Checkout Roadmile_Locator repository'
+
+# 第 2 步：安裝 .p12 憑證，密碼來自變數群組
+- task: InstallAppleCertificate@2
+  displayName: 'Install Apple Distribution Certificate'
+  inputs:
+    certSecureFile: 'Certificates.p12'
+    certPwd: '$(certPwd)'
+    keychain: 'temp'
+
+# 第 3 步：安裝描述檔
+- task: InstallAppleProvisioningProfile@1
+  displayName: 'Install App Store Provisioning Profile'
+  inputs:
+    provProfileSecureFile: 'Road_mile_searcher.mobileprovision'
+```
+
+#### 測試與建置
+
+在正式打包前，先跑單元測試，測試通過後，再封存 (Archive) 和匯出 .ipa。
+
+```yaml
+# 第 4 步：執行單元測試
+- task: Xcode@5
+  displayName: 'Run Unit Tests'
+  inputs:
+    actions: 'test'
+    scheme: $(scheme)
+    sdk: 'iphonesimulator'
+    destinationSimulators: 'iPhone 16 Pro'
+    publishJUnitResults: true # 將測試結果顯示在報告中
+
+# 第 5 步：封存並匯出 .ipa 檔
+- task: Xcode@5
+  displayName: 'Archive and Export .ipa'
+  inputs:
+    actions: 'archive'
+    scheme: $(scheme)
+    sdk: 'iphoneos' # 正式打包要用 iphoneos
+    packageApp: true
+    configuration: 'Release'
+    signingOption: 'manual'
+    # 這兩個變數由前面安裝憑證的任務自動產生，signingOption 為 manual 時必須宣告
+    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+    # 將產出的 .ipa 放到一個暫存目錄
+    exportPath: '$(Build.ArtifactStagingDirectory)/ipa'
+```
+
+執行到這裡，我們就成功在 Azure 虛擬機產生了一個經過簽署、可以發布的 .ipa 檔案了。
+
+#### 保存與上傳
+
+我們需要將產出的 .ipa 檔案保存下來 (發布成 Artifact)，然後再將它上傳到 App Store Connect。
+
+```yaml
+# 第 6 步：將 .ipa 檔發布成產出物，方便日後下載
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Build Artifacts'
+  condition: succeeded() # 只有在前面步驟都成功時才執行
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/ipa'
+    ArtifactName: 'AppPackage'
+    publishLocation: 'Container'
+
+# 第 7 步：上傳到 App Store Connect
+- task: AppStoreRelease@1
+  displayName: 'Upload to App Store Connect'
+  condition: succeeded()
+  inputs:
+    serviceEndpoint: 'App Store Connect API' # 選擇我們設定好的服務連線
+    appIdentifier: 'com.hthsieh.RoadMileLocator'
+    ipaPath: '$(Build.ArtifactStagingDirectory)/ipa/*.ipa'
+    releaseTrack: 'TestFlight' # 上傳到 TestFlight
+```
+
+詳細的參數說明可以參考[微軟官方文件](https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/xcode-v5?view=azure-pipelines)，裡面有蠻詳細的說明的～
+
+## 觸發 Pipeline
+
+萬事俱備，是時候來驗證我們努力的成果了！
+
+>測試之前，記得再次確認要建置的分支（例如 main）上，所有的程式碼都已經合併完畢。
+
+我們前往 Azure DevOps，在左側邊欄找到 Repos，點選 Tags 分頁。接著選取我們的 App 專案 Repo，並按下右上角的 New tag 按鈕。
+
+![alt text](gitTag.png)
+
+確認版本號以及 branch 無誤後點選 Create，接著到 Azure pipeline 分頁。
+
+![alt text](permission.png)
+
+第一次執行時，畫面上出現了需要授權的訊息。這是 Azure DevOps 的安全機制，它告訴我們，這個 Pipeline 需要我們的許可，才能存取先前設定好的 Secure files（我們的憑證）、Variable groups（我們的密碼）以及專案的 Repo。
+
+![alt text](permit.png)
+
+這是很正常的步驟，勇敢地把所有 Permit 按鈕都點下去，給予它執行的權力。授權完畢後，我們的 Pipeline 就會正式啟動了！
+
+![alt text](pipelineRun.png)
+
+看著畫面上我們定義的每一個步驟：安裝憑證、執行測試、建置封存、上傳... 一個個亮起綠燈，這代表我們在 YAML 檔中寫的腳本都正確無誤地被執行了。
+
+等待了幾分鐘，所有步驟都顯示成功後，打開 App Store Connect，進入 TestFlight 頁面查看
+
+![alt text](testFlight.png)
+
+成功了！版本 1.0.0 出現上面，狀態顯示為「準備提交」。這表示我們的 App 已經順利地送到了蘋果的伺服器上。
+
+## 本日小結
+
+今天，我們完成了 CI/CD 中最關鍵的部分，也就是將所有環節串聯起來，實現了從推送一個 Git Tag 到 App 出現在 TestFlight 的全自動化流程，我們不需要再手動操作 Xcode 來完成這件事情，體會到了自動化的魔力，開頭辛苦一次，但之後就可以把時間和精力從重複性的工作中解放出來。
+
+不過，App 出現在 TestFlight 還不是終點。它還只是「準備提交」的狀態。明天，我們就要來處理最後的上架流程：在 App Store Connect 中，我們該如何填寫 App 的各種資訊、設定測試員，並最終按下「提交審查」按鈕。
