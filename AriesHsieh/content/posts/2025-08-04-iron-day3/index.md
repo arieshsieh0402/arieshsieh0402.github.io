@@ -46,11 +46,11 @@ Azure DevOps 是微軟提供的開發工具服務平台，整合了版本控制�
 
 ![azureReg2](azureReg2.png)
 
-3. 使用 Microsoft 帳號登入（如果沒有就註冊）。第一次啟用 Azure 帳號，會要你填一些基本資料，就照著填。
+3. 使用 Microsoft 帳號登入（如果沒有就註冊）。首次啟用 Azure 帳號時，系統會要求您填寫基本資料，依照畫面指示完成即可。
 
 ![azureReg3](azureReg3.png)
 
-最後他會要你填信用卡，但基本上他就只是要你綁一張卡，Azure DevOps 有免費額度可以用，基本上個人使用是用不完的，後面會提到。
+最後系統會要求綁定信用卡，這主要是為了驗證身分，在免費額度內並不會產生費用。如後續說明，Azure DevOps 的免費額度對個人專案來說綽綽有餘。
 
 ## 建立組織（Organization
 
@@ -80,23 +80,28 @@ Azure DevOps 是微軟提供的開發工具服務平台，整合了版本控制�
 
 ![azureDevOps3](azureDevOps3.png)
 
->在 Advanced 選項中：
->- **版本控制系統**：預設為 Git，這是目前最普及的版本控制系統
->- **工作項目流程（Work item process）**：
->   - Basic：最簡單的工作追蹤流程，只有三種狀態（To Do、Doing、Done），適合小型專案或個人開發
->   - Agile：較完整的敏捷開發流程，包含使用者故事（User Stories）、任務（Tasks）等
->   - Scrum：完整的 Scrum 開發流程，包含產品待辦清單（Product Backlog）、衝刺規劃（Sprint）等
->   - CMMI：最複雜的流程，適合需要嚴格變更控制的大型專案
->- **可見度**：預設為 Private（私人），只有被邀請的成員才能存取
->
->因為這是個人專案，我們選擇 Basic 流程就足夠了。
+在 Advanced 選項中：
+- **版本控制系統**：預設為 Git，這是目前最普及的版本控制系統
+- **工作項目流程（Work item process）**：
+   - Basic：最簡單的工作追蹤流程，只有三種狀態（To Do、Doing、Done），適合小型專案或個人開發
+   - Agile：較完整的敏捷開發流程，包含使用者故事（User Stories）、任務（Tasks）等
+   - Scrum：完整的 Scrum 開發流程，包含產品待辦清單（Product Backlog）、衝刺規劃（Sprint）等
+   - CMMI：最複雜的流程，適合需要嚴格變更控制的大型專案
+- **可見度**：預設為 Private（私人），只有被邀請的成員才能存取
+
+在公司的專案中使用的是 Agile 流程。它提供了 User Stories、Features 和 Tasks 等工作項目，能很好地幫助團隊拆解需求並追蹤所交付的程式碼。
+
+然而，對於單人開發的個人專案來說，這樣的框架似乎大了一些。我的主要需求為記錄「開發事項」、可以清楚知道哪些項目的狀態，是尚未開始，進行中還是已完成，並且對於每個工作項目，可以清楚知道與哪一次程式碼的提交掛勾，並不需要管理複雜的需求層級或團隊協作。
+
+Basic 流程正好符合這個情境。它移除了 Agile 中關於使用者故事的層級，讓我們能直接建立和追蹤「議題 (Issue)」，相對輕量。
+
 >詳細差別的介紹可以參考[微軟官方說明](https://learn.microsoft.com/zh-tw/azure/devops/boards/work-items/guidance/choose-process?view=azure-devops&tabs=agile-process)。
 
-建立完畢後，我們終於有點樣子了～
+建立完畢後，專案儀表板便會顯示出來，代表我們完成了第一步。
 
 ![azureDevOps4](azureDevOps4.png)
 
-這邊就先不詳述左邊那一列是什麼，之後用到的時候會逐一介紹。
+左側的功能選單我們暫不詳述，在後續文章使用到時會再逐一介紹。
 
 ## 取得 Azure Repos repo
 
@@ -116,13 +121,13 @@ Azure DevOps 是微軟提供的開發工具服務平台，整合了版本控制�
 git clone YOUR_REPO_URL
 ```
 
-接著他會要你輸入剛剛產生的密碼，貼上就對了。
+接著，終端機會提示您輸入密碼，貼上剛剛產生的憑證即可。
 
 # 建立 Xcode 專案
 
 ## 設定 .gitignore
 
-在開始將專案加入版控前，先建立 `.gitignore` 檔案：
+在將任何程式碼加入版本控制之前，養成好習慣，第一步驟是設定 .gitignore 檔案。這個檔案會告訴 Git 哪些檔案或目錄不應該被追蹤，例如使用者個人的設定檔、編譯過程中產生的暫存檔、或是包含敏感資訊的檔案。這能確保我們的 repo 保持乾淨，只包含必要的原始碼。
 
 ```shell
 vi .gitignore
@@ -156,7 +161,7 @@ vi .gitignore
 
 - **Product Name:** 就是你的專案名稱(Project Name)，組織名稱(Organization Identifier)因為我是個人，所以我就設定自己的名稱。
 
-- **Bundle identifier:** 這個蠻重要的，iOS Xcode 的 bundle identifier 是用來辨識你的 App，相當於應用的「身份證字號」。也就是說，每個上架到 App Store 以及安裝到設備上的 App 都必須有獨一無二的 bundle identifier，不能與他人或自己已有的 App 重覆，否則無法上架或安裝。
+- **Bundle identifier:** 這個蠻重要的，iOS Xcode 的 bundle identifier 是用來辨識你的 App，相當於應用的身份證字號。也就是說，每個上架到 App Store 以及安裝到設備上的 App 都必須有獨一無二的 bundle identifier，不能與他人或自己已有的 App 重覆，否則無法上架或安裝。
 
 - **Interface:** 這裡可以選擇 UIkit 或是 SwiftUI，我們這次要使用 SwiftUI 來建立 App。
 
@@ -169,7 +174,7 @@ Testing System 與 Storage 就先保持預設值 None 不選擇。讓我們按 N
 
 ***Hello world!***
 
-一個最最基本的 SwiftUI iOS App 模板建立好啦～
+一個最基本的 SwiftUI iOS App 模板就建立好了。
 
 ## 提交初始專案
 
@@ -181,7 +186,7 @@ git commit -m 'Init commit'
 git push -u origin main
 ```
 
->因為我們是從空的 repo clone 下來的，所以不需要執行 `git init` 和 `git remote add origin`。
+>因為我們是從空的 repo clone 下來的，所以不需要執行 git init 和 git remote add origin。這裡的 -u (或 --set-upstream) 參數會將本地的 main 分支與遠端的 origin/main 分支建立關聯。設定完成後，未來在這個分支上，只需要輸入 git push 即可，無需再指定遠端和分支名稱。
 
 # 小結
 
