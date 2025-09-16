@@ -1,7 +1,7 @@
 ---
 title: "[Day 3] Azure DevOps 設定與 Xcode 專案初始化"
-date: 2025-08-04T11:24:11+08:00
-draft: true
+date: 2025-09-16T00:00:11+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: "Azure DevOps 帳號申請、組織建立與專案初始化設定；介紹 Xcode 專案結構"
@@ -190,6 +190,6 @@ git push -u origin main
 
 # 小結
 
-今天我們完成了 Azure DevOps 環境設定和 Xcode 專案的建立。下一篇我們將開始進行專案的基礎開發。
+今天我們完成了 Azure DevOps 環境設定和 Xcode 專案的建立。下一篇我們將開始進行了解開發專案所需的基礎知識。
 
 [^1]: https://www.toptal.com/developers/gitignore
