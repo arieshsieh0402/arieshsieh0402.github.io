@@ -205,17 +205,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
 
 允許 App 在前景與背景持續存取位置。當呼叫 `requestAlwaysAuthorization()`（而且使用者已先通過 WhenInUse）時，跳出你於 Value 設定的文字。
 
-結論是，如果你需要背景也取用使用者位置，你必須設定 1. 與 2.。再加上開啟 Background modes:
-
-![backGroundMode1](backGroundMode1.png)
-
-同樣在左側邊欄點選你的專案，右邊選擇你的 target，最上方的分頁選擇 Signing & Capabilities，左側點選「+ Capability」，搜尋 Background modes 並加入。
-
-![backGroundMode2](backGroundMode2.png)
-
-加入後下方會出現 Background modes 區塊，並勾選 Loaction updates。
-
-到這裡權限處理才算告一段落。
+結論是，如果你需要背景也取用使用者位置，你必須設定 1. 與 2.。
 
 # 於 ContentView 中使用 LocationManager
 
