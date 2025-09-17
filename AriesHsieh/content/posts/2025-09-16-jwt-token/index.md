@@ -129,4 +129,4 @@ sequenceDiagram
 
 以 Kong 為例進行說明。
 
-子公司必須自行產一對 RSA 公私鑰，私鑰由子公司自行保管。子公司提供公鑰給 Kong，Kong 於該子公司(Consumer)上建立 JWT Credential，輸入該公鑰後，會自動產出(也可以自行指定)一個 `key` 字串。當子公司的系統需要呼叫 API 時，需於 Payload 中的 `iss` 欄位帶入該 `key` 字串，以供 Kong 辨識是哪一個 Consumer 呼叫。Kong 收到請求後，會用對應的公鑰進行驗證。
+由 Kong 管理者產出一對 RSA 公私鑰，私鑰給予子公司自行保管。Kong 於該子公司(Consumer)上建立 JWT Credential，輸入該公鑰後，會自動產出(也可以自行指定)一個 `key` 字串。當子公司的系統需要呼叫 API 時，需於 Payload 中的 `iss` 欄位帶入該 `key` 字串，以供 Kong 辨識是哪一個 Consumer 呼叫，並以該私鑰進行簽發 JWT Token。Kong 收到請求後，會用對應的公鑰進行驗證。
