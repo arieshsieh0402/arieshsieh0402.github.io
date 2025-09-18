@@ -1,7 +1,7 @@
 ---
 title: "[Day 6] SwiftUI 基礎元件與佈局"
-date: 2025-08-09T11:12:04+08:00
-draft: true
+date: 2025-08-19T00:00:00+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "SwiftUI"]
 description: "從零開始學習 SwiftUI 的基本元件與佈局技巧，並實作一個簡單的登入介面"

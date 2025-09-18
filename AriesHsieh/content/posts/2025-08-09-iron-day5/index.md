@@ -1,7 +1,7 @@
 ---
 title: "[Day 5] Swift 語言快速入門（二）"
-date: 2025-08-09T10:59:53+08:00
-draft: true
+date: 2025-08-18T10:59:53+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "SwiftUI"]
 description: "Swift 語言基礎教學，適合初學者快速上手"
