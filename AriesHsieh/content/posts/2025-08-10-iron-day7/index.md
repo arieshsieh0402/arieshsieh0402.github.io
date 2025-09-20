@@ -1,7 +1,7 @@
 ---
 title: "[Day 7] SwiftUI 列表與導航"
-date: 2025-08-10T19:02:28+08:00
-draft: true
+date: 2025-09-20T03:02:28+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "Swift", "SwiftUI", "iOS", "List", "Navigation"]
 description: "本文介紹 SwiftUI 中的 List 元件與 ForEach 的使用方法，以及如何透過 NavigationView 和 NavigationLink 實現畫面導航與資料傳遞。"
@@ -9,6 +9,12 @@ showToc: true
 TocOpen: false
 searchHidden: false
 comments: true
+---
+
+![alt text](IMG_0959.JPG)
+
+>台 7 線 15k
+
 ---
 
 # SwiftUI 列表與導航
