@@ -1,7 +1,7 @@
 ---
 title: "[Day 8] 讀取與解析 CSV 資料"
-date: 2025-08-13T07:33:11+08:00
-draft: true
+date: 2025-09-21T07:33:11+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "Swift", "SwiftUI", "iOS", "List", "Navigation", "CSV"]
 description: "資料載入與管理，使用 SwiftUI 讀取並解析 CSV 資料"
