@@ -1,7 +1,7 @@
 ---
 title: "[Day 12] 使用 Azure board 進行專案管理"
-date: 2025-08-19T20:39:21+08:00
-draft: true
+date: 2025-09-25T00:39:21+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
@@ -13,7 +13,7 @@ comments: true
 
 # 前言
 
-在 Day 1 的時候有提到，在我剛進公司時，公司正好在導入 Azure DevOps 作為專案管理工具。這讓我有機會從零開始學習如何使用這個工具，並且在實際的工作中應用它，也因此體會到了專案管理工具對於軟體開發的重要性與價值。例如，它能幫助團隊更清楚地了解專案進度、分配任務、追蹤 Bug 等等；每一個工作項目都能被清楚地記錄與追蹤，讓整個開發流程變得更有條理。而原本今年鐵人賽想單純撰寫 SwiftUI App 的計畫，但想了一下，或許我可以嘗試把我使用 Azure DevOps 的經驗也融入其中，也是個不錯的結合。
+在 Day 1 的時候有提到，在我剛進公司時，公司正好在導入 Azure DevOps 作為專案管理工具。這讓我有機會從零開始學習如何使用這個工具，並且在實際的工作中應用它，也因此體會到了專案管理工具對於軟體開發的重要性與價值。例如，它能幫助團隊更清楚地了解專案進度、分配任務、追蹤 Bug 等等。在還沒有工具之前，我們可能常常用 Excel、Trello 或甚至是口頭溝通，結果就是「欸，那個功能上次是誰說要做的？」或是「這個 Bug 修好了嗎？」之類的對話層出不窮，資訊非常分散。每一個工作項目都能被清楚地記錄與追蹤，讓整個開發流程變得更有條理；每一個工作項目都能被清楚地記錄與追蹤，讓整個開發流程變得更有條理。而原本今年鐵人賽想單純撰寫 SwiftUI App 的計畫，但想了一下，或許我可以嘗試把我使用 Azure DevOps 的經驗也融入其中，也是個不錯的結合。
 
 # 什麼是 Azure Boards?
 
@@ -34,7 +34,7 @@ Azure Boards 是一個基於網頁的服務，讓團隊可以一起規劃、追�
 
 詳細可參考[微軟說明](https://learn.microsoft.com/zh-tw/azure/devops/boards/work-items/guidance/choose-process?view=azure-devops&tabs=agile-process)。
 
-我們公司是使用 Agile 流程，但在這個專案中，我會使用 Basic 流程來進行管理。因為這個專案的規模較小，且我主要是個人開發，所以 Basic 流程就足夠了。其他的我沒有接觸過，如果想要了解差異，可以參考[微軟官方文件](https://learn.microsoft.com/zh-tw/azure/devops/boards/work-items/about-work-items?view=azure-devops&tabs=agile-process#track-work-with-different-work-item-types)。
+我們公司是使用 Agile 流程，但在這個專案中，我會使用 Basic 流程來進行管理。因為這個專案的規模較小，且我主要是個人開發，所以 Basic 流程就足夠了。如果用 Agile 或 Scrum，會多出像 User Story、Feature、等這些工作項目類型，對我一個人來說反而有點太複雜了，Basic 的三層架構（Epic → Issue → Task）對我來說最直覺。如果想要進一步了解差異，可以參考[微軟官方文件](https://learn.microsoft.com/zh-tw/azure/devops/boards/work-items/about-work-items?view=azure-devops&tabs=agile-process#track-work-with-different-work-item-types)。
 
 ## Basic process
 
@@ -77,7 +77,7 @@ Portfolio Backlog 與 Product Backlog 這兩個概念主要用在專案管理的
   - CI/CD 建設
     - 規劃並最終建立自動化建置與測試的 CI/CD Pipeline。
 
-接著再就該 issue 建立預計要完成的 tasks。
+這裡我想稍微分享一下我規劃的思路。整個「開發 SwiftUI 公路里程定位 App」是我的最終目標，所以它自然就是層級最高的 Epic。而底下的 Issue，我把它們看作是達成這個目標的幾個關鍵成果或主要階段，例如「UI/UX」、「核心功能」、「測試」等等。它們各自獨立但都屬於同一個 Epic。最後的 Task 才是「今天要來做什麼」這種可以馬上動手的具體工作。
 
 ## 建立 work item
 
@@ -93,7 +93,7 @@ Portfolio Backlog 與 Product Backlog 這兩個概念主要用在專案管理的
 
 ![azureBoard3](azureBoard3.png)
 
-簡單說明一下這個頁面。每一個 work item，你可以把該工作項 assign 給某個人，初始建立的 「State」 是 「To Do」，如果要開始進行可以改為 「Active」。你可以在「Description」裡面對該工作項目撰寫敘述等。建立完成後就可以按下「Save」儲存建立此工作項目。
+簡單說明一下這個頁面。每一個 work item，你可以把該工作項 assign 給某個人，初始建立的「State」 是「To Do」，如果要開始進行可以改為「Active」。就像是我們把白板上的便利貼從「待辦事項」移動到「進行中」的動作，讓整個團隊或自己一眼就能看出哪些事情已經開始進行了。
 
 儲存後，我們接下來要基於此 Epic 建立 Issue，在右側的「Related Work」區域，點選「Add link」。
 
@@ -115,4 +115,4 @@ Portfolio Backlog 與 Product Backlog 這兩個概念主要用在專案管理的
 
 # 本日小結
 
-明天就可以按照規劃好的項目開始開發了！
+很多人（包括以前的我）在做個人專案時，可能常常是想到什麼就做什麼，很容易做到一半就陷入混亂。今天花了點時間把 Epic 和 Issue 都規劃好，雖然看起來只是些管理工作，但其實是為未來的自己省下了更多時間。
