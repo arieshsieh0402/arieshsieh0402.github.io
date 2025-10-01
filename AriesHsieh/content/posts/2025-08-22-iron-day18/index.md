@@ -1,7 +1,7 @@
 ---
 title: "[Day 18] 里程定位與地圖顯示（四）- Picker 滑動時會亂跳？開立 bug 單吧！"
-date: 2025-08-22T10:55:07+08:00
-draft: true
+date: 2025-10-01T00:00:07+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
