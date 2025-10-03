@@ -1,9 +1,9 @@
 ---
 title: "[Day 19] 里程定位與地圖顯示（五）- 自訂元件樣式"
-date: 2025-08-22T10:55:20+08:00
-draft: true
-categories: []
-tags: []
+date: 2025-10-02T10:55:20+08:00
+draft: false
+categories: ["iOS"]
+tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
 showToc: true
 TocOpen: false

@@ -1,9 +1,9 @@
 ---
 title: "[Day 20] 里程定位與地圖顯示（六）- 佈局調整"
-date: 2025-08-22T10:55:24+08:00
-draft: true
-categories: []
-tags: []
+date: 2025-10-03T00:00:24+08:00
+draft: false
+categories: ["iOS"]
+tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
 showToc: true
 TocOpen: false
