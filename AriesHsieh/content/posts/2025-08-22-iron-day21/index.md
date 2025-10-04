@@ -1,9 +1,9 @@
 ---
 title: "[Day 21] 里程定位與地圖顯示（七）- TapGesture & Sheet"
-date: 2025-08-22T10:55:29+08:00
-draft: true
-categories: []
-tags: []
+date: 2025-10-04T10:55:29+08:00
+draft: false
+categories: ["iOS"]
+tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
 showToc: true
 TocOpen: false

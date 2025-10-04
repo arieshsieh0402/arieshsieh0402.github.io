@@ -2,8 +2,8 @@
 title: "[Day 25] 使用 XCTest 來建立單元測試"
 date: 2025-08-22T10:55:43+08:00
 draft: true
-categories: []
-tags: []
+categories: ["iOS"]
+tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
 showToc: true
 TocOpen: false

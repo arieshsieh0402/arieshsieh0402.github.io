@@ -2,8 +2,8 @@
 title: "[Day 29] 提交 App Store 審查"
 date: 2025-08-22T10:56:12+08:00
 draft: true
-categories: []
-tags: []
+categories: ["iOS"]
+tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
 showToc: true
 TocOpen: false

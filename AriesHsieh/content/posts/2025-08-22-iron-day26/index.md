@@ -2,8 +2,8 @@
 title: "[Day 26] 實現 iOS 自動化部署（一）- App Store 的前置作業"
 date: 2025-08-22T10:55:46+08:00
 draft: true
-categories: []
-tags: []
+categories: ["iOS"]
+tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
 showToc: true
 TocOpen: false
