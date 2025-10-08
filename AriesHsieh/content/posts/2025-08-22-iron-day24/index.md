@@ -1,7 +1,7 @@
 ---
 title: "[Day 24] 地理圍欄通知（二）"
-date: 2025-08-22T10:55:40+08:00
-draft: true
+date: 2025-10-07T10:55:40+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
