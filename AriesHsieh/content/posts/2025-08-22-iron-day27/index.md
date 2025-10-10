@@ -1,7 +1,7 @@
 ---
 title: "[Day 27] 實現 iOS 自動化部署（二）- 設定 Azure Pipelines"
-date: 2025-08-22T10:56:06+08:00
-draft: true
+date: 2025-10-10T10:56:06+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
