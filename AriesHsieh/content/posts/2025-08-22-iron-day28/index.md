@@ -1,7 +1,7 @@
 ---
 title: "[Day 28] 實現 iOS 自動化部署（三）- 建構完整的 Pipeline"
-date: 2025-08-22T10:56:09+08:00
-draft: true
+date: 2025-10-11T10:56:09+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""

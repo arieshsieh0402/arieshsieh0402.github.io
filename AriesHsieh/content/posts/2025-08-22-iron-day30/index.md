@@ -1,7 +1,7 @@
 ---
 title: "[Day 30] Finish line: 一段 SwiftUI 與 DevOps 之旅"
-date: 2025-10-05T11:00:00+08:00
-draft: true
+date: 2025-10-13T00:00:00+08:00
+draft: false
 categories: ["iOS"]
 tags: ["2025 iron", "SwiftUI", "Azure", "DevOps"]
 description: ""
