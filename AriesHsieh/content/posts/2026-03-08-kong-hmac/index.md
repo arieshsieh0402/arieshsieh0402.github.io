@@ -1,6 +1,6 @@
 ---
 title: "Kong HMAC Auth Plugin：筆記與適用場景分析"
-date: 2026-03-08T06:57:06+08:00
+date: 2026-03-08T07:57:06+08:00
 draft: false
 categories: ["API Gateway"]
 tags: ["Kong", "HMAC", "Authentication", "API"]
