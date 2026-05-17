@@ -455,6 +455,30 @@
     color: var(--ink-400);
   }
   .beta-card li strong { color: var(--ink-900); font-weight: 600; }
+  .beta-card .tip {
+    margin-top: 22px;
+    padding: 14px 16px;
+    background: var(--orange-soft);
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink-700);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .beta-card .tip-tag {
+    flex: 0 0 auto;
+    padding: 2px 9px;
+    background: var(--orange);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: var(--r-pill);
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+  }
+  .beta-card .tip strong { color: var(--ink-900); font-weight: 600; }
 
   .beta-cta {
     margin-top: 56px;
@@ -1059,10 +1083,14 @@
         <h3>怎麼加入</h3>
         <ol>
           <li>在 iPhone / iPad 上安裝 <strong>TestFlight</strong>（Apple 官方測試 app）</li>
-          <li>用下方按鈕的公開連結加入</li>
+          <li>用 <strong>Safari</strong> 點下方按鈕的公開連結加入</li>
           <li>TestFlight 會自動安裝 AttorneyTech 測試版</li>
           <li>有任何問題、Bug、想要的功能，歡迎回報</li>
         </ol>
+        <div class="tip">
+          <span class="tip-tag">提示</span>
+          <span>請務必用 <strong>Safari</strong> 點擊連結，LINE / Messenger / IG 等 in-app 瀏覽器有時無法跳轉到 TestFlight。如果 TestFlight 跳出要求輸入<strong>邀請碼</strong>，代表沒走到公開測試流程，回 Safari 重新點一次連結即可。</span>
+        </div>
       </div>
     </div>
 
