@@ -597,10 +597,12 @@
 
   /* ── responsive ───────────────────────────── */
   @media (max-width: 900px) {
+    .wrap { padding: 0 20px; }
     .hero-grid, .about-grid, .beta-grid, .author-grid { grid-template-columns: 1fr; gap: 48px; }
     .hero { padding: 48px 0 64px; }
     section.block { padding: 64px 0; }
-    .phone { margin: 0 auto; }
+    .phone { margin: 0 auto; width: 280px; height: 580px; }
+    .about-phone .phone { width: 280px; height: 580px; }
     .timeline { grid-template-columns: repeat(2, 1fr); }
     .timeline::before { display: none; }
     .features, .feedback { grid-template-columns: 1fr; }
@@ -608,6 +610,37 @@
     .nav ul { display: none; }
     .beta-cta { padding: 32px 28px; flex-direction: column; align-items: flex-start; }
     .author-portrait { width: 180px; height: 180px; }
+    .pullquote { font-size: 18px; padding: 6px 0 6px 18px; }
+    .about-copy .pullquote .zh { font-size: 20px; }
+  }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 0 16px; }
+    .nav-row { height: 56px; }
+    .brand .name em { display: none; }
+    .nav-cta { padding: 8px 12px; font-size: 13px; }
+    .hero { padding: 32px 0 48px; }
+    .hero h1 { margin: 14px 0 18px; }
+    .hero .sub { font-size: 16px; margin-bottom: 24px; }
+    .btn-primary, .btn-secondary { padding: 12px 18px; font-size: 14px; }
+    .phone {
+      width: min(260px, 78vw);
+      height: auto;
+      aspect-ratio: 32 / 66;
+      border-radius: 38px;
+      padding: 7px;
+    }
+    .phone::before { width: 80px; height: 26px; top: 14px; }
+    .phone .screen { border-radius: 32px; }
+    .about-phone .phone { width: min(240px, 70vw); height: auto; }
+    section.block { padding: 56px 0; }
+    .block-head { margin-bottom: 40px; }
+    .block-head h2 { font-size: 26px; }
+    .feat { padding: 24px 22px; }
+    .beta-card { padding: 28px 24px; }
+    .beta-cta { padding: 28px 22px; }
+    .beta-cta h3 { font-size: 20px; }
+    .author-portrait { width: 140px; height: 140px; }
   }
 </style>
 </head>
@@ -664,7 +697,7 @@
     <div class="block-head" data-reveal>
       <div class="eyebrow">about · 緣起</div>
       <h2>為什麼自己寫一個 APP？</h2>
-      <p style="width: 625px">還在事務所的時候，律師們都是扛著貼滿標籤紙的紙本卷宗去法院。開庭瞬息萬變，有時就是沒有辦法馬上翻到資料，那幾秒鐘彷彿時間靜止一般。</p>
+      <p>還在事務所的時候，律師們都是扛著貼滿標籤紙的紙本卷宗去法院。開庭瞬息萬變，有時就是沒有辦法馬上翻到資料，那幾秒鐘彷彿時間靜止一般。</p>
     </div>
 
     <div class="about-grid">
@@ -877,6 +910,24 @@
     .carousel-tab { padding: 8px 12px; }
     .carousel-tab .l { font-size: 12px; }
   }
+  @media (max-width: 480px) {
+    .carousel-wrap { grid-template-columns: 36px 1fr 36px; gap: 8px; }
+    .carousel-wrap .phone {
+      width: min(220px, 60vw);
+      height: auto;
+      aspect-ratio: 32 / 66;
+      border-radius: 14px;
+      padding: 4px;
+    }
+    .carousel-wrap .phone::before { width: 60px; height: 18px; top: 10px; }
+    .carousel-wrap .phone .screen { border-radius: 10px; }
+    .carousel-arrow { width: 36px; height: 36px; }
+    .carousel-arrow svg { width: 16px; height: 16px; }
+    .carousel-caption { margin-top: 24px; }
+    .carousel-caption .cap-zh { font-size: 16px; }
+    .carousel-tab { padding: 6px 8px; }
+    .carousel-tab .l { font-size: 11px; }
+  }
 </style>
 
 <section class="block">
@@ -884,7 +935,7 @@
     <div class="block-head" data-reveal>
       <div class="eyebrow">screens · 介面預覽</div>
       <h2>實機畫面</h2>
-      <p style="width: 750px">左右切換看看 v2.0 的案件詳情 ── 從概覽、庭期、當事人、受任資訊、費用，到卷宗、關聯案件。</p>
+      <p>左右切換看看 v2.0 的案件詳情 ── 從概覽、庭期、當事人、受任資訊、費用，到卷宗、關聯案件。</p>
     </div>
 
     <div class="carousel-wrap" id="shots-carousel" data-reveal data-reveal-delay="120">
