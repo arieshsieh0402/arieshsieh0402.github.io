@@ -1,0 +1,1151 @@
+<!DOCTYPE html><html lang="zh-Hant"><head>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AttorneyTech · 公測開放</title>
+<meta name="description" content="一位執業律師親手寫的 iOS 案件管理工具。從案件、當事人、庭期、費用到法律顧問契約。第二代大改版公測開放中。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF8;
+    --bg-2: #F5F4F0;
+    --bg-3: #EFEEE9;
+    --ink-900: #1A1815;
+    --ink-700: #3D3A35;
+    --ink-500: #807A72;
+    --ink-400: #A09A91;
+    --ink-300: #C8C4BD;
+    --line: rgba(26,24,21,0.08);
+    --line-strong: rgba(26,24,21,0.14);
+    --navy: #2C4A6E;
+    --navy-soft: #E8EDF7;
+    --navy-deep: #1F3654;
+    --orange: #C96442;
+    --orange-soft: #F5E6DF;
+    --success: #5A8F4D;
+    --font-tc: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "PingFang TC", system-ui, sans-serif;
+    --font-en: "Newsreader", "Noto Sans TC", serif;
+    --r-md: 12px;
+    --r-lg: 16px;
+    --r-xl: 24px;
+    --r-pill: 999px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-tc);
+    background: var(--bg);
+    color: var(--ink-900);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── nav ───────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(250,250,248,0.85);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-row {
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { width: 32px; height: 32px; border-radius: 7px; }
+  .brand .name {
+    font-weight: 600; letter-spacing: 0.01em; color: var(--ink-900);
+    font-size: 16px;
+  }
+  .brand .name em {
+    font-style: normal; color: var(--ink-500); font-weight: 500;
+    margin-left: 6px; font-size: 12px;
+    padding: 2px 7px; border-radius: var(--r-pill);
+    background: var(--navy-soft); color: var(--navy);
+  }
+  .nav ul {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; gap: 28px; font-size: 14px; color: var(--ink-700);
+  }
+  .nav ul a:hover { color: var(--navy); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--navy); color: #fff;
+    padding: 9px 16px; border-radius: var(--r-pill);
+    font-size: 14px; font-weight: 500;
+    transition: background .15s ease;
+  }
+  .nav-cta:hover { background: var(--navy-deep); }
+
+  /* ── eyebrow ──────────────────────────────── */
+  .eyebrow {
+    font-family: var(--font-en);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-500);
+    font-weight: 500;
+  }
+  .eyebrow .dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--orange); border-radius: 50%;
+    margin-right: 8px; vertical-align: 2px;
+  }
+
+  /* ── hero ─────────────────────────────────── */
+  .hero { padding: 80px 0 100px; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 72px;
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 4.6vw, 60px);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    margin: 18px 0 22px;
+    color: var(--ink-900);
+    text-wrap: balance;
+  }
+  .hero h1 .accent { color: var(--navy); }
+  .hero .sub {
+    font-size: 18px; color: var(--ink-700);
+    max-width: 520px; margin: 0 0 32px;
+    text-align: justify;
+    text-justify: inter-ideograph;
+    line-height: 1.65;
+  }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--navy); color: #fff;
+    padding: 14px 22px; border-radius: var(--r-pill);
+    font-size: 15px; font-weight: 500;
+    border: none; cursor: pointer; font-family: inherit;
+    transition: background .15s ease;
+  }
+  .btn-primary:hover { background: var(--navy-deep); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--ink-700);
+    padding: 14px 18px; border-radius: var(--r-pill);
+    font-size: 15px; font-weight: 500;
+    border: 1px solid var(--line-strong);
+    background: transparent; cursor: pointer; font-family: inherit;
+  }
+  .btn-secondary:hover { background: var(--bg-2); }
+
+  .hero-meta {
+    margin-top: 28px; font-size: 13px; color: var(--ink-500);
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .hero-meta .v {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .hero-meta .v::before {
+    content: ""; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--success);
+  }
+
+  /* iPhone frame in hero */
+  .phone {
+    width: 320px; height: 660px;
+    margin-left: auto;
+    background: #1A1815;
+    border-radius: 48px;
+    padding: 9px;
+    position: relative;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.05) inset,
+      0 30px 60px -20px rgba(26,24,21,0.25),
+      0 10px 30px -10px rgba(26,24,21,0.15);
+  }
+  .phone::before {
+    content: ""; position: absolute;
+    top: 18px; left: 50%; transform: translateX(-50%);
+    width: 100px; height: 32px;
+    background: #0A0907; border-radius: 20px;
+    z-index: 2;
+  }
+  .phone .screen {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    border-radius: 40px;
+    overflow: hidden;
+    position: relative;
+  }
+  .phone image-slot, .phone img {
+    width: 100%; height: 100%; object-fit: cover;
+    object-position: top center;
+  }
+
+  /* ── section base ────────────────────────── */
+  section.block { padding: 100px 0; border-top: 1px solid var(--line); }
+  .block-head { max-width: 720px; margin-bottom: 56px; }
+  .block-head h2 {
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    margin: 14px 0 16px;
+    color: var(--ink-900);
+    text-wrap: balance;
+  }
+  .block-head p {
+    font-size: 17px; color: var(--ink-700);
+    margin: 0; line-height: 1.65;
+  }
+
+  /* ── about / backstory ───────────────────── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 80px;
+    align-items: start;
+  }
+  .about-copy {
+    max-width: 620px;
+  }
+  .about-phone {
+    justify-self: end;
+  }
+  .about-phone .phone {
+    width: 280px; height: 580px;
+    margin: 0;
+  }
+  .about-copy p {
+    font-size: 17px;
+    color: var(--ink-700);
+    margin: 0 0 24px;
+    line-height: 1.9;
+    text-wrap: pretty;
+    letter-spacing: 0.01em;
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+  .about-copy p.lead {
+    font-size: 19px;
+    color: var(--ink-900);
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+  .about-copy .ornament {
+    border: 0;
+    text-align: center;
+    margin: 12px 0 28px;
+    height: 1em;
+    color: var(--ink-300);
+    font-size: 13px;
+    letter-spacing: 0.55em;
+    font-family: var(--font-en);
+    overflow: visible;
+  }
+  .about-copy .ornament::before { content: "✦  ✦  ✦"; }
+  .pullquote {
+    border-left: 3px solid var(--navy);
+    padding: 8px 0 8px 22px;
+    margin: 28px 0;
+    font-family: var(--font-en);
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--ink-900);
+    letter-spacing: -0.01em;
+  }
+  .pullquote .zh { font-family: var(--font-tc); font-style: normal; font-weight: 500; letter-spacing: 0.005em; }
+  .about-copy .pullquote {
+    margin: 40px 0 0;
+    padding: 16px 0 16px 28px;
+    border-left-width: 4px;
+  }
+  .about-copy .pullquote .zh {
+    font-size: 26px;
+    line-height: 1.5;
+  }
+  .about-media {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .about-media image-slot {
+    width: 100%; height: 380px;
+  }
+  .about-media .caption {
+    font-size: 12px; color: var(--ink-500);
+    font-family: var(--font-en); letter-spacing: 0.04em;
+  }
+
+  /* ── timeline ─────────────────────────────── */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+    position: relative;
+    margin-top: 16px;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 12px; left: 8px; right: 8px;
+    height: 1px;
+    background: var(--line-strong);
+  }
+  .tl-item { position: relative; padding-top: 36px; }
+  .tl-item::before {
+    content: ""; position: absolute;
+    top: 8px; left: 0;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--ink-300);
+  }
+  .tl-item.now::before { background: var(--orange); border-color: var(--orange); }
+  .tl-item.now .year { color: var(--orange); }
+  .tl-item .year {
+    font-family: var(--font-en);
+    font-size: 13px; letter-spacing: 0.08em;
+    font-weight: 500;
+    color: var(--ink-500);
+    margin-bottom: 8px;
+  }
+  .tl-item h4 {
+    font-size: 15px; font-weight: 600; color: var(--ink-900);
+    margin: 0 0 6px; letter-spacing: -0.01em;
+  }
+  .tl-item p {
+    font-size: 13px; color: var(--ink-500);
+    margin: 0; line-height: 1.55;
+  }
+
+  /* ── feature grid ─────────────────────────── */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .feat {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--r-xl);
+    padding: 28px 26px;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .feat:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-2px);
+  }
+  .feat .num {
+    font-family: var(--font-en);
+    font-size: 12px; letter-spacing: 0.12em;
+    color: var(--ink-400); font-weight: 500;
+    margin-bottom: 14px; display: block;
+  }
+  .feat h3 {
+    font-size: 18px; font-weight: 600;
+    margin: 0 0 14px; letter-spacing: -0.01em;
+    line-height: 1.35;
+  }
+  .feat ul {
+    list-style: none; margin: 0; padding: 0;
+    font-size: 14px; color: var(--ink-700);
+    line-height: 1.7;
+  }
+  .feat ul li {
+    padding-left: 16px; position: relative;
+    margin-bottom: 4px;
+  }
+  .feat ul li::before {
+    content: ""; position: absolute;
+    left: 0; top: 11px; width: 6px; height: 1px;
+    background: var(--ink-400);
+  }
+
+  /* ── screenshots showcase ─────────────────── */
+  .shots {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .shot {
+    background: var(--bg-2);
+    border-radius: var(--r-lg);
+    padding: 16px 16px 20px;
+    border: 1px solid var(--line);
+  }
+  .shot .frame {
+    background: #1A1815;
+    border-radius: 18px;
+    padding: 5px;
+    aspect-ratio: 9 / 19.5;
+    position: relative;
+    overflow: hidden;
+  }
+  .shot .frame img, .shot .frame image-slot {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top center;
+    border-radius: 14px;
+    display: block;
+  }
+  .shot .label {
+    margin-top: 14px;
+    font-size: 13px; color: var(--ink-700); font-weight: 500;
+  }
+  .shot .label small {
+    display: block; font-size: 11px; color: var(--ink-500);
+    font-family: var(--font-en); letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  /* ── beta info ────────────────────────────── */
+  .beta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+  }
+  .beta-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--r-xl);
+    padding: 36px 32px;
+  }
+  .beta-card h3 {
+    font-size: 20px; font-weight: 600;
+    margin: 12px 0 18px; letter-spacing: -0.01em;
+  }
+  .beta-card .icon {
+    width: 36px; height: 36px;
+    background: var(--navy-soft); color: var(--navy);
+    border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 600;
+    font-family: var(--font-en);
+  }
+  .beta-card ol, .beta-card ul {
+    margin: 0; padding-left: 0; list-style: none;
+    counter-reset: step;
+  }
+  .beta-card li {
+    padding-left: 36px; position: relative;
+    font-size: 15px; line-height: 1.7; color: var(--ink-700);
+    margin-bottom: 14px;
+  }
+  .beta-card ol li {
+    counter-increment: step;
+  }
+  .beta-card ol li::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute; left: 0; top: 4px;
+    font-family: var(--font-en);
+    font-size: 13px;
+    color: var(--navy);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .beta-card ul li::before {
+    content: "—"; position: absolute; left: 0; top: 0;
+    color: var(--ink-400);
+  }
+  .beta-card li strong { color: var(--ink-900); font-weight: 600; }
+
+  .beta-cta {
+    margin-top: 56px;
+    background: var(--navy);
+    color: #fff;
+    border-radius: var(--r-xl);
+    padding: 44px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .beta-cta h3 {
+    font-size: 24px; font-weight: 600;
+    margin: 0 0 6px; letter-spacing: -0.015em;
+  }
+  .beta-cta p { margin: 0; font-size: 15px; color: rgba(255,255,255,0.7); }
+  .beta-cta a.btn {
+    background: #fff; color: var(--navy);
+    padding: 14px 24px; border-radius: var(--r-pill);
+    font-weight: 600; font-size: 15px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+
+  /* ── author ───────────────────────────────── */
+  .author-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .author-portrait {
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--bg-2);
+  }
+  .author-portrait image-slot {
+    width: 100%; height: 100%;
+  }
+  .author-name {
+    font-size: 22px; font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 4px;
+  }
+  .author-role {
+    font-family: var(--font-en);
+    font-size: 13px; color: var(--ink-500);
+    letter-spacing: 0.06em;
+    margin-bottom: 22px;
+  }
+  .author-bio p {
+    font-size: 16px; line-height: 1.8; color: var(--ink-700);
+    margin: 0 0 14px;
+  }
+  .author-bio a.read {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--navy); font-weight: 500; font-size: 14px;
+    margin-top: 8px;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+  }
+
+  /* ── feedback ─────────────────────────────── */
+  .feedback {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .fb {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--r-xl);
+    padding: 28px 26px;
+  }
+  .fb .ch {
+    font-family: var(--font-en);
+    font-size: 12px; letter-spacing: 0.12em;
+    color: var(--ink-500); font-weight: 500;
+    margin-bottom: 10px; text-transform: uppercase;
+  }
+  .fb h4 {
+    font-size: 17px; font-weight: 600;
+    margin: 0 0 8px;
+  }
+  .fb p {
+    font-size: 14px; color: var(--ink-700);
+    margin: 0 0 16px; line-height: 1.65;
+  }
+  .fb a {
+    font-size: 14px; color: var(--navy); font-weight: 500;
+    border-bottom: 1px solid currentColor; padding-bottom: 1px;
+  }
+
+  /* ── footer ───────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 48px 0 60px;
+    margin-top: 40px;
+  }
+  .foot {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    font-size: 13px; color: var(--ink-500);
+  }
+  .foot .brand .name { font-size: 14px; }
+  .foot .links { display: flex; gap: 22px; }
+
+  /* ── smooth in-page nav ───────────────────── */
+  html { scroll-behavior: smooth; }
+  section[id], header.hero { scroll-margin-top: 80px; }
+
+  /* ── nav arrival animation ────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    .is-arriving > .wrap {
+      animation: arrive 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes arrive {
+      from { opacity: 0.35; transform: translateY(20px); }
+      to   { opacity: 1;    transform: translateY(0); }
+    }
+  }
+
+  /* ── reveal on scroll ─────────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] {
+      opacity: 0;
+      transform: translate3d(0, 28px, 0);
+      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+    [data-reveal="left"]  { transform: translate3d(-40px, 0, 0); }
+    [data-reveal="right"] { transform: translate3d( 40px, 0, 0); }
+    [data-reveal="up"]    { transform: translate3d(0, 32px, 0); }
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  /* ── responsive ───────────────────────────── */
+  @media (max-width: 900px) {
+    .hero-grid, .about-grid, .beta-grid, .author-grid { grid-template-columns: 1fr; gap: 48px; }
+    .hero { padding: 48px 0 64px; }
+    section.block { padding: 64px 0; }
+    .phone { margin: 0 auto; }
+    .timeline { grid-template-columns: repeat(2, 1fr); }
+    .timeline::before { display: none; }
+    .features, .feedback { grid-template-columns: 1fr; }
+    .shots { grid-template-columns: repeat(2, 1fr); }
+    .nav ul { display: none; }
+    .beta-cta { padding: 32px 28px; flex-direction: column; align-items: flex-start; }
+    .author-portrait { width: 180px; height: 180px; }
+  }
+</style>
+</head>
+<body style="">
+
+<nav class="nav">
+  <div class="wrap nav-row">
+    <a href="#" class="brand">
+      <img src="landing/assets/logo-gray.png" alt="AttorneyTech">
+      <span class="name">AttorneyTech<em>iOS 公測</em></span>
+    </a>
+    <ul>
+      <li><a href="#about">緣起</a></li>
+      <li><a href="#new">新功能</a></li>
+      <li><a href="#beta">公測</a></li>
+      <li><a href="#author">作者</a></li>
+    </ul>
+    <a href="https://testflight.apple.com/join/TBHHjeu6" target="_blank" rel="noopener" class="nav-cta">加入 TestFlight →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div data-reveal="left">
+      <div class="eyebrow"><span class="dot"></span>TestFlight 公測 · 限時開放</div>
+      <h1>為臺灣執業律師<br><span class="accent">打造的</span>案件管理 App。</h1>
+      <p class="sub">從案件、當事人、庭期、費用，到法律顧問契約 ── 一位曾經的執業律師打開電腦，把自己當男最需要的東西，一個一個寫成 app。 第二代大改版公測開放。</p>
+      <div class="cta-row">
+        <a class="btn-primary" href="https://testflight.apple.com/join/TBHHjeu6" target="_blank" rel="noopener">加入 TestFlight 公測
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+        <a class="btn-secondary" href="#new">看看這次新增了什麼</a>
+      </div>
+      <div class="hero-meta">
+        <span class="v">v2.0 公測開放中</span>
+        <span>·</span>
+        <span>iPhone &amp; iPad</span>
+      </div>
+    </div>
+    <div data-reveal="right" data-reveal-delay="120">
+      <div class="phone">
+        <div class="screen">
+          <img src="landing/assets/hero-home.png" alt="主頁 Dashboard 截圖" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ABOUT / BACKSTORY -->
+<section class="block" id="about">
+  <div class="wrap">
+    <div class="block-head" data-reveal>
+      <div class="eyebrow">about · 緣起</div>
+      <h2>為什麼自己寫一個 APP？</h2>
+      <p style="width: 625px">還在事務所的時候，律師們都是扛著貼滿標籤紙的紙本卷宗去法院。開庭瞬息萬變，有時就是沒有辦法馬上翻到資料，那幾秒鐘彷彿時間靜止一般。</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-copy" data-reveal="left">
+        <p class="lead">法院雖有電子卷宗，但整體來說這行業數位化的腳步，還有很大的進步空間 ── 當年我帶筆電去開庭時，有幾次被法官當庭詢問我帶筆電的目的。</p>
+
+        <hr class="ornament" />
+
+        <p>另一個讓人困擾的是案件管理。小型事務所，基於成本通常只能「自行管理」：Google Calendar、Excel、或乾脆放在大腦裡。因此，我萌生了寫一套工具給自己用的想法 ── 雖然當時的我，並不會寫程式。</p>
+
+        <p>在一段準備育兒的職涯空檔，因緣際會下開始自學寫程式，後來進了 AppWorks School 的 iOS Training Program。AttorneyTech 第一版就是在 School 的四週個人專案中誕生的，2023 年底正式上架 App Store。</p>
+
+        <hr class="ornament" />
+
+        <p>但說實話，上架後我就一直沒時間動它。一停就是兩年多。</p>
+
+        <p>真正讓它再次動起來，是這一年跟 AI 的協作 ── 在零碎的時間裡也能一點一點把它往前推。</p>
+
+        <p>AI 的發展迅速，也讓我看到一件事：很多律師正在用 AI 幫自己寫案件管理系統，那一度讓我猶豫，要不要繼續改版。但我看了看現在的 AttorneyTech，它還沒長成我當初想要的樣子。所以我決定把它做完 ，只要能有幫助到需要的人就夠了。</p>
+      </div>
+
+      <div class="about-phone" data-reveal="right" data-reveal-delay="120">
+        <div class="phone">
+          <div class="screen">
+            <img src="landing/assets/about-conflict.png" alt="衝突檢查截圖" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEW FEATURES -->
+<section class="block" id="new">
+  <div class="wrap">
+    <div class="block-head" data-reveal>
+      <div class="eyebrow">what's new · 新功能</div>
+      <h2>第二代大改版，新增了哪些功能？</h2>
+      <p>v2.0 不是把舊版重新上一層皮 ── 是從資訊架構、流程到每一個畫面，全部重新想過一次。</p>
+    </div>
+
+    <div class="features">
+      <div class="feat" data-reveal data-reveal-delay="0">
+        <span class="num">01 · PLATFORM</span>
+        <h3>平台與外觀</h3>
+        <ul>
+          <li>iPad 全面支援，大螢幕排版</li>
+          <li>完整深色模式</li>
+          <li>動態字級、輔助使用最佳化</li>
+        </ul>
+      </div>
+
+      <div class="feat" data-reveal data-reveal-delay="80">
+        <span class="num">02 · HOME &amp; CASES</span>
+        <h3>主頁與案件</h3>
+        <ul>
+          <li>主頁 Dashboard 化：今日庭期、本週庭期、待辦、法顧到期、超額提醒</li>
+          <li>案件詳情多功能化：程序階段、當事人、費用、受任、卷宗、關聯案件</li>
+          <li>新增案件流程重新設計</li>
+        </ul>
+      </div>
+
+      <div class="feat" data-reveal data-reveal-delay="160">
+        <span class="num">03 · PARTIES</span>
+        <h3>當事人與衝突偵測</h3>
+        <ul>
+          <li>全新當事人系統</li>
+          <li>潛在利益衝突偵測</li>
+          <li>庭期衝突功能重新設計</li>
+        </ul>
+      </div>
+
+      <div class="feat" data-reveal data-reveal-delay="0">
+        <span class="num">04 · RETAINER</span>
+        <h3>法律顧問契約</h3>
+        <ul>
+          <li>合約 + 工時記錄 + 服務時數額度</li>
+          <li>主頁超額提醒</li>
+          <li>顧問請款單 PDF / CSV 匯出</li>
+        </ul>
+      </div>
+
+      <div class="feat" data-reveal data-reveal-delay="80">
+        <span class="num">05 · DATA</span>
+        <h3>資料匯入匯出</h3>
+        <ul>
+          <li>案件、當事人 CSV 匯入</li>
+          <li>「匯出我的資料」CSV 可攜檔</li>
+          <li>跨裝置 iCloud 同步</li>
+        </ul>
+      </div>
+
+      <div class="feat" data-reveal data-reveal-delay="160">
+        <span class="num">06 · TOOLS</span>
+        <h3>外部工具頁</h3>
+        <ul>
+          <li>期間試算</li>
+          <li>判決查詢</li>
+          <li>裁判費計算</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOTS · INTERACTIVE -->
+<style>
+  .carousel-wrap {
+    display: grid;
+    grid-template-columns: 56px 1fr 56px;
+    align-items: center;
+    gap: 48px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .carousel-wrap .phone {
+    margin: 0 auto;
+    width: 320px; height: 660px;
+  }
+  .carousel-wrap .phone .screen {
+    overflow: hidden;
+  }
+  .carousel-wrap .phone .screen-img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top center;
+    display: block;
+  }
+  .carousel-arrow {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--ink-700);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    padding: 0;
+  }
+  .carousel-arrow:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+  }
+  .carousel-arrow:disabled {
+    opacity: 0.35; cursor: not-allowed;
+  }
+  .carousel-arrow svg {
+    width: 20px; height: 20px;
+  }
+  .carousel-caption {
+    text-align: center;
+    margin-top: 36px;
+  }
+  .carousel-caption .cap-en {
+    display: block;
+    font-family: var(--font-en);
+    font-size: 12px; color: var(--ink-500);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .carousel-caption .cap-zh {
+    font-size: 18px; font-weight: 600;
+    color: var(--ink-900);
+    letter-spacing: -0.005em;
+  }
+  .carousel-tabs {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .carousel-tab {
+    flex: 0 0 auto;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 10px;
+    padding: 8px 22px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.15s;
+  }
+  .carousel-tab .d {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--ink-300);
+    transition: background 0.15s, transform 0.15s;
+  }
+  .carousel-tab .l {
+    font-size: 13px;
+    color: var(--ink-500);
+    letter-spacing: 0.02em;
+    transition: color 0.15s, font-weight 0.15s;
+  }
+  .carousel-tab:hover .l { color: var(--ink-700); }
+  .carousel-tab.active .d {
+    background: var(--navy);
+    transform: scale(1.4);
+  }
+  .carousel-tab.active .l {
+    color: var(--ink-900);
+    font-weight: 600;
+  }
+  @media (max-width: 720px) {
+    .carousel-wrap { grid-template-columns: 44px 1fr 44px; gap: 12px; }
+    .carousel-wrap .phone { width: 260px; height: 540px; }
+    .carousel-arrow { width: 44px; height: 44px; }
+    .carousel-tabs { gap: 0; }
+    .carousel-tab { padding: 8px 12px; }
+    .carousel-tab .l { font-size: 12px; }
+  }
+</style>
+
+<section class="block">
+  <div class="wrap">
+    <div class="block-head" data-reveal>
+      <div class="eyebrow">screens · 介面預覽</div>
+      <h2>實機畫面</h2>
+      <p style="width: 750px">左右切換看看 v2.0 的案件詳情 ── 從概覽、庭期、當事人、受任資訊、費用，到卷宗、關聯案件。</p>
+    </div>
+
+    <div class="carousel-wrap" id="shots-carousel" data-reveal data-reveal-delay="120">
+      <button class="carousel-arrow prev" aria-label="上一張">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+
+      <div class="phone">
+        <div class="screen">
+          <img class="screen-img" src="landing/assets/case-overview.png" alt="案件概覽">
+        </div>
+      </div>
+
+      <button class="carousel-arrow next" aria-label="下一張">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+
+    <!-- preload sources for static-html bundler (paths get rewritten to blob URLs at runtime) -->
+    <div class="carousel-sources" hidden aria-hidden="true">
+      <img data-i="0" data-en="case · overview"   data-zh="案件概覽" src="landing/assets/case-overview.png">
+      <img data-i="1" data-en="case · hearings"   data-zh="庭期"     src="landing/assets/case-hearings.png">
+      <img data-i="2" data-en="case · parties"    data-zh="當事人"   src="landing/assets/case-parties.png">
+      <img data-i="3" data-en="case · engagement" data-zh="受任資訊" src="landing/assets/case-engagement.png">
+      <img data-i="4" data-en="case · fees"       data-zh="費用"     src="landing/assets/case-fees.png">
+      <img data-i="5" data-en="case · documents"  data-zh="卷宗"     src="landing/assets/case-docs.png">
+      <img data-i="6" data-en="case · relations"  data-zh="關聯案件" src="landing/assets/case-relations.png">
+    </div>
+
+    <div class="carousel-caption">
+      <small class="cap-en">case · overview</small>
+      <span class="cap-zh">案件概覽</span>
+    </div>
+
+    <div class="carousel-tabs" role="tablist">
+      <button class="carousel-tab active" data-i="0"><span class="d"></span><span class="l">概覽</span></button>
+      <button class="carousel-tab" data-i="1"><span class="d"></span><span class="l">庭期</span></button>
+      <button class="carousel-tab" data-i="2"><span class="d"></span><span class="l">當事人</span></button>
+      <button class="carousel-tab" data-i="3"><span class="d"></span><span class="l">受任</span></button>
+      <button class="carousel-tab" data-i="4"><span class="d"></span><span class="l">費用</span></button>
+      <button class="carousel-tab" data-i="5"><span class="d"></span><span class="l">卷宗</span></button>
+      <button class="carousel-tab" data-i="6"><span class="d"></span><span class="l">關聯</span></button>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('shots-carousel');
+    if (!root) return;
+    var sourceEls = Array.from(document.querySelectorAll('.carousel-sources img'));
+    var slides = sourceEls.map(function (el) {
+      return { src: el.src, en: el.dataset.en, zh: el.dataset.zh };
+    });
+    var img = root.querySelector('.screen-img');
+    var capEn = document.querySelector('.carousel-caption .cap-en');
+    var capZh = document.querySelector('.carousel-caption .cap-zh');
+    var tabs = Array.from(document.querySelectorAll('.carousel-tab'));
+    var prev = root.querySelector('.prev');
+    var next = root.querySelector('.next');
+    var idx = 0;
+
+    function render() {
+      var s = slides[idx];
+      img.src = s.src;
+      img.alt = s.zh;
+      capEn.textContent = s.en;
+      capZh.textContent = s.zh;
+      tabs.forEach(function (t, i) { t.classList.toggle('active', i === idx); });
+    }
+    function go(i) {
+      idx = (i + slides.length) % slides.length;
+      render();
+    }
+    prev.addEventListener('click', function () { go(idx - 1); });
+    next.addEventListener('click', function () { go(idx + 1); });
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { go(parseInt(t.dataset.i, 10)); });
+    });
+    document.addEventListener('keydown', function (e) {
+      // only react when carousel is in viewport
+      var r = root.getBoundingClientRect();
+      var visible = r.top < window.innerHeight && r.bottom > 0;
+      if (!visible) return;
+      if (e.key === 'ArrowLeft') go(idx - 1);
+      else if (e.key === 'ArrowRight') go(idx + 1);
+    });
+    // touch swipe
+    var sx = 0, sy = 0, tracking = false;
+    root.addEventListener('touchstart', function (e) {
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY; tracking = true;
+    }, { passive: true });
+    root.addEventListener('touchend', function (e) {
+      if (!tracking) return; tracking = false;
+      var dx = e.changedTouches[0].clientX - sx;
+      var dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx < 0) go(idx + 1); else go(idx - 1);
+      }
+    });
+  })();
+</script>
+
+<!-- BETA -->
+<section class="block" id="beta">
+  <div class="wrap">
+    <div class="block-head" data-reveal>
+      <div class="eyebrow">beta · 公測</div>
+      <h2>誰可以加入公測？怎麼加入？</h2>
+      <p>只要你有興趣，都可以加入。</p>
+    </div>
+
+    <div class="beta-grid">
+      <div class="beta-card" data-reveal="left">
+        <div class="icon">W</div>
+        <h3>適合誰</h3>
+        <ul>
+          <li>執業律師 / 法律工作者</li>
+          <li>有自己手上實際處理的<strong>案件</strong>可以拿來測試</li>
+          <li>願意在使用過程中<strong>回報問題、提需求</strong></li>
+          <li>有一支 iPhone / iPad（iOS 17 以上）</li>
+        </ul>
+      </div>
+      <div class="beta-card" data-reveal="right" data-reveal-delay="120">
+        <div class="icon">→</div>
+        <h3>怎麼加入</h3>
+        <ol>
+          <li>在 iPhone / iPad 上安裝 <strong>TestFlight</strong>（Apple 官方測試 app）</li>
+          <li>用下方按鈕的公開連結加入</li>
+          <li>TestFlight 會自動安裝 AttorneyTech 測試版</li>
+          <li>有任何問題、Bug、想要的功能，歡迎回報</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="beta-cta" data-reveal>
+      <div>
+        <h3>準備好了嗎？</h3>
+        <p>TestFlight 公開連結</p>
+      </div>
+      <a class="btn" href="https://testflight.apple.com/join/TBHHjeu6" target="_blank" rel="noopener" data-tf-link="">加入 TestFlight 公測
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- AUTHOR -->
+<section class="block" id="author">
+  <div class="wrap">
+    <div class="block-head" data-reveal>
+      <div class="eyebrow">author · 作者</div>
+      <h2>關於開發者。</h2>
+    </div>
+    <div class="author-grid" data-reveal data-reveal-delay="120">
+      <div>
+        <h3 class="author-name">Aries Hsieh</h3>
+        <div class="author-role">FOUNDER · DEVELOPER · LAWYER</div>
+        <div class="author-bio">
+          <p>曾經的執業律師。執業幾年後在職涯空檔自學寫程式，現在在金融業 IT 部門打滾。</p>
+          <p>AttorneyTech 是我從律師時期就想做的事情，希望能夠對各位道長有所幫助。</p>
+          <a class="read" href="https://vocus.cc/article/65e288dbfd89780001e29c9d" target="_blank" rel="noopener"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEEDBACK -->
+<section class="block">
+  <div class="wrap">
+    <div class="block-head" data-reveal>
+      <div class="eyebrow">feedback · 回饋管道</div>
+      <h2>你的回饋會直接影響下一版。</h2>
+      <p>我也很多年沒實際執業了，如果功能設計上有想錯的地方，希望各路道長不吝指教 ── 任何意見、bug、想要的功能，都歡迎丟過來。</p>
+    </div>
+    <div class="feedback">
+      <div class="fb" data-reveal="left">
+        <div class="ch">email</div>
+        <h4>直接寫信</h4>
+        <p>最直接的方式。寫詳細一點，含截圖最好。</p>
+        <a href="mailto:hthsieh.law@gmail.com">hthsieh.law@gmail.com</a>
+      </div>
+      <div class="fb" data-reveal="right" data-reveal-delay="120">
+        <div class="ch">in-app</div>
+        <h4>App 內回報</h4>
+        <p>使用 TestFlight 內建的回報功能，會自動帶上你的裝置與版本資訊。</p>
+        <a href="https://testflight.apple.com/join/TBHHjeu6" target="_blank" rel="noopener">TestFlight → 分享意見回馈</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="#">
+      <img src="landing/assets/logo-gray.png" alt="AttorneyTech" style="width:24px;height:24px;border-radius:5px">
+      <span class="name">AttorneyTech</span>
+    </a>
+    <div>© 2026 AttorneyTech</div>
+  </div>
+  <div class="wrap" style="margin-top:16px;font-size:12px;color:var(--ink-400);letter-spacing:0.02em;">
+    本頁所有截圖中的姓名如有雷同純屬巧合，案件皆為虛構。
+  </div>
+</footer>
+
+<!-- (no external scripts needed for deployment) -->
+
+<script>
+  (function () {
+    var els = document.querySelectorAll('[data-reveal]');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+    els.forEach(function (el) {
+      var d = el.getAttribute('data-reveal-delay');
+      if (d) el.style.transitionDelay = d + 'ms';
+      io.observe(el);
+    });
+  })();
+
+  // nav anchor → arrival animation on target section
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    document.querySelectorAll('.nav a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        var id = a.getAttribute('href').slice(1);
+        if (!id) return;
+        var target = document.getElementById(id);
+        if (!target) return;
+        target.classList.remove('is-arriving');
+        void target.offsetWidth;
+        target.classList.add('is-arriving');
+        target.addEventListener('animationend', function () {
+          target.classList.remove('is-arriving');
+        }, { once: true });
+      });
+    });
+  })();
+</script>
+
+<template id="__bundler_thumbnail" data-bg-color="#2C4A6E">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" fill="#2C4A6E"/>
+    <g transform="translate(50, 50)" fill="#FAFAF8">
+      <text text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="34" font-weight="600" y="6">A</text>
+      <text text-anchor="middle" font-family="system-ui, sans-serif" font-size="7" letter-spacing="0.3em" y="24">BETA</text>
+    </g>
+  </svg>
+</template>
+
+
+</body></html>
