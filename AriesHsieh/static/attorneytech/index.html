@@ -273,6 +273,26 @@
     font-size: 26px;
     line-height: 1.5;
   }
+  /* ── scope / 範圍 ──────────────────────── */
+  .scope-copy {
+    max-width: 760px;
+  }
+  .scope-copy p {
+    font-size: 17px;
+    color: var(--ink-700);
+    margin: 0 0 24px;
+    line-height: 1.9;
+    letter-spacing: 0.01em;
+    text-align: justify;
+    text-justify: inter-ideograph;
+    text-wrap: pretty;
+  }
+  .scope-copy p strong {
+    color: var(--ink-900);
+    font-weight: 600;
+  }
+  .scope-copy p:last-child { margin-bottom: 0; }
+
   .about-media {
     display: flex; flex-direction: column; gap: 16px;
   }
@@ -680,6 +700,7 @@
     <ul>
       <li><a href="#about">緣起</a></li>
       <li><a href="#new">新功能</a></li>
+      <li><a href="#scope">範圍</a></li>
       <li><a href="#privacy">資料</a></li>
       <li><a href="#beta">公測</a></li>
       <li><a href="#author">作者</a></li>
@@ -693,7 +714,7 @@
   <div class="wrap hero-grid">
     <div data-reveal="left">
       <div class="eyebrow"><span class="dot"></span>TestFlight 公測 · 限時開放</div>
-      <h1>為臺灣執業律師<br><span class="accent">打造的</span>案件管理 App。</h1>
+      <h1>為臺灣律師打造，<br>裝進<span class="accent">口袋</span>的案件管理 App。</h1>
       <p class="sub">從案件、當事人、庭期、費用，到法律顧問契約 ── 一位曾經的執業律師打開電腦，把自己當年最需要的東西，一個一個寫成 app。為臺灣律師日常工作流而生，第二代大改版公測開放。</p>
       <div class="cta-row">
         <a class="btn-primary" href="https://testflight.apple.com/join/TBHHjeu6" target="_blank" rel="noopener">加入 TestFlight 公測
@@ -1059,6 +1080,26 @@
     });
   })();
 </script>
+
+<!-- SCOPE -->
+<section class="block" id="scope">
+  <div class="wrap">
+    <div class="block-head" data-reveal>
+      <div class="eyebrow">scope · 範圍</div>
+      <h2>這個 app 做什麼、不做什麼。</h2>
+    </div>
+
+    <div class="scope-copy" data-reveal>
+      <p>這個 app 想做的，是律師<strong>人不在事務所的時候</strong>會用到的那些東西。</p>
+
+      <p>最常用手機翻案件資料的場景大概是：在外面突然要查當事人資訊、要確認訴訟程序進到哪一步、在路上想看這週還剩幾場庭、月底前要核一下顧問契約還剩多少小時。AttorneyTech 想做到的，是這些「在外面、手邊只有手機」的時刻。</p>
+
+      <p>至於書狀全文、判決掃描檔、證物原檔、上百頁的卷宗 PDF ── 老實說目前我覺得<strong>不該由這個 app 處理</strong>。那些東西留在電腦或事務所原本的系統最安全。它不是、也不打算變成雲端硬碟。</p>
+
+      <p>另外目前還沒做的功能也說一下：多人協作 / 團隊共享、或是很夯的 AI 應用。AI 這塊我有在觀察，但或許會等本地模型成熟到值得用我才會加進去。</p>
+    </div>
+  </div>
+</section>
 
 <!-- DATA / PRIVACY -->
 <section class="block" id="privacy">
