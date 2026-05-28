@@ -313,8 +313,6 @@ services:
 
 # 小結
 
-如果你也在 Kong 上用 ai-mcp-proxy 把 REST API 轉成 MCP server，而且想掛 openid-connect plugin 做企業 SSO，這裡是給後人的 TL;DR：
-
 1. **不要**把 ai-mcp-proxy 設成 `conversion-listener` 模式 + 同 route 掛 OIDC，會 500 port nil。
 2. 拆成兩個 route：listener（對外、掛 OIDC）+ conversion-only（後端、不掛 OIDC）。
 3. 兩個 route 用 tag 串起來（listener 的 `server.tag` = conversion-only 的 plugin tag）。
