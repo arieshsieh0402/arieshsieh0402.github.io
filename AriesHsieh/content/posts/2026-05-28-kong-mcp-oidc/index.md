@@ -1,5 +1,5 @@
 ---
-title: "Kong AI MCP Proxy 撞上 OpenID Connect：一次企業 SSO 整合的踩雷紀錄"
+title: "Kong AI MCP Proxy 撞上 OpenID Connect"
 date: 2026-05-28T21:04:08+08:00
 draft: false
 categories: ["API Gateway"]
