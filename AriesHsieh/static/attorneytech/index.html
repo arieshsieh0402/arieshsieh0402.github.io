@@ -578,6 +578,42 @@
     font-size: 16px; line-height: 1.8; color: var(--ink-700);
     margin: 0 0 14px;
   }
+  .author-credentials {
+    list-style: none;
+    margin: 24px 0 28px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .author-credentials li {
+    position: relative;
+    padding: 18px 18px 18px 38px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    color: var(--ink-700);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .author-credentials li::before {
+    content: "";
+    position: absolute;
+    top: 25px;
+    left: 20px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+  .author-credentials strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--ink-900);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
   .author-bio a.read {
     display: inline-flex; align-items: center; gap: 6px;
     color: var(--navy); font-weight: 500; font-size: 14px;
@@ -668,6 +704,7 @@
   @media (max-width: 900px) {
     .wrap { padding: 0 20px; }
     .hero-grid, .about-grid, .beta-grid, .author-grid { grid-template-columns: 1fr; gap: 48px; }
+    .author-credentials { grid-template-columns: 1fr; }
     .hero { padding: 48px 0 64px; }
     section.block { padding: 64px 0; }
     .phone { margin: 0 auto; width: 280px; height: 580px; }
@@ -1217,7 +1254,12 @@
         <h3 class="author-name">Aries Hsieh</h3>
         <div class="author-role">FOUNDER · DEVELOPER · LAWYER</div>
         <div class="author-bio">
-          <p>曾經的執業律師。執業幾年後在職涯空檔自學寫程式，現在在金融業 IT 部門打滾。</p>
+          <p>從法律跨進軟體開發，起點是在職涯空檔自學寫程式。</p>
+          <ul class="author-credentials" aria-label="開發者資歷">
+            <li><strong>法律實務</strong>曾任執業律師</li>
+            <li><strong>技術職涯</strong>現於金融業 IT 部門任職</li>
+            <li><strong>得獎紀錄</strong>2025 iThome 鐵人賽<br>Mobile Development 組優選</li>
+          </ul>
           <p>AttorneyTech 是我從律師時期就想做的工具。我用前律師的視角設計它，希望它能真的進到道長們的日常工作流。</p>
           <a class="read" href="https://vocus.cc/article/65e288dbfd89780001e29c9d" target="_blank" rel="noopener"></a>
         </div>
