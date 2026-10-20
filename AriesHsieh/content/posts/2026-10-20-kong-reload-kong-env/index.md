@@ -1,7 +1,7 @@
 ---
 title: "Kong reload 後設定沒有恢復：從 .kong_env 合併機制理解註解與明確設定"
 date: 2026-10-20T14:38:41+08:00
-draft: true
+draft: false
 categories: ["API Gateway"]
 tags: ["Kong", "Data Plane", "Nginx", "Configuration"]
 description: "記錄 Kong Data Plane 執行 reload 時，將設定註解掉未恢復預設值的排查過程，以及 .kong_env 合併機制帶來的設定差異。"
